@@ -1,21 +1,13 @@
-var pubnub = PUBNUB({
-    subscribe_key: 'sub-c-6f08dafe-ef69-11e5-872f-02ee2ddab7fe',
-    publish_key: 'pub-c-d499c43e-d44f-4daf-b7af-23414ef0019a'
-});
+var scheme   = "wss://";
+var uri      = scheme + "websocketfaye.herokuapp.com/";
+var ws       = new WebSocket(uri);
 
-pubnub.subscribe({
-  channel : 'room',
-  callback: function(data) {
-    frequencies[data.frequency].gain.gain.value = data.value;
-  },
-  error: function(err) {
-      console.log(err);
-  }
-})
+ws.onmessage = function(message) {
+  console.log(message.data);
+  var data = JSON.parse(message.data);
+  frequencies[data.frequency].gain.gain.value = data.value;
+};
 
-function send(data) {
-  pubnub.publish({
-    channel: 'room',
-    message: data
-  });
+function send(data){
+  ws.send(JSON.stringify(data));
 }
