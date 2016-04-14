@@ -3,7 +3,6 @@ var uri      = scheme + "websocketfaye.herokuapp.com/";
 var ws       = new WebSocket(uri);
 
 ws.onmessage = function(message) {
-  console.log(message.data);
   var data = JSON.parse(message.data);
   frequencies[data.frequency].gain.gain.value = data.value;
 };
