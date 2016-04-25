@@ -1,14 +1,3 @@
-//querty 
-//trabalho desenvolvido a partir de samples retirados da leitura de Hroldo de campos do poema galáxias, 
-// Dezembro de 2014
-//por Ariane Stolfi
-
-//não é compatível com todos browsers
-
-//fique a vontade pra copiar o codigo
-//direitos autorais dos samples e video pertencem aos seus respectivos autores
-
-//work in progress
 var sample = {};
 var audio_context = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -16,37 +5,13 @@ function chat(event) {
   if(event.keyCode===13){
     var text = $('#chat').val();
     $('#chat').val('');
-    send({som: text, time: new Date().getTime()});
+    send({text: text});
   }
 };
 
 $(function(){
-  load('a');
-  load('b');
-  load('c');
-  load('d');
-  load('e');
-  load('f');
-  load('g');
-  load('h');
-  load('i');
-  load('j');
-  load('k');
-  load('l');
-  load('m');
-  load('n');
-  load('o');
-  load('p');
-  load('q');
-  load('r');
-  load('s');
-  load('t');
-  load('u');
-  load('v');
-  load('w');
-  load('x');
-  load('y');
-  load('z');
+  var files = 'abcdefghijklmnopqrstuvwxyz';
+  for(var i=0; i<files.length; i++) load(files[i]);
 });
   
 function play(buffer){
