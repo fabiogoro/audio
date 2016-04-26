@@ -4,7 +4,7 @@ var ws       = new WebSocket(uri);
 
 ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
-  $('#messages').prepend(data.text+'</br>');
+  $('#messages').prepend('<p class="msg">'+data.text+'</p>');
   var buffer = data.text.toLowerCase().replace(/[^a-z]+/g, '');
   play(buffer);
 };
