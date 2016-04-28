@@ -1,9 +1,39 @@
 p {
-    margin: 0;
+  margin: 0;
+  width: 100%; 
+  font-family: arial; 
+  font-size: 60px;
 }
 
+.on.color0{
+  background-color: red;
+  color: #fff;
+}
 
-.on {
-    background-color: red;
-    color: #fff;
+.on.color1{
+  background-color: orangered;
+  color: #fff;
+}
+
+.on.color2{
+  background-color: red;
+  color: #fff;
+}
+
+.on.color3{
+  background-color: orangered;
+  color: #fff;
+}
+
+#chat {
+  width: 100%; 
+  border: 2px solid #000; 
+  font-family: arial; 
+  font-size: 40px;
+}
+
+@media (min-width: 700px) { 
+  #chat {
+    font-size: 60px;
+  }
 }
