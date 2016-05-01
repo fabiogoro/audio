@@ -1,21 +1,18 @@
-# Banda Crítica 
+# Open Band / Banda Aberta
 
-The idea of this project is to create an application 
-that allow people to create a performance by their own, 
-using their phones.
+This project consists in an application that allow people to create performances by their own, using their devices.
 
-There are 3 versions at the moment, which are in 3 different branches in this github:
+Esse projeto consiste em uma aplicação web que permite pessoas criarem performances por si mesmas, usando seus celulares.
 
-* Oscillator: An oscillator with different frequencies.
-* Chat: A chat that runs audio samples everytime a message is sent.
-* Both: Mix the other 2 versions.
+# How to run / Como Rodar
 
-# How to run
-
-This project is written in plain html/javascript.
+This project is written in plain HTML/Javascript.
 To run this project just open it in your browser.
 
-# Dependencies
+O projeto é escrito apenas em HTML/Javascript.
+Para rodá-lo apenas abra em seu browser.
+
+# Dependencies / Dependências
 
 * WebAudio
 * JQuery
