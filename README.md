@@ -1,13 +1,18 @@
-# Audio project
+# Open Band / Banda Aberta
 
-Web Audio and Cloud/P2P joining devices for making music.
+This project consists in an application that allow people to create performances by their own, using their devices.
 
-# How to run
+Esse projeto consiste em uma aplicação web que permite pessoas criarem performances por si mesmas, usando seus celulares.
 
-This project is written in plain html/javascript.
+# How to run / Como Rodar
+
+This project is written in plain HTML/Javascript.
 To run this project just open it in your browser.
 
-# Dependencies
+O projeto é escrito apenas em HTML/Javascript.
+Para rodá-lo apenas abra em seu browser.
+
+# Dependencies / Dependências
 
 * WebAudio
 * JQuery

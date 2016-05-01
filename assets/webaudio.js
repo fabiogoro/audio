@@ -5,14 +5,13 @@ function chat(event) {
   if(event.keyCode===13){
     var text = $('#chat').val();
     $('#chat').val('');
-    if(text != '') send(text,1);
+    if(text != '') send(text,0);
   }
 };
 
 $(document).on('click', '.msg', function(){
-  $(this).toggleClass("on");
   var text = $(this).text();
-  send(text);
+  send(text, $(this).prop('id'));
 });
 
 function play(pos){
