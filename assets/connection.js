@@ -11,8 +11,8 @@ ws.onmessage = function(message) {
   } else {
     $('#'+data.touch).toggleClass('on');
   }
-  if(data.text === 'stop!') buffer = []; else {
-    var text = data.text.toLowerCase().split('');
+  if(data.text.toLowerCase() === 'stop!' || data.text.toLowerCase() === 'basta!') buffer = []; else {
+    var text = data.text.split('');
     buffer.push(text);
     play(buffer.length-1);
   }

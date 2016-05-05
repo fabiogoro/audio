@@ -26,7 +26,7 @@ function play(pos){
 }
 
 $(function(){
-  var format = ['.mp3', '.wav', '.ogg'];
+  var format = ['.mp3', '.ogg', '.wav'];
   for(j=0;j<format.length;j++){
     load(0, format[j]);
     for(var i=32; i<256; i++) load(i, format[j]);
