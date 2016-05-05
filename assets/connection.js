@@ -12,7 +12,7 @@ ws.onmessage = function(message) {
     $('#'+data.touch).toggleClass('on');
   }
   if(data.text === 'stop!') buffer = []; else {
-    var text = data.text.toLowerCase().replace(/[^a-z.]+/g, '').split('');
+    var text = data.text.toLowerCase().split('');
     buffer.push(text);
     play(buffer.length-1);
   }
