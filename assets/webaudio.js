@@ -26,21 +26,24 @@ function play(pos){
 }
 
 $(function(){
-  load(0);
-  for(var i=32; i<256; i++) load(i);
+  var format = ['.mp3', '.wav', '.ogg'];
+  for(j=0;j<format.length;j++){
+    load(0, format[j]);
+    for(var i=32; i<256; i++) load(i, format[j]);
+  }
 });
 
-function load(file){
+function load(file, format){
   var request = new XMLHttpRequest();
   request.onload = function() {
-    if (this.status === 404) {sample[file] = 0;}
+    if (this.status === 404) {if(!sample[file]) sample[file] = 0;}
     else {
       audio_context.decodeAudioData(request.response, function(buffer) {
         sample[file] = buffer;
       }, onError);
     }
   }
-  request.open('GET', 'samples/'+file+'.mp3', true);
+  request.open('GET', 'samples/'+file+format, true);
   request.responseType = 'arraybuffer';
   request.send();
 }
