@@ -6,7 +6,7 @@ var id = 0;
 ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
   if(!data.touch) {
-    $('#messages').prepend('<p id='+id+' class="msg color'+id%4+'">'+data.text+'</p>');
+    $('#messages').prepend('<p id=msg_'+id+' class="msg color'+id%4+'">'+data.text+'</p>');
     id += 1;
   } else {
     $('#'+data.touch).toggleClass('on');
