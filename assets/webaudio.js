@@ -1,6 +1,21 @@
 var sample = {};
 var buffer = [];
 var audio_context = new (window.AudioContext || window.webkitAudioContext)();
+var started = 0;
+
+window.addEventListener('touchend',start,false);
+function start(){
+  if (/(iPhone|iPad)/i.test(navigator.userAgent)) {
+    if(!started) {
+      audio_context = new (window.AudioContext || window.webkitAudioContext)(); 
+      started=1;
+      var dummy = audio_context.createOscillator();
+      dummy.connect(audio_context.destination);
+      dummy.start(0);
+      dummy.disconnect();
+    }
+  }
+}
 
 function chat(event) {
   if(event.keyCode===13){
@@ -10,9 +25,9 @@ function chat(event) {
   }
 };
 
-$(document).on('click', '.msg', function(){
+$(document).on('click touchend', '.msg', function(){
   var text = $(this).text();
-  send(text, $(this).prop('id'));
+  send(text, $(this).prop('id').replace( /^\D+/g, ''));
 });
 
 function play(pos){
@@ -26,12 +41,18 @@ function play(pos){
 }
 
 $(function(){
-  var format = ['.mp3', '.ogg', '.wav'];
+  init();  
+});
+
+function init(){
+  var format = [/*'.mp3', '.ogg',*/ '.wav'];
   for(j=0;j<format.length;j++){
     load(0, format[j]);
-    for(var i=32; i<256; i++) load(i, format[j]);
+    for(var i=32; i<127; i++) load(i, format[j]);
+    for(var i=127; i<256; i++) sample[i] = 0;
   }
-});
+}
+
 
 function load(file, format){
   var request = new XMLHttpRequest();

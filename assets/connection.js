@@ -6,10 +6,10 @@ var id = 0;
 ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
   if(!data.touch) {
-    $('#messages').prepend('<p id='+id+' class="msg color'+id%4+'">'+data.text+'</p>');
+    $('#messages').prepend('<p id=msg'+id+' class="msg color'+id%4+'">'+data.text+'</p>');
     id += 1;
   } else {
-    $('#'+data.touch).toggleClass('on');
+    $('#msg'+data.touch).toggleClass('on');
   }
   if(data.text.toLowerCase() === 'stop!' || data.text.toLowerCase() === 'basta!') buffer = []; else {
     var text = data.text.split('');
@@ -18,6 +18,7 @@ ws.onmessage = function(message) {
   }
 };
 
-function send(data, touch=0){
+function send(data, touch){
+  if(!touch) touch=0;
   ws.send(JSON.stringify({text: data, touch: touch}));
 }
