@@ -25,9 +25,9 @@ function chat(event) {
   }
 };
 
-$(document).on('click touchend', '.msg', function(){
+$(document).on('touchend', '.msg', function(){
   var text = $(this).text();
-  send(text, $(this).prop('id').replace( /^\D+/g, ''));
+  send(text, 1);
 });
 
 function play(pos){
@@ -36,7 +36,10 @@ function play(pos){
   if(sample[sound]===0) sound = 0;
   source.buffer = sample[sound];
   source.connect(audio_context.destination);
-  source.onended = function(){if(buffer.length != 0 && buffer[pos] != '' ) play(pos);};
+  source.onended = function(){
+    if(buffer.length != 0 && buffer[pos] != '' ) play(pos); 
+    else $('.'+playing[pos]).removeClass('on');
+  };
   source.start(0);
 }
 
