@@ -3,16 +3,19 @@ var uri      = scheme + "websocketfaye.herokuapp.com/";
 var ws       = new WebSocket(uri);
 
 var id = 0;
+var folder = 0;
 ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
-  if(!data.touch) {
-    $('#messages').prepend('<p class="msg color'+id%4+'">'+data.text+'</p>');
-    id += 1;
-  }
-  if(data.text.toLowerCase() === 'stop!' || data.text.toLowerCase() === 'basta!') buffer = []; else {
-    var text = data.text.split('');
-    buffer.push(text);
-    play(buffer.length-1);
+  if(data.text.substr(0,8) === '/samples') folder = data.text.split('').pop(); else {
+    if(!data.touch) {
+      $('#messages').prepend('<p class="msg color'+id%4+'">'+data.text+'</p>');
+      id += 1;
+    }
+    if(data.text.toLowerCase() === 'stop!' || data.text.toLowerCase() === 'basta!') buffer = []; else {
+      var text = data.text.split('');
+      buffer.push(text);
+      play(buffer.length-1);
+    }
   }
 };
 

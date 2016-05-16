@@ -1,4 +1,4 @@
-var sample = {};
+var sample = [{},{}];
 var buffer = [];
 var audio_context = new (window.AudioContext || window.webkitAudioContext)();
 var started = 0;
@@ -33,8 +33,8 @@ $(document).on('click touchend', '.msg', function(){
 function play(pos){
   var source = audio_context.createBufferSource();
   var sound = buffer[pos].shift().charCodeAt(0);
-  if(sample[sound]===0) sound = 0;
-  source.buffer = sample[sound];
+  if(sample[folder][sound]===0) sound = 0;
+  source.buffer = sample[folder][sound];
   source.connect(audio_context.destination);
   source.onended = function(){if(buffer.length != 0 && buffer[pos] != '' ) play(pos);};
   source.start(0);
@@ -49,7 +49,7 @@ function init(){
   for(j=0;j<format.length;j++){
     load(0, format[j]);
     for(var i=32; i<127; i++) load(i, format[j]);
-    for(var i=127; i<256; i++) sample[i] = 0;
+    for(var i=127; i<256; i++) sample[0][i] = 0;
   }
 }
 
@@ -57,14 +57,30 @@ function init(){
 function load(file, format){
   var request = new XMLHttpRequest();
   request.onload = function() {
-    if (this.status === 404) {if(!sample[file]) sample[file] = 0;}
+    if (this.status === 404) {if(!sample[0][file]) sample[0][file] = 0;}
     else {
       audio_context.decodeAudioData(request.response, function(buffer) {
-        sample[file] = buffer;
+        sample[0][file] = buffer;
       }, onError);
     }
   }
   request.open('GET', 'samples/'+file+format, true);
+  request.responseType = 'arraybuffer';
+  request.send();
+  load2(file,format);
+}
+
+function load2(file, format){
+  var request = new XMLHttpRequest();
+  request.onload = function() {
+    if (this.status === 404) {if(!sample[1][file]) sample[1][file] = 0;}
+    else {
+      audio_context.decodeAudioData(request.response, function(buffer) {
+        sample[1][file] = buffer;
+      }, onError);
+    }
+  }
+  request.open('GET', 'samples_1/'+file+format, true);
   request.responseType = 'arraybuffer';
   request.send();
 }
