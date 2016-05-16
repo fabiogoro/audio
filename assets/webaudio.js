@@ -27,7 +27,7 @@ function chat(event) {
 
 $(document).on('click touchend', '.msg', function(){
   var text = $(this).text();
-  send(text, $(this).prop('id').replace( /^\D+/g, ''));
+  send(text, 1);
 });
 
 function play(pos){
