@@ -44,22 +44,20 @@ var total;
 function load(folder, file, format){
   files++; total = files;
   var request = new XMLHttpRequest();
-  request.onload = on_load(folder, file);
+  request.onload = function() {
+    files--;
+    $('#percent').html(Math.floor((total-files)/total*100)+'%');
+    if (this.status === 404) {if(!sample[folder][file]) sample[folder][file] = 0;}
+    else {
+      audio_context.decodeAudioData(request.response, function(buffer) {
+        sample[folder][file] = buffer;
+        if(files===0) loaded();
+      }, on_error);
+    }
+  };
   request.open('GET', 'samples_'+folder+'/'+file+format, true);
   request.responseType = 'arraybuffer';
   request.send();
-}
-
-function on_load(folder, file) {
-  files--;
-  $('#percent').html(Math.floor((total-files)/total*100)+'%');
-  if (this.status === 404) {if(!sample[folder][file]) sample[folder][file] = 0;}
-  else {
-    audio_context.decodeAudioData(request.response, function(buffer) {
-      sample[folder][file] = buffer;
-      if(files===0) loaded();
-    }, on_error);
-  }
 }
 
 function on_error(e){
