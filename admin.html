@@ -12,6 +12,12 @@
   </head>
   <body>
     <div id="main">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" onclick="send('/samples0')">Pasta 0</button>
+        <button type="button" class="btn btn-default" onclick="send('/samples1')">Pasta 1</button>
+        <button type="button" class="btn btn-default" onclick="send('/samples2')">Pasta 2</button>
+      </div>
+    <canvas class="visualizer"></canvas> 
       <input type=text id=chat placeholder='Clique, escreva, envie' onkeypress='chat(event)'>
       <div id="messages" ></div>
       <div id="loading"><i class='fa fa-circle-o-notch fa-spin '></i> Carregando... <span id="percent"></span></div>
@@ -22,5 +28,6 @@
     <script type="text/javascript" src="assets/ios_hack.js"></script>
     <script type="text/javascript" src="assets/chat.js"></script>
     <script type="text/javascript" src="assets/connection.js"></script>
+    <script type="text/javascript" src="assets/wave.js"></script>
   </body>
 </html>
