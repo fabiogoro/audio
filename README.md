@@ -28,11 +28,14 @@ Há algumas mensagens especiais, como:
 
 This project is written in plain HTML/Javascript.
 To run this project just open it in your browser.
+For more information about the server visit the other project (https://github.com/fabiogoro/bandaserver)
 
 O projeto é escrito apenas em HTML/Javascript.
 Para rodá-lo apenas abra em seu browser.
+Para mais informações sobre o servidor, visite (https://github.com/fabiogoro/bandaserver)
 
 # Dependencies / Dependências
 
 * WebAudio
 * JQuery
+* The server: https://github.com/fabiogoro/bandaserver
