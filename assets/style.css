@@ -29,12 +29,12 @@ p {
   width: 100%; 
   border: 2px solid #000; 
   font-family: arial; 
-  font-size: 40px;
+  font-size: 20px;
 }
 
 @media (min-width: 700px) { 
   #chat {
-    font-size: 60px;
+    font-size: 20px;
   }
 }
 
@@ -54,3 +54,5 @@ p {
   letter-spacing: 1px;
   text-transform: uppercase;
 }
+
+
