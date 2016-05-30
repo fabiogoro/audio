@@ -51,7 +51,7 @@ function load(folder, file, format){
     else {
       audio_context.decodeAudioData(request.response, function(buffer) {
         sample[folder][file] = buffer;
-        if(files<5) loaded();
+        if(files<50) loaded();
       }, on_error);
     }
   };
