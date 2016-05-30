@@ -26,11 +26,11 @@ $(function(){
 
 function init(){
   files = 0;
-  var format = [/*'.mp3', '.ogg',*/ '.wav'];
+  var format = ['.mp3'/*, '.ogg', '.wav'*/];
   for(j=0;j<format.length;j++){
     load_folder(0, format[j]);
     load_folder(1, format[j]);
-    load_folder(2, format[j]);
+    //load_folder(2, format[j]);
   }
 }
 
@@ -51,7 +51,7 @@ function load(folder, file, format){
     else {
       audio_context.decodeAudioData(request.response, function(buffer) {
         sample[folder][file] = buffer;
-        if(files===0) loaded();
+        if(files<5) loaded();
       }, on_error);
     }
   };
