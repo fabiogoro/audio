@@ -1,3 +1,4 @@
+var record = 1;
 var canvas;
 $(function(){
   var analyser = audio_context.createAnalyser();

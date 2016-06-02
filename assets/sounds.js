@@ -1,14 +1,23 @@
 var sample = [{},{},{}];
 var buffer = [];
-var audio_context = new (window.AudioContext || window.webkitAudioContext)();
 var files;
-var compressor = audio_context.createDynamicsCompressor();
-compressor.threshold.value = -50;
-compressor.knee.value = 40;
-compressor.ratio.value = 24;
-compressor.reduction.value = -20;
+var audio_context;
+var compressor;
+var gain;
+start_web_audio();
 
-compressor.connect(audio_context.destination);
+function start_web_audio(){
+  audio_context = new (window.AudioContext || window.webkitAudioContext)();
+  compressor = audio_context.createDynamicsCompressor();
+  compressor.threshold.value = -50;
+  compressor.knee.value = 40;
+  compressor.ratio.value = 24;
+  compressor.reduction.value = -20;
+  gain = audio_context.createGain();
+  gain.gain.value = 1;
+  gain.connect(audio_context.destination);
+  compressor.connect(gain);
+}
 
 function play(pos){
   var source = audio_context.createBufferSource();
@@ -26,7 +35,7 @@ $(function(){
 
 function init(){
   files = 0;
-  var format = ['.mp3'/*, '.ogg', '.wav'*/];
+  var format = ['.mp3', /*'.ogg', /*'.wav'*/];
   for(j=0;j<format.length;j++){
     load_folder(0, format[j]);
     load_folder(1, format[j]);
@@ -62,4 +71,5 @@ function load(folder, file, format){
 
 function on_error(e){
   console.log('Error: '+e);
+  if(files<50) loaded();
 }
