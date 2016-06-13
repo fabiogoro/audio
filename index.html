@@ -1,125 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Web Audio">
-    <meta name="author" content="Banda Aberta">
-
-    <title>Banda Aberta</title>
+<html>
+<head>
+    <meta charset="utf-8"> 
+    
     <link type="text/css" href="assets/style.css" rel="stylesheet">
-    <link type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  </head>
-  <body>
-    <div id="main">
-      <input type=text id=chat placeholder='envie uma mensagem' onkeypress='chat(event)'>
-      <div id="messages" ></div>
-      <div id="help"><i class='fa fa-question' onclick='help();'></i></div>
-    </div>
-    <div id="loading"><i class='fa fa-circle-o-notch fa-spin '></i> Carregando... <span id="percent"></span></div>
-    <div id="main-help">
-      <div id="letters">
-        <div id="lowercase">
-          <span onclick="send('a',1)">a</span>
-          <span onclick="send('b',1)">b</span>
-          <span onclick="send('c',1)">c</span>
-          <span onclick="send('d',1)">d</span>
-          <span onclick="send('e',1)">e</span>
-          <span onclick="send('f',1)">f</span>
-          <span onclick="send('g',1)">g</span>
-          <span onclick="send('h',1)">h</span>
-          <span onclick="send('i',1)">i</span>
-          <span onclick="send('j',1)">j</span>
-          <span onclick="send('k',1)">k</span>
-          <span onclick="send('l',1)">l</span>
-          <span onclick="send('m',1)">m</span>
-          <span onclick="send('n',1)">n</span>
-          <span onclick="send('o',1)">o</span>
-          <span onclick="send('p',1)">p</span>
-          <span onclick="send('q',1)">q</span>
-          <span onclick="send('r',1)">r</span>
-          <span onclick="send('s',1)">s</span>
-          <span onclick="send('t',1)">t</span>
-          <span onclick="send('u',1)">u</span>
-          <span onclick="send('v',1)">v</span>
-          <span onclick="send('w',1)">w</span>
-          <span onclick="send('x',1)">x</span>
-          <span onclick="send('y',1)">y</span>
-          <span onclick="send('z',1)">z</span>
-        </div>
-        <div id="uppercase">
-          <span onclick="send('A',1)">A</span>
-          <span onclick="send('B',1)">B</span>
-          <span onclick="send('C',1)">C</span>
-          <span onclick="send('D',1)">D</span>
-          <span onclick="send('E',1)">E</span>
-          <span onclick="send('F',1)">F</span>
-          <span onclick="send('G',1)">G</span>
-          <span onclick="send('H',1)">H</span>
-          <span onclick="send('I',1)">I</span>
-          <span onclick="send('J',1)">J</span>
-          <span onclick="send('K',1)">K</span>
-          <span onclick="send('L',1)">L</span>
-          <span onclick="send('M',1)">M</span>
-          <span onclick="send('N',1)">N</span>
-          <span onclick="send('O',1)">O</span>
-          <span onclick="send('P',1)">P</span>
-          <span onclick="send('Q',1)">Q</span>
-          <span onclick="send('R',1)">R</span>
-          <span onclick="send('S',1)">S</span>
-          <span onclick="send('T',1)">T</span>
-          <span onclick="send('U',1)">U</span>
-          <span onclick="send('V',1)">V</span>
-          <span onclick="send('W',1)">W</span>
-          <span onclick="send('X',1)">X</span>
-          <span onclick="send('Y',1)">Y</span>
-          <span onclick="send('Z',1)">Z</span>
-        </div>
-      </div>
-      <div id="numbers">
-        <span onclick="send('1',1)">1</span>
-        <span onclick="send('2',1)">2</span>
-        <span onclick="send('3',1)">3</span>
-        <span onclick="send('4',1)">4</span>
-        <span onclick="send('5',1)">5</span>
-        <span onclick="send('6',1)">6</span>
-        <span onclick="send('7',1)">7</span>
-        <span onclick="send('8',1)">8</span>
-        <span onclick="send('9',1)">9</span>
-        <span onclick="send('0',1)">0</span>
-        <span onclick="send('!',1)">!</span>
-        <span onclick="send('@',1)">@</span>
-        <span onclick="send('#',1)">#</span>
-        <span onclick="send('$',1)">$</span>
-        <span onclick="send('%',1)">%</span>
-        <span onclick="send('¨',1)">¨</span>
-        <span onclick="send('&',1)">&</span>
-        <span onclick="send('*',1)">*</span>
-        <span onclick="send('(',1)">(</span>
-        <span onclick="send(')',1)">)</span>
-        <span onclick="send('-',1)">-</span>
-        <span onclick="send('_',1)">_</span>
-        <span onclick="send('=',1)">=</span>
-        <span onclick="send('+',1)">+</span>
-        <span onclick="send('/',1)">/</span>
-        <span onclick="send('\',1)">\</span>
-      </div>
-      <div id='commands'>
-        <span onclick="send('quieto!')">quieto!</span></br>
-        <span onclick="send('som!')">som!</span></br>
-        <span onclick="send('basta!')">basta!</span></br>
-      </div>
-      <i class='fa fa-arrow-circle-o-up' onclick="caps()"></i>
-      <span id='cmd_key' onclick="cmd_keys()">cmd</span>
-      <span id='number_key' onclick="number_keys()">123</span>
-    </div>
-    <div id="close"><i class='fa fa-times' onclick='quit_help();'></i></div>
+    <style>
+        
+        
+        
+        body {
+            padding: 50px;
+            font-family: sans-serif;
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/sounds.js"></script>
-    <script type="text/javascript" src="assets/ios_hack.js"></script>
-    <script type="text/javascript" src="assets/chat.js"></script>
-    <script type="text/javascript" src="assets/connection.js"></script>
-    <script type="text/javascript" src="assets/help.js"></script>
-  </body>
+        }
+        
+        
+        
+    </style>
+    
+</head>
+<body>
+    
+    <h1>banda aberta</h1>
+    
+    <div class="main">
+    
+        <h1>26/05/2016 <br>15h </h1>
+                
+        <a class="play" href="chat.html">&#9658;</a>
+        
+        
+    <p class="text">plataforma para diálogos sonoros coletivos</p>
+        <br>
+        
+            <!--<a class="btn gg">aqui</a>-->
+    
+    <p class="nota">samples extraídos de: <br>Haroldo de Campos (Galáxias), Johanna Beyer (Música das Esferas), Velimir Khlebnikov (The radio of the Future), Stênio Biazon, André Martins, Ariane Stolfi e freesound</p>
+    <p class="nota"> desenvolvido por Ariane Stolfi e Fábio Gorodscy com a colaboração do NuSom</p>
+  
+        
+        
+        
+
+    
+    
+
+</body>
+
 </html>

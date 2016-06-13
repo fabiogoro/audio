@@ -25,7 +25,7 @@ $(function(){
       var offset = HEIGHT - height - 1;
       var barWidth = WIDTH/analyser.frequencyBinCount;
       var hue = i/analyser.frequencyBinCount * 360;
-      canvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+      canvas.fillStyle = 'hsl(' + 1 + ', 100%, 50%)';
       canvas.fillRect(i * barWidth, offset, barWidth, height);
     }
     var timeDomain = new Uint8Array(analyser.frequencyBinCount);
