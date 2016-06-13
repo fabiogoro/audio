@@ -104,8 +104,14 @@
         <span onclick="send('/',1)">/</span>
         <span onclick="send('\',1)">\</span>
       </div>
+      <div id='commands'>
+        <span onclick="send('quieto!')">quieto!</span></br>
+        <span onclick="send('som!')">som!</span></br>
+        <span onclick="send('basta!')">basta!</span></br>
+      </div>
       <i class='fa fa-arrow-circle-o-up' onclick="caps()"></i>
-      <span onclick="number_keys()">123</span>
+      <span id='cmd_key' onclick="cmd_keys()">cmd</span>
+      <span id='number_key' onclick="number_keys()">123</span>
     </div>
     <div id="close"><i class='fa fa-times' onclick='quit_help();'></i></div>
 

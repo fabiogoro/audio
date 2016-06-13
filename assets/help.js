@@ -18,4 +18,17 @@ function caps(){
 function number_keys(){
   $('#letters').toggle();
   $('#numbers').toggle();
+  $('#commands').hide();
+  $('.fa-arrow-circle-o-up').toggle();
+  $('#cmd_key').toggle();
+  $('#number_key').html($('#number_key').html() == '123' ? 'abc' : '123');
+}
+
+function cmd_keys(){
+  $('#letters').toggle();
+  $('#numbers').hide();
+  $('#commands').toggle();
+  $('.fa-arrow-circle-o-up').toggle();
+  $('#number_key').toggle();
+  $('#cmd_key').html($('#cmd_key').html() == 'cmd' ? 'abc' : 'cmd');
 }

@@ -3,6 +3,7 @@ p {
   width: 100%; 
   font-family: arial; 
   font-size: 60px;
+  word-wrap: break-word;
 }
 
 .on.color0{
@@ -71,6 +72,8 @@ p {
 }
 
 #main-help {
+  font-family: sans-serif;
+  font-weight: bold;
   font-size: 60px;
   display: none;
 }
@@ -85,6 +88,11 @@ p {
 }
 
 #numbers {
+  width: 85%;
+  display:none;
+}
+
+#commands {
   width: 85%;
   display:none;
 }
