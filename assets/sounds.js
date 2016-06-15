@@ -4,6 +4,7 @@ var files;
 var audio_context;
 var compressor;
 var gain;
+var destination;
 start_web_audio();
 
 function start_web_audio(){
@@ -16,6 +17,7 @@ function start_web_audio(){
   gain = audio_context.createGain();
   gain.gain.value = 1;
   gain.connect(audio_context.destination);
+  destination = gain;
   compressor.connect(gain);
 }
 
@@ -24,7 +26,7 @@ function play(pos){
   var sound = buffer[pos].shift().charCodeAt(0);
   if(sample[folder][sound]===0) sound = 0;
   source.buffer = sample[folder][sound];
-  source.connect(compressor);
+  source.connect(destination);
   source.onended = function(){if(buffer.length != 0 && buffer[pos] != '' ) play(pos);};
   source.start(0);
 }
