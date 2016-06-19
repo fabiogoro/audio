@@ -18,12 +18,18 @@ function system_commands(data){
 function simple_commands(text){
   switch(text){
     case 'stop!':
-    case 'basta!':
+    case 'corta!':
       buffer = []; 
       return true;
     case 'quieto!':
       gain.gain.linearRampToValueAtTime(0, audio_context.currentTime + 2);
       return true;
+    case 'piano!':
+      gain.gain.linearRampToValueAtTime(0.2, audio_context.currentTime + 2);
+      return true;   
+    case 'mezzo!':
+      gain.gain.linearRampToValueAtTime(0.6, audio_context.currentTime + 2);
+      return true; 
     case 'som!':
       gain.gain.linearRampToValueAtTime(1, audio_context.currentTime + 2); 
       return true;

@@ -34,7 +34,7 @@ function loaded(){
         play(buffer.length-1);
       }
     }
-    if(!record) $('#messages p:nth-child(25)').remove();
+    if(!record) $('#messages p:nth-child(100)').remove();
   };
 
   $('#main').show(500);

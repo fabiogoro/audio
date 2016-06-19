@@ -41,7 +41,8 @@ function init(){
   for(j=0;j<format.length;j++){
     load_folder(0, format[j]);
     load_folder(1, format[j]);
-    //load_folder(2, format[j]);
+    load_folder(2, format[j]);
+    load_folder(3, format[j]);
   }
 }
 
