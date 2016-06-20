@@ -1,5 +1,5 @@
 var scheme   = "wss://";
-var uri      = scheme + "websocketfaye.herokuapp.com/";
+var uri      = scheme + SERVER;
 var ws       = new WebSocket(uri);
 
 var id = 0;

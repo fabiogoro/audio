@@ -1,11 +1,9 @@
+var reg = new RegExp('[0-'+FOLDERS+']')
 function system_commands(data){
   if(data.text.substr(0,8) === '/samples') {
     info = data.text.split('').pop();
-    switch(info){
-      case 's': if(folder!=0) send('/samples'+folder); break;
-      case '0': case '1': case '2': 
-        folder = info;
-    }
+    if(info === 's' && folder!=0) send('/samples'+folder); 
+    if(reg.test(info)) folder = info;
     return true;
   }
   if(data.text === '/compressor') {

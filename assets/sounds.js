@@ -37,11 +37,9 @@ $(function(){
 
 function init(){
   files = 0;
-  var format = ['.mp3', /*'.ogg', /*'.wav'*/];
-  for(j=0;j<format.length;j++){
-    load_folder(0, format[j]);
-    load_folder(1, format[j]);
-    //load_folder(2, format[j]);
+  var format = ['.mp3' /*'.ogg', /*'.wav'*/];
+  for(i=0;i<=FOLDERS;i++){
+    load_folder(i, format[0]);
   }
 }
 
@@ -58,7 +56,7 @@ function load(folder, file, format){
   request.onload = function() {
     files--;
     $('#percent').html(Math.floor((total-files)/total*100)+'%');
-    if (this.status === 404) {if(!sample[folder][file]) sample[folder][file] = 0;}
+    if (this.status === 404) {if(!sample[folder][file]) sample[folder][file] = 0; if(files<50) loaded();}
     else {
       audio_context.decodeAudioData(request.response, function(buffer) {
         sample[folder][file] = buffer;
