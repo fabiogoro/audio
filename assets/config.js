@@ -1,2 +1,2 @@
 var SERVER = "websocketfaye.herokuapp.com/";
-var FOLDERS = 2;
+var FOLDERS = 3;

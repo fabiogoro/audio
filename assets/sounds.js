@@ -1,4 +1,4 @@
-var sample = [{},{},{}];
+var sample = [];
 var buffer = [];
 var files;
 var audio_context;
@@ -39,6 +39,7 @@ function init(){
   files = 0;
   var format = ['.mp3' /*'.ogg', /*'.wav'*/];
   for(i=0;i<=FOLDERS;i++){
+    sample.push({});
     load_folder(i, format[0]);
   }
 }
