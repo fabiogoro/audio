@@ -1,6 +1,11 @@
+$(function() {
+  //$('#slider').slider();
+});
+
 function quit_help(){
   $('#main').show();
   $('#main-help').hide();
+  $('#main-config').hide();
   $('#close').hide();
 }
 
@@ -9,6 +14,13 @@ function help(){
   $('#main-help').show();
   $('#close').show();
 }
+
+function config(){
+  $('#main').hide();
+  $('#main-config').show();
+  $('#close').show();
+}
+
 
 function caps(){
   $('#lowercase').toggle();

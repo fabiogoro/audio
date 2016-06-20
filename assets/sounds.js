@@ -15,10 +15,12 @@ function start_web_audio(){
   compressor.ratio.value = 24;
   compressor.reduction.value = -20;
   gain = audio_context.createGain();
+  master_gain = audio_context.createGain();
   gain.gain.value = 1;
-  gain.connect(audio_context.destination);
+  gain.connect(master_gain);
   destination = gain;
   compressor.connect(gain);
+  master_gain.connect(audio_context.destination);
 }
 
 function play(pos){
@@ -65,7 +67,8 @@ function load(folder, file, format){
       }, on_error);
     }
   };
-  request.open('GET', 'samples_'+folder+'/'+file+format, true);
+  if(!file) request.open('GET', 'samples_0/32.mp3', true);
+  else request.open('GET', 'samples_'+folder+'/'+file+format, true);
   request.responseType = 'arraybuffer';
   request.send();
 }

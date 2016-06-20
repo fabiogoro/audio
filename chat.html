@@ -14,9 +14,16 @@
     <div id="main">
       <input type=text id=chat placeholder='envie uma mensagem' onkeypress='chat(event)'>
       <div id="messages" ></div>
-      <div id="help"><i class='fa fa-question' onclick='help();'></i></div>
+      <div id="config"></div>
+      <div id="help">
+        <i class='fa fa-cog' onclick='config();'></i></br>
+        <i class='fa fa-question' onclick='help(); return false;'></i>
+      </div>
     </div>
     <div id="loading"><i class='fa fa-circle-o-notch fa-spin '></i> Carregando... <span id="percent"></span></div>
+    <div id="main-config">
+      <span>Volume</span><div id="slider"></div>
+    </div>
     <div id="main-help">
       <div id="letters">
         <div id="lowercase">

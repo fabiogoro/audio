@@ -140,6 +140,13 @@ h1 {
   display: none;
 }
 
+#main-config {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  display: none;
+}
+
 #uppercase {
   display: none;
   width: 85%;
