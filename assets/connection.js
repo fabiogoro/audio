@@ -1,5 +1,4 @@
-var scheme   = "wss://";
-var uri      = scheme + SERVER;
+var uri      = SERVER;
 var ws       = new WebSocket(uri);
 
 var id = 0;
