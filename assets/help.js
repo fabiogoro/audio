@@ -1,5 +1,14 @@
 $(function() {
-  //$('#slider').slider();
+  $('#slider').slider({
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 1
+  });
+});
+
+$('#slider').on('slidechange', function() {
+  master_gain.gain.value = $('#slider').slider('value');
 });
 
 function quit_help(){

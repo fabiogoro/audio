@@ -5,6 +5,11 @@ html {
   box-sizing: inherit;
 }
 
+#slider {
+  margin: 10px;
+  margin-right: 60px;
+}
+
 .msg {
   margin: 0;
   width: 100%; 
