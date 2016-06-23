@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Web Audio">
+    <meta name="author" content="Banda Aberta">
+
+    <title>Banda Aberta</title>
+    <link type="text/css" href="assets/style.css" rel="stylesheet">
+    <link type="text/css" href="assets/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link type="text/css" href="assets/lib/css/jquery-ui.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="main" class="multi">
+        <div id="faixa0" class="faixa">
+            <input type=text id=chat0 placeholder='envie uma mensagem' onkeypress='pista(event, 0)' />
+            <div id="messages1"></div>
+            <div id="config"></div>
+            <div id="help">
+                <i class='fa fa-cog' onclick='config();'></i>
+                <br/>
+                <i class='fa fa-question' onclick='help(); return false;'></i>
+            </div>
+        </div>
+
+
+
+        <div id="faixa1" class="faixa">
+
+            <input type=text id=chat1 placeholder='envie uma mensagem' onkeypress='pista(event, 1)' />
+            <div id="messages1"></div>
+            <div id="config"></div>
+            <div id="help">
+                <i class='fa fa-cog' onclick='config();'></i>
+                <br/>
+                <i class='fa fa-question' onclick='help(); return false;'></i>
+            </div>
+        </div>
+
+
+        <div id="faixa2" class="faixa">
+
+            <input type=text id=chat2 placeholder='envie uma mensagem' onkeypress='pista(event, 2)' />
+            <div id="messages2"></div>
+            <div id="config"></div>
+            <div id="help">
+                <i class='fa fa-cog' onclick='config();'></i>
+                <br/>
+                <i class='fa fa-question' onclick='help(); return false;'></i>
+            </div>
+        </div>
+
+
+        <div id="faixa3" class="faixa">
+
+            <input type=text id=chat3 placeholder='envie uma mensagem' onkeypress='pista(event, 3)' />
+            <div id="messages3"></div>
+            <div id="config"></div>
+            <div id="help">
+                <i class='fa fa-cog' onclick='config();'></i>
+                <br/>
+                <i class='fa fa-question' onclick='help(); return false;'></i>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="loading"><i class='fa fa-circle-o-notch fa-spin '></i> Carregando... <span id="percent"></span></div>
+    <div id="main-config">
+        <span>Volume</span>
+        <div id="slider"></div>
+    </div>
+
+
+    <div id="close"><i class='fa fa-times' onclick='quit_help();'></i></div>
+
+    <script type="text/javascript" src="assets/config.js"></script>
+    <script type="text/javascript" src="assets/lib/js/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="assets/lib/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="assets/sounds.js"></script>
+    <script type="text/javascript" src="assets/ios_hack.js"></script>
+    <script type="text/javascript" src="assets/chat.js"></script>
+    <script type="text/javascript" src="assets/connection.js"></script>
+    <script type="text/javascript" src="assets/help.js"></script>
+    <script type="text/javascript" src="assets/commands.js"></script>
+
+
+
+
+</body>
+
+</html>

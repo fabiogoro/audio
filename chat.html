@@ -13,14 +13,19 @@
   </head>
   <body>
     <div id="main">
-      <input type=text id=chat placeholder='envie uma mensagem' onkeypress='chat(event)'>
+        <div id="faixa" class="faixa">
+      <input type=text id=chat placeholder='envie uma mensagem' onkeypress='chat(event)'/>
       <div id="messages" ></div>
+            
+        </div>    
+            
       <div id="config"></div>
       <div id="help">
-        <i class='fa fa-cog' onclick='config();'></i></br>
+        <i class='fa fa-cog' onclick='config();'></i><br/>
         <i class='fa fa-question' onclick='help(); return false;'></i>
       </div>
     </div>
+   
     <div id="loading"><i class='fa fa-circle-o-notch fa-spin '></i> Carregando... <span id="percent"></span></div>
     <div id="main-config">
       <span>Volume</span><div id="slider"></div>
@@ -113,11 +118,11 @@
         <span onclick="send('\',1)">\</span>
       </div>
       <div id='commands'>
-        <span onclick="send('corta!')">corta!</span></br>
-        <span onclick="send('som!')">som!</span></br>
-        <span onclick="send('piano!')">piano!</span></br>
-        <span onclick="send('mezzo!')">mezzo!</span></br>
-        <span onclick="send('basta!')">quieto!</span></br>
+        <span onclick="send('corta!')">corta!</span><br/>
+        <span onclick="send('som!')">som!</span><br/>
+        <span onclick="send('piano!')">piano!</span><br/>
+        <span onclick="send('mezzo!')">mezzo!</span><br/>
+        <span onclick="send('basta!')">quieto!</span><br/>
       </div>
       <i class='fa fa-arrow-circle-o-up' onclick="caps()"></i>
       <span id='cmd_key' onclick="cmd_keys()">cmd</span>
