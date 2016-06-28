@@ -8,6 +8,7 @@ var destination;
 start_web_audio();
 
 function start_web_audio(){
+  if(audio_context!=null) audio_context.close();
   audio_context = new (window.AudioContext || window.webkitAudioContext)();
   compressor = audio_context.createDynamicsCompressor();
   compressor.threshold.value = -50;

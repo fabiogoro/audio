@@ -2,7 +2,7 @@ var record = 1;
 var canvas;
 $(function(){
   var analyser = audio_context.createAnalyser();
-  compressor.connect(analyser);
+  gain.connect(analyser);
   analyser.fftSize = 1024;
   var bufferLength = analyser.frequencyBinCount;
   var dataArray = new Float32Array(bufferLength);

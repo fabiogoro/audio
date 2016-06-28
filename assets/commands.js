@@ -10,6 +10,10 @@ function system_commands(data){
     destination = (destination==compressor) ? gain : compressor; 
     return true;
   }
+  if(data.text === '/restart') {
+    start_web_audio(); 
+    return true;
+  }
   return false;
 }
 
