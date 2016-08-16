@@ -55,4 +55,36 @@ p {
   text-transform: uppercase;
 }
 
+#help {
+  position: fixed;
+  bottom: 3px;
+  right: 3px;
+  font-size: 60px;
+}
 
+#close {
+  position: fixed;
+  top: 3px;
+  right: 3px;
+  font-size: 60px;
+  display: none;
+}
+
+#main-help {
+  font-size: 60px;
+  display: none;
+}
+
+#uppercase {
+  display: none;
+  width: 85%;
+}
+
+#lowercase {
+  width: 85%;
+}
+
+#numbers {
+  width: 85%;
+  display:none;
+}

@@ -12,15 +12,25 @@
   </head>
   <body>
     <div id="main">
-      <input type=text id=chat placeholder='envie uma mensagem' onkeypress='chat(event)'>
-      <div id="messages" ></div>
+      <canvas class="visualizer"></canvas> 
+      <span onclick="play_all(1)">1</span>
+      <span onclick="play_all(2)">2</span>
+      <span onclick="play_all(3)">3</span>
+      <span onclick="play_all(4)">4</span>
+      <span onclick="play_all(5)">5</span>
+      <span onclick="play_all(6)">6</span>
+      <span onclick="play_all(7)">7</span>
+      <span onclick="play_all(8)">8</span>
+      <span onclick="play_all(9)">9</span>
     </div>
     <div id="loading"><i class='fa fa-circle-o-notch fa-spin '></i> Carregando... <span id="percent"></span></div>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
     <script type="text/javascript" src="assets/sounds.js"></script>
+    <script type="text/javascript" src="assets/wave.js"></script>
     <script type="text/javascript" src="assets/ios_hack.js"></script>
     <script type="text/javascript" src="assets/chat.js"></script>
     <script type="text/javascript" src="assets/connection.js"></script>
+    <script type="text/javascript" src="assets/help.js"></script>
   </body>
 </html>

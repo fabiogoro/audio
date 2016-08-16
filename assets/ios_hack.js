@@ -1,15 +1,11 @@
-var started = 0;
-
-window.addEventListener('touchend',start,false);
+$(document).on('touchend',start);
 function start(){
+  $(document).off('touchend',start);
   if (/(iPhone|iPad)/i.test(navigator.userAgent)) {
-    if(!started) {
-      audio_context = new (window.AudioContext || window.webkitAudioContext)(); 
-      started=1;
-      var dummy = audio_context.createOscillator();
-      dummy.connect(audio_context.destination);
-      dummy.start(0);
-      dummy.disconnect();
-    }
+    start_web_audio();
+    var dummy = audio_context.createOscillator();
+    dummy.connect(audio_context.destination);
+    dummy.start(0);
+    dummy.disconnect();
   }
 }
