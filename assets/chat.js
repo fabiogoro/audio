@@ -6,10 +6,14 @@ function chat(event) {
   }
 };
 
-$(document).on('click touchend', '.msg', function(){
+$(document).on('click touchend', '.msg.from_chat', function(){
   var text = $(this).text();
-  play_repeat(text);
-  //send(text, 1);
+  send(text, 1);
+});
+
+$(document).on('click touchend', '.msg.from_loop', function(){
+  var text = $(this).text();
+  send(text, 2);
 });
 
 function pista(event, pasta) {

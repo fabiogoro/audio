@@ -35,11 +35,18 @@ function play(pos){
   if(buffer.length != 0 && buffer[pos] != '') setTimeout('play('+pos+')',60/bpm*1000);
 }
 
-function play_repeat(text){
-  var text = text.split('');
-  buffer.push(text);
-  play_sample(buffer.length-1);
-  if(buffer.length != 0 && buffer[pos] != '') setTimeout('play('+pos+')',60/bpm*1000);
+function play_repeat(pos, p_element){
+  play_sample(pos);
+  if(buffer.length != 0 && buffer[pos] != '') setTimeout(play_repeat,60/bpm*1000,pos,p_element);
+  else{
+    if(p_element.text()!=''){
+      buffer[pos]=p_element.text().split(''); 
+      setTimeout(play_repeat,60/bpm*1000,pos,p_element);
+    }
+  }
+  //pos = buffer.length-1;
+  //play(pos);
+  //play_repeat(data);
 }
 
 $(function(){

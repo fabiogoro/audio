@@ -26,13 +26,24 @@ function loaded(){
       var data = JSON.parse(message.data);
       if(!system_commands(data)) {
         if(!data.touch) {
-          var p = $('<p />',{class: 'msg', text: data.text});
+          var p = $('<p />',{class: 'msg from_chat', text: data.text});
           $('#messages').prepend(p);
-        }
-        if(!simple_commands(data.text.toLowerCase())) {
-          var text = data.text.split('');
-          buffer.push(text);
-          play(buffer.length-1);
+          if(!simple_commands(data.text.toLowerCase())) {
+            var text = data.text.split('');
+            buffer.push(text);
+            play(buffer.length-1);
+          }
+        } else {
+          if(data.touch==1){
+            var p = $('<p />',{class: 'msg from_loop '+data.text, text: data.text});
+            $('#loop').prepend(p);
+            $('#messages :contains('+data.text+')').text('').remove();
+            var text = data.text.split('');
+            buffer.push(text);
+            play_repeat(buffer.length-1, p);
+          } else {
+            $("[class='msg from_loop "+data.text+"']").text('').remove();
+          }
         }
       }
       if(!record) $('#messages p:nth-child(100)').remove();
