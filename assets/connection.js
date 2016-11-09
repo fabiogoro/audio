@@ -26,8 +26,8 @@ function loaded(){
       var data = JSON.parse(message.data);
       if(!system_commands(data)) {
         if(!data.touch) {
-          $('#messages').prepend('<p class="msg color'+id%4+'">'+data.text+'</p>');
-          id += 1;
+          var p = $('<p />',{class: 'msg', text: data.text});
+          $('#messages').prepend(p);
         }
         if(!simple_commands(data.text.toLowerCase())) {
           var text = data.text.split('');

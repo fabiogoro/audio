@@ -14,6 +14,22 @@ function system_commands(data){
     start_web_audio(); 
     return true;
   }
+  if(data.text.substr(0,4) === '/bpm') {
+    if(data.text.substr(4)) bpm = parseInt(data.text.substr(4));
+    return true;
+  }
+  if(data.text.substr(0,4) === 'sudo') {
+    words = data.text.split(' ');
+    if(words.length>1) pwd = words[1];
+    $.get('sudo', {pwd: pwd}, function( data ) {
+      if(data){
+        code = '';
+        for(var i=2;i<words.length;i++) code+=words[i]+' ';
+        $('#messages').prepend('<p class="msg">'+code+'</p>');
+      }
+    });
+    return true;
+  }
   return false;
 }
 

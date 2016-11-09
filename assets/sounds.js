@@ -11,10 +11,6 @@ function start_web_audio(){
   if(audio_context!=null) audio_context.close();
   audio_context = new (window.AudioContext || window.webkitAudioContext)();
   compressor = audio_context.createDynamicsCompressor();
-  compressor.threshold.value = -50;
-  compressor.knee.value = 40;
-  compressor.ratio.value = 24;
-  compressor.reduction.value = -20;
   gain = audio_context.createGain();
   master_gain = audio_context.createGain();
   gain.gain.value = 1;
@@ -24,14 +20,19 @@ function start_web_audio(){
   master_gain.connect(audio_context.destination);
 }
 
-function play(pos){
+var bpm = 120;
+function play_sample(pos){
   var source = audio_context.createBufferSource();
   var sound = buffer[pos].shift().charCodeAt(0);
   if(sample[folder][sound]===0) sound = 0;
   source.buffer = sample[folder][sound];
   source.connect(destination);
-  source.onended = function(){if(buffer.length != 0 && buffer[pos] != '' ) play(pos);};
   source.start(0);
+}
+
+function play(pos){
+  play_sample(pos);
+  if(buffer.length != 0 && buffer[pos] != '') setTimeout('play('+pos+')',60/bpm*1000);
 }
 
 $(function(){
