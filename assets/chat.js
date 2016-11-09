@@ -8,7 +8,8 @@ function chat(event) {
 
 $(document).on('click touchend', '.msg', function(){
   var text = $(this).text();
-  send(text, 1);
+  play_repeat(text);
+  //send(text, 1);
 });
 
 function pista(event, pasta) {

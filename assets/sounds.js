@@ -35,6 +35,12 @@ function play(pos){
   if(buffer.length != 0 && buffer[pos] != '') setTimeout('play('+pos+')',60/bpm*1000);
 }
 
+function play_repeat(pos){
+  play_sample(pos);
+  if(buffer.length != 0 && buffer[pos] != '') setTimeout('play('+pos+')',60/bpm*1000);
+  else send(text, 1);
+}
+
 $(function(){
   init();  
 });
