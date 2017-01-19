@@ -86,13 +86,28 @@
 
       var minutes = Math.floor(input / 60);
       var seconds = Math.ceil(input) % 60;
-
+      //var mseconds = input % 60;
+      //mseconds = seconds * 1000 - mseconds;
+      
+      //console.log(input);
       return (minutes < 10 ? '0' : '')
         + minutes
         + ":"
-        + (seconds < 10 ? '0' : '') + seconds;
+        + (seconds < 10 ? '0' : '') + seconds ;
     };
   });
+
+    app.filter('toASCII', function () {
+    return function (input) {
+      if (!input) {
+        return "_";
+      }
+      var char = String.fromCharCode(input);
+      //console.log(input);
+      return char ;
+    };
+  });
+
 
 
   app.controller('mdWavesurferAudioController', ['$attrs', '$element',
@@ -210,7 +225,7 @@
       return {
 
         restrict: 'E',
-        templateUrl: 'md-player-audio.partial.html',
+        templateUrl: 'assets/md-player-audio.partial.html',
         transclude: true,
         controller: 'mdWavesurferAudioController',
         controllerAs: 'audio'
@@ -295,7 +310,8 @@
           }, defaults = {
             scrollParent: true,
             waveColor: 'violet',
-            progressColor: 'purple'
+            progressColor: 'purple',
+            height: 128
           };
 
           options = angular.extend(defaults, attributes, (control.properties || {}), options);
@@ -307,6 +323,15 @@
               control.surfer.play();
             }
             $scope.$apply();
+        // Init spectrogram plugin
+        var spectrogram = Object.create(WaveSurfer.Spectrogram);
+
+        spectrogram.init({
+            wavesurfer: control.surfer,
+            container: '.spec' + control.title,
+            fftSamples: 256 
+                    });
+
           });
 
           control.surfer.on('pause', function () {
@@ -397,7 +422,7 @@
   app.directive('mdWavesurferPlayer', function () {
     return {
       restrict: 'E',
-      templateUrl: 'md-player.partial.html',
+      templateUrl: 'assets/md-player.partial.html',
       scope: {
         src: '@url',
         title: '@',
