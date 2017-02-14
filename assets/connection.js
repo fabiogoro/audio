@@ -5,6 +5,7 @@ var id = 0;
 var folder = 0;
 var record;
 var load_flag = 1;
+var speak_flag = false;
 
 function send(data, touch){
   if(!touch) touch=0;
@@ -25,6 +26,7 @@ function loaded(){
     ws.onmessage = function(message) {
       var data = JSON.parse(message.data);
       if(!system_commands(data)) {
+        if(speak_flag) meSpeak.speak(data.text);
         if(!data.touch) {
           var p = $('<p />',{class: 'msg from_chat', text: data.text});
           $('#messages').prepend(p);
