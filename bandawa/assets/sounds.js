@@ -71,7 +71,7 @@ function play(pos){
         window["osc"+j].noteOn(note, velocity);
       } else {
         window["noise"+j].disconnect();
-        switch (j) {
+        switch (j%3) {
           case 0:
             bwc? bwc:(bufferSizeWhiteNoise = Math.pow(2,note%6+8)); // between 2^8 and 2^14
             bwc = true;
