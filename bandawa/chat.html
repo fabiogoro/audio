@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Web Audio">
+    <meta name="author" content="Banda Aberta">
+
+    <title>Banda Aberta</title>
+    <link type="text/css" href="assets/style.css" rel="stylesheet">
+    <link type="text/css" href="assets/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link type="text/css" href="assets/lib/css/jquery-ui.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="main">
+        <div id="faixa" class="faixa">
+      <div id="loop" ></div>
+      <input type=text id=chat maxlength='140' placeholder='envie uma mensagem' onkeypress='chat(event);'/>
+      <div id="messages" ></div>
+
+        </div>
+
+      <div id="config"></div>
+      <div id="help">
+        <i class='fa fa-cog' onclick='config();'></i><br/>
+        <i class='fa fa-question' onclick='help(); return false;'></i>
+      </div>
+    </div>
+
+    <div id="loading"><i class='fa fa-circle-o-notch fa-spin '></i> Carregando... <span id="percent"></span></div>
+    <div id="main-config">
+      <span>Volume</span><div id="slider"></div>
+    </div>
+    <div id="main-help">
+      <div id="letters">
+        <div id="lowercase">
+          <span onclick="send('a',1)">a</span>
+          <span onclick="send('b',1)">b</span>
+          <span onclick="send('c',1)">c</span>
+          <span onclick="send('d',1)">d</span>
+          <span onclick="send('e',1)">e</span>
+          <span onclick="send('f',1)">f</span>
+          <span onclick="send('g',1)">g</span>
+          <span onclick="send('h',1)">h</span>
+          <span onclick="send('i',1)">i</span>
+          <span onclick="send('j',1)">j</span>
+          <span onclick="send('k',1)">k</span>
+          <span onclick="send('l',1)">l</span>
+          <span onclick="send('m',1)">m</span>
+          <span onclick="send('n',1)">n</span>
+          <span onclick="send('o',1)">o</span>
+          <span onclick="send('p',1)">p</span>
+          <span onclick="send('q',1)">q</span>
+          <span onclick="send('r',1)">r</span>
+          <span onclick="send('s',1)">s</span>
+          <span onclick="send('t',1)">t</span>
+          <span onclick="send('u',1)">u</span>
+          <span onclick="send('v',1)">v</span>
+          <span onclick="send('w',1)">w</span>
+          <span onclick="send('x',1)">x</span>
+          <span onclick="send('y',1)">y</span>
+          <span onclick="send('z',1)">z</span>
+        </div>
+        <div id="uppercase">
+          <span onclick="send('A',1)">A</span>
+          <span onclick="send('B',1)">B</span>
+          <span onclick="send('C',1)">C</span>
+          <span onclick="send('D',1)">D</span>
+          <span onclick="send('E',1)">E</span>
+          <span onclick="send('F',1)">F</span>
+          <span onclick="send('G',1)">G</span>
+          <span onclick="send('H',1)">H</span>
+          <span onclick="send('I',1)">I</span>
+          <span onclick="send('J',1)">J</span>
+          <span onclick="send('K',1)">K</span>
+          <span onclick="send('L',1)">L</span>
+          <span onclick="send('M',1)">M</span>
+          <span onclick="send('N',1)">N</span>
+          <span onclick="send('O',1)">O</span>
+          <span onclick="send('P',1)">P</span>
+          <span onclick="send('Q',1)">Q</span>
+          <span onclick="send('R',1)">R</span>
+          <span onclick="send('S',1)">S</span>
+          <span onclick="send('T',1)">T</span>
+          <span onclick="send('U',1)">U</span>
+          <span onclick="send('V',1)">V</span>
+          <span onclick="send('W',1)">W</span>
+          <span onclick="send('X',1)">X</span>
+          <span onclick="send('Y',1)">Y</span>
+          <span onclick="send('Z',1)">Z</span>
+        </div>
+      </div>
+      <div id="numbers">
+        <span onclick="send('1',1)">1</span>
+        <span onclick="send('2',1)">2</span>
+        <span onclick="send('3',1)">3</span>
+        <span onclick="send('4',1)">4</span>
+        <span onclick="send('5',1)">5</span>
+        <span onclick="send('6',1)">6</span>
+        <span onclick="send('7',1)">7</span>
+        <span onclick="send('8',1)">8</span>
+        <span onclick="send('9',1)">9</span>
+        <span onclick="send('0',1)">0</span>
+        <span onclick="send('!',1)">!</span>
+        <span onclick="send('@',1)">@</span>
+        <span onclick="send('#',1)">#</span>
+        <span onclick="send('$',1)">$</span>
+        <span onclick="send('%',1)">%</span>
+        <span onclick="send('¨',1)">¨</span>
+        <span onclick="send('&',1)">&</span>
+        <span onclick="send('*',1)">*</span>
+        <span onclick="send('(',1)">(</span>
+        <span onclick="send(')',1)">)</span>
+        <span onclick="send('-',1)">-</span>
+        <span onclick="send('_',1)">_</span>
+        <span onclick="send('=',1)">=</span>
+        <span onclick="send('+',1)">+</span>
+        <span onclick="send('/',1)">/</span>
+        <span onclick="send('\',1)">\</span>
+      </div>
+      <div id='commands'>
+        <span onclick="send('corta!')">corta!</span><br/>
+        <span onclick="send('som!')">som!</span><br/>
+        <span onclick="send('piano!')">piano!</span><br/>
+        <span onclick="send('mezzo!')">mezzo!</span><br/>
+        <span onclick="send('basta!')">quieto!</span><br/>
+      </div>
+      <i class='fa fa-arrow-circle-o-up' onclick="caps()"></i>
+      <span id='cmd_key' onclick="cmd_keys()">cmd</span>
+      <span id='number_key' onclick="number_keys()">123</span>
+    </div>
+    <div id="close"><i class='fa fa-times' onclick='quit_help();'></i></div>
+
+
+    <script type="text/javascript" src="mespeak/mespeak.js"></script>
+    <script type="text/javascript">
+// VOICE SYNTH
+      meSpeak.loadConfig("mespeak/mespeak_config.json");
+      meSpeak.loadVoice('voices/pt.json');
+    </script>
+
+
+    <script type="text/javascript">
+      var SERVER = "wss://websocketfaye.herokuapp.com/";
+      var FOLDERS = 0;
+    </script>
+    <script type="text/javascript" src="assets/config.js"></script>
+    <script type="text/javascript" src="assets/lib/js/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="assets/lib/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="assets/sounds.js"></script>
+    <script type="text/javascript" src="assets/ios_hack.js"></script>
+    <script type="text/javascript" src="assets/chat.js"></script>
+    <script type="text/javascript" src="assets/connection.js"></script>
+    <script type="text/javascript" src="assets/help.js"></script>
+    <script type="text/javascript" src="assets/commands.js"></script>
+
+    <script>
+
+    // NOISES
+    // http://noisehack.com/generate-noise-web-audio-api/
+    // audio_context = new (window.AudioContext || window.webkitAudioContext)();
+
+    // WHITE NOISE
+    var bufferSizeWhiteNoise = 2 * audio_context.sampleRate;
+    var whiteFunc = function() {
+      var noiseBuffer = audio_context.createBuffer(1, bufferSizeWhiteNoise, audio_context.sampleRate);
+      var output = noiseBuffer.getChannelData(0);
+      for (var i = 0; i < bufferSizeWhiteNoise; i++) {
+          output[i] = (Math.random() * 2 - 1)*0.1;
+      }
+      var node = audio_context.createBufferSource();
+      node.buffer = noiseBuffer;
+      node.loop = true;
+      node.start(0);
+      // node.gain.value = (gainCompensation%101)/100;
+      return node;
+    };
+    // example of white noise
+    // var whiteNoise = (whiteFunc)();
+    // whiteNoise.connect(audio_context.destination);
+    // whiteNoise.gain.value = 0.5;
+
+    // PINK NOISE
+    var bufferSizePinkNoise = 4096;
+    var pinkFunc = function() {
+        var b0, b1, b2, b3, b4, b5, b6;
+        b0 = b1 = b2 = b3 = b4 = b5 = b6 = 0.0;
+        var node = audio_context.createScriptProcessor(bufferSizePinkNoise, 1, 1);
+        node.onaudioprocess = function(e) {
+            var output = e.outputBuffer.getChannelData(0);
+            for (var i = 0; i < bufferSizePinkNoise; i++) {
+                var white = Math.random() * 2 - 1;
+                b0 = 0.99886 * b0 + white * 0.0555179;
+                b1 = 0.99332 * b1 + white * 0.0750759;
+                b2 = 0.96900 * b2 + white * 0.1538520;
+                b3 = 0.86650 * b3 + white * 0.3104856;
+                b4 = 0.55000 * b4 + white * 0.5329522;
+                b5 = -0.7616 * b5 - white * 0.0168980;
+                output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+                // output[i] *= 0.11; // (roughly) compensate for gain
+                output[i] *= 0.01; // (roughly) compensate for gain
+                b6 = white * 0.115926;
+            }
+        }
+        return node;
+    };
+
+    // example of pink noise
+    // var pinkNoise = (pinkFunc)();
+    // pinkNoise.connect(audio_context.destination);
+
+    // BROWNIAN NOISE
+    var bufferSizeBrownNoise = 4096;
+    var brownFunc = function() {
+        var lastOut = 0.0;
+        var node = audio_context.createScriptProcessor(bufferSizeBrownNoise, 1, 1);
+        node.onaudioprocess = function(e) {
+            var output = e.outputBuffer.getChannelData(0);
+            for (var i = 0; i < bufferSizeBrownNoise; i++) {
+                var white = Math.random() * 2 - 1;
+                output[i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = output[i];
+                // output[i] *= 3.5; // (roughly) compensate for gain
+                output[i] *= 0.5; // (roughly) compensate for gain
+            }
+        }
+        return node;
+    };
+    // example of brown noise
+    // var brownNoise = (brownFunc)();
+    // brownNoise.connect(audio_context.destination);
+
+
+    </script>
+
+    <script src="build/waax.min.js"></script>
+    <script>
+      var numberOfOscAndNoise = 3;
+
+      var osc0 = WX.SimpleOsc({output: 0.25});
+      var osc1 = WX.SimpleOsc({output: 0.25});
+      var osc2 = WX.SimpleOsc({output: 0.25});
+      var osc3 = WX.SimpleOsc({output: 0.25});
+      var osc4 = WX.SimpleOsc({output: 0.25});
+      var osc5 = WX.SimpleOsc({output: 0.25});
+      var osc6 = WX.SimpleOsc({output: 0.25});
+      var osc7 = WX.SimpleOsc({output: 0.25});
+      var osc8 = WX.SimpleOsc({output: 0.25});
+      var osc9 = WX.SimpleOsc({output: 0.25});
+      osc0.to(WX.Master);
+      osc1.to(WX.Master);
+      osc2.to(WX.Master);
+      osc3.to(WX.Master);
+      osc4.to(WX.Master);
+      osc5.to(WX.Master);
+      osc6.to(WX.Master);
+      osc7.to(WX.Master);
+      osc8.to(WX.Master);
+      osc9.to(WX.Master);
+
+      var noise0 = (whiteFunc)(25);
+      var noise1 = (pinkFunc)(25);
+      var noise2 = (brownFunc)(25);
+      var noise3 = (whiteFunc)(25);
+      var noise4 = (pinkFunc)(25);
+      var noise5 = (brownFunc)(25);
+      var noise6 = (whiteFunc)(25);
+      var noise7 = (pinkFunc)(25);
+      var noise8 = (brownFunc)(25);
+      var noise9 = (brownFunc)(25);
+      // noise0.connect(audio_context.destination);
+
+      function stopAll(){
+        for(var i= 0; i < 10; i++) { window["osc"+i].noteOff(); }
+
+        for(var i= 0; i < 10; i++) { window["noise"+i].disconnect(); }
+      }
+    </script>
+
+</body>
+</html>

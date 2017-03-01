@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Web Audio">
+    <meta name="author" content="Banda Aberta">
+
+    <title>Banda Aberta</title>
+    <link type="text/css" href="assets/style.css" rel="stylesheet">
+    <link type="text/css" href="assets/lib/css/font-awesome.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="main">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" onclick="send('/samples0')">Pasta 0</button>
+        <button type="button" class="btn btn-default" onclick="send('/samples1')">Pasta 1</button>
+        <button type="button" class="btn btn-default" onclick="send('/samples2')">Pasta 2</button>
+        <button type="button" class="btn btn-default" onclick="send('/samples3')">Pasta 3</button>
+      </div>
+    <canvas class="visualizer"></canvas> 
+      <input type=text id=chat placeholder='envie sua mensagem' onkeypress='chat(event)'>
+      <div id="messages" ></div>
+    </div>
+    <div id="loading"><i class='fa fa-circle-o-notch fa-spin '></i> Carregando... <span id="percent"></span></div>
+
+    <script type="text/javascript" src="assets/config.js"></script>
+    <script type="text/javascript" src="assets/lib/js/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="assets/sounds.js"></script>
+    <script type="text/javascript" src="assets/ios_hack.js"></script>
+    <script type="text/javascript" src="assets/chat.js"></script>
+    <script type="text/javascript" src="assets/connection.js"></script>
+    <script type="text/javascript" src="assets/wave.js"></script>
+    <script type="text/javascript" src="assets/commands.js"></script>
+  </body>
+</html>
