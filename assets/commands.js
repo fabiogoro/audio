@@ -22,6 +22,12 @@ function system_commands(data){
     if(data.text.substr(4)) bpm = parseInt(data.text.substr(4));
     return true;
   }
+  if(data.text.substr(0,5) === '/adsr') {
+    if(data.text.substr(5)) time = parseInt(data.text.substr(5));
+    else time = 0.5;
+    test_adsr(time);
+    return true;
+  }
   if(data.text.substr(0,4) === 'sudo') {
     words = data.text.split(' ');
     if(words.length>1) pwd = words[1];
