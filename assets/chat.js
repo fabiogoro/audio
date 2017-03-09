@@ -1,26 +1,24 @@
+// When enter is pressed, clear textbox and send message.
 function chat(event) {
   if(event.keyCode===13){
     var text = $('#chat').val();
     $('#chat').val('');
-    if(text != '') send(text,0);
+    if(text != '') send(text,0); // Don't send empty messages...
   }
 };
 
+// When touched, turn on touch.
 $(document).on('click touchend', '.msg.from_chat', function(){
   var text = $(this).text();
-  send(text, 1);
+  var touch = 1;
+  send(text, touch);
 });
 
-$(document).on('click touchend', '.msg.from_loop', function(){
-  var text = $(this).text();
-  send(text, 2);
-});
 
+// TODO
 function pista(event, pasta) {
   if(event.keyCode===13){
-    
     var divmsg = '#chat' + pasta;  
-      
     var text = $(divmsg).val();
     $(divmsg).val('');
     if(text != '') send(text,0);
