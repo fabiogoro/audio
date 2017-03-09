@@ -48,10 +48,6 @@ html {
   }
 }
 
-#main {
-  display: none;
-}
-
 .visualizer {
   width: 100%;
   height: 50%;

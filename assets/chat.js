@@ -7,7 +7,7 @@ function chat(event) {
   }
 };
 
-// When touched, turn on touch.
+// When touched, turn on touch and send message.
 $(document).on('click touchend', '.msg.from_chat', function(){
   var text = $(this).text();
   var touch = 1;
