@@ -36,7 +36,6 @@ function loaded(){
 function on_message(message) {
   var data = JSON.parse(message.data);
   if(!system_commands(data)) { // If message contains a system command, don't print and don't play it.
-    if(speak_flag) meSpeak.speak(data.text); // If speak is on, speak the message.
     if(!data.touch) { // If touched, don't print message into screen again.
       var p = $('<p />',{class: 'msg from_chat', text: data.text});
       $('#messages').prepend(p);
@@ -44,7 +43,10 @@ function on_message(message) {
     if(!simple_commands(data.text.toLowerCase())) { // If message is a simple command, don't play it.
       var text = data.text.split('');
       buffer.push(text);
-      play(buffer.length-1);
+      var message_gain = audio_context.createGain(); // Creating the gain node that has lower value in long messages.
+      message_gain.gain.value = 1/text.length;
+      message_gain.connect(destination);
+      play(buffer.length-1,message_gain);
     }
   }
   if(!record) $('#messages p:nth-child(100)').remove(); // If record is off, limit 100 messages.

@@ -49,24 +49,25 @@ function start_web_audio(){
 // which could be the gain node or the compressor node.
 // 
 //////////////
-function play_sample(pos){
+function play_sample(pos, gain){
   var source = audio_context.createBufferSource();
-  var sound = buffer[pos].shift().charCodeAt(0);
+  var ch = buffer[pos].shift();
+  var sound = ch.charCodeAt(0);
+  if(speak_flag) meSpeak.speak(ch); // If speak is on, speak the message.
   if(sample[folder][sound]===0) sound = 0; // If can't find a sample for the ASCII, play sound 0.
   source.buffer = sample[folder][sound];
-  source.connect(destination);
+  source.connect(gain);
   source.start(0);
 }
 
 //////////////
 //
-// which could be the gain node or the compressor node.
 // 
 //////////////
 var bpm = 120;
-function play(pos){
-  play_sample(pos);
-  if(buffer.length != 0 && buffer[pos] != '') setTimeout('play('+pos+')',60/bpm*1000);
+function play(pos, gain){
+  play_sample(pos, gain);
+  if(buffer.length != 0 && buffer[pos] != '') setTimeout(function(){play(pos, gain);},60/bpm*1000);
 }
 
 //////////////
