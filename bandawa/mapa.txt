@@ -1,0 +1,52 @@
+.
+a = Drums('x')
+
+,
+a = Drums('o')
+
+'
+a = Drums('*')
+
+
+
+
+s
+a = Drums('-')
+
+
+
+/
+b = PWM()
+b.frequency = Add( 220, Saw( .5, 220)._ )
+
+
+
+
+números
+acordes
+a.chord( 'c3M7' )
+a.chord( 'e3M7' )
+a.chord( 'g3M7' )
+a.chord( 'b3M7' )
+a.chord( 'd4M7' )
+a.chord( 'c4m7' )
+a.chord( 'e4m7' )
+a.chord( 'g4m7' )
+a.chord( 'b4m7' )
+a.chord( 'd5m7' )
+
+
+como default podemos usar algo do tipo
+
+
+
+a = Robot({ maxVoices: 3 })
+	.say.seq( ['h e r e i s a s e n t e n c e'], 1/2 )
+	.chord.seq( Rndi(0) )
+
+a.amp = 2
+
+a.fx.add( Chorus() )
+
+
+
