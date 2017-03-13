@@ -29,11 +29,11 @@ a.chord( 'e3M7' )
 a.chord( 'g3M7' )
 a.chord( 'b3M7' )
 a.chord( 'd4M7' )
-a.chord( 'c4m7' )
-a.chord( 'e4m7' )
-a.chord( 'g4m7' )
-a.chord( 'b4m7' )
-a.chord( 'd5m7' )
+a.chord( 'f4m7' )
+a.chord( 'a4m7' )
+a.chord( 'c5m7' )
+a.chord( 'e5m7' )
+a.chord( 'g5m7' )
 
 
 como default podemos usar algo do tipo
