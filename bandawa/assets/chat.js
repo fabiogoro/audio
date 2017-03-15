@@ -241,8 +241,8 @@ function test_adsr(intervalInSec){
 
 function noise(duration, xposition, yposition, height){
   if(xposition===undefined) xposition = 0;
-  if(height===undefined) height = 20000;
   if(yposition===undefined) yposition = 10000;
+  if(height===undefined) height = 20000;
   //var out = new ADSR();
   var whiteNoise = audio_context.createBufferSource();
   var biquadFilter = audio_context.createBiquadFilter();
@@ -259,21 +259,46 @@ function noise(duration, xposition, yposition, height){
   //out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,0.8);
 }
 
+function sine(duration, yposition, direction, xposition){
+  if(duration===undefined) duration = 1;
+  if(yposition===undefined) yposition = 100;
+  if(direction===undefined) direction = yposition;
+  if(xposition===undefined) xposition = 0.1;
+  var out = new ADSR();
+  var sine = audio_context.createOscillator();
+  sine.frequency.value = yposition;
+  sine.type = "sine";
+  sine.connect(out.node);
+  sine.start(audio_context.currentTime+xposition);
+  sine.frequency.exponentialRampToValueAtTime(direction, audio_context.currentTime+xposition+duration);
+  out.node.connect(destination);
+  out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,1,0.8);
+}
+
+var down = 200;
+var middle = 410;
+var up = 830;
+
 function f(){ //Criando letra F
   noise(0.2); //Haste vertical, 0.2 segundos de duracao (largura), altura e posicao indefinidos (ocupam espectro todo)
-  noise(0.8,0,4000,1); //Haste superior, 0.8 duracao, posicionado em 8kHz no espectro e com 1 unidade de altura (fino).
-  noise(0.7,0,2000,1); //Haste inferior, 0.7 duracai, posicionado em 4kHz e 1 unidade de altura.
+  sine(0.8,up); //Haste superior, 0.8 duracao, posicionado em 8kHz no espectro e com 1 unidade de altura (fino).
+  sine(0.7,middle); //Haste inferior, 0.7 duracai, posicionado em 4kHz e 1 unidade de altura.
 }
 
 function l(){ //Criando L
-  noise(0.2); //Haste vertical, identica a do F
-  noise(0.8,0,1000,1); // Haste horizontal, posicionado em 1kHz
+  noise(0.2); 
+  sine(0.8,down); 
 }
 
 function h(){ //Criando H
-  noise(0.2); //Haste vertical, identica a do F
-  noise(0.8,0,2000,1); // Haste horizontal, posicionado em 1kHz
-  noise(0.2,0.8); // Haste vertical ao final do H.
+  noise(0.2);
+  sine(0.8,middle);
+  noise(0.2,0.8);
+}
+
+function v(){
+  sine(0.5,up,down);
+  sine(0.5,down,up,0.6);
 }
 
 function play_matrix(matrix){
@@ -314,10 +339,97 @@ function t(){// T
 function play_text(text){
   letter = text.shift();
   switch(letter){
-    case 'A': a();
-    case 'X': x();
-    case 'T': t();
-    default: t();
+    case 'A': a(); break;
+    case 'X': x(); break;
+    case 'T': t(); break;
+    case 'F': f(); break;
+    case 'H': h(); break;
+    case 'V': v(); break;
+    case 'L': l(); break;
+    default:
+    var b1_group = "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, U, W, 1, 6, 8, 0";
+    if($.inArray(letter,b1_group)!=-1) b1();
+    var b2_group = "V, S, 5, 4";
+    if($.inArray(letter,b2_group)!=-1) b2();
+    var b3_group = "X, Z, 2, J";
+    if($.inArray(letter,b3_group)!=-1) b3();
+    var b4_group = "A, B, D, H, J, M, N, O, Q, U, W, V";
+    if($.inArray(letter,b4_group)!=-1) b4();
+    var b5_group = "P, R";
+    if($.inArray(letter,b5_group)!=-1) b5();
+    var b6_group = "G, S, X";
+    if($.inArray(letter,b6_group)!=-1) b6();
+    var b7_group = "T";
+    if($.inArray(letter,b7_group)!=-1) b7();
+    var h1_group = "B, C, D, E, G, J, K, L, O, Q, S";
+    if($.inArray(letter,h1_group)!=-1) h1();
+    var h2_group = "A, B, E, F, G, H, P, R, S";
+    if($.inArray(letter,h2_group)!=-1) h2();
+    var h3_group = "A, B, C, D, E, F, G, O, P, Q, R, S";
+    if($.inArray(letter,h3_group)!=-1) h3();
+    var g1_group = "K, V";
+    if($.inArray(letter,g1_group)!=-1) g1();
+    var g2_group = "M, X, N";
+    if($.inArray(letter,g2_group)!=-1) g2();
+    var g3_group = "M, X, K";
+    if($.inArray(letter,g3_group)!=-1) g3();
   }
   if(text.length>0) setTimeout(function(){play_text(text);},1000);
+}
+
+///////////////
+//
+// Tipografia
+//
+//////////////
+function b1(){ //Vertical bar at the beggining
+  noise(0.2);
+}
+
+function b2(){ //Half-sized vertical bar at the upper beggining
+  noise(0.2, 0, up, 100);
+}
+
+function b3(){ //Half-sized vertical bar at the lower beggining
+  noise(0.2, 0, down, 100);
+}
+
+function b4(){ //Vertical bar at the end
+  noise(0.2, 0.8);
+}
+
+function b5(){ //Half-sized vertical bar at the upper end
+  noise(0.2, 0.8, up, 100);
+}
+
+function b6(){ //Half-sized vertical bar at the lower end
+  noise(0.2, 0.8, down, 100);
+}
+
+function b7(){ //Vertical bar at the middle
+  noise(0.2, 0.5);
+}
+
+function h1(){ //Horizontal bar at the bottom
+  sine(0.8, down);
+}
+
+function h2(){ //Horizontal bar at the middle
+  sine(0.8, middle);
+}
+
+function h3(){ //Horizontal bar at the top
+  sine(0.8, up);
+}
+
+function g1(){
+  sine(0.8,middle,down);
+}
+
+function g2(){ 
+  sine(0.8,up,middle);
+}
+
+function g3(){ 
+  sine(0.8,middle,up);
 }
