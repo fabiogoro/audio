@@ -40,15 +40,16 @@ ws.onmessage = function(message) {
     $('#messages').prepend(p);
   }
   var text = data.text.split('');
-  buffer.push(text);
-  meSpeak.speak(data.text, {
-    amplitude: 100,
-    wordgap: 1,
-    pitch: 60,
-    speed: 120,
-    variant: "f2"
-  });
-  play(buffer.length-1);
+  play_text(text);
+  //buffer.push(text);
+  //meSpeak.speak(data.text, {
+  //  amplitude: 100,
+  //  wordgap: 1,
+  //  pitch: 60,
+  //  speed: 120,
+  //  variant: "f2"
+  //});
+  //play(buffer.length-1);
   $('#messages p:nth-child(100)').remove();
 };
 
@@ -63,6 +64,7 @@ var files;
 var audio_context;
 var gain;
 var destination;
+var noise_buffer
 start_web_audio();
 
 function start_web_audio(){
@@ -74,6 +76,13 @@ function start_web_audio(){
   gain.connect(master_gain);
   destination = gain;
   master_gain.connect(audio_context.destination);
+
+  var bufferSize = 10 * audio_context.sampleRate;
+  noise_buffer = audio_context.createBuffer(1, bufferSize, audio_context.sampleRate);
+  var output = noise_buffer.getChannelData(0);
+  for (var i = 0; i < bufferSize; i++) {
+    output[i] = Math.random() * 2 - 1;
+  }
 }
 
 var scale = [0, 2, 4, 5, 7, 9, 11];
@@ -228,4 +237,87 @@ function test_adsr(intervalInSec){
   a = new ScissorVoice(64,1,["sine"],1);
   a.connect(destination);
   a.output.play(0,intervalInSec*0.1,intervalInSec*0.1,intervalInSec*0.4,intervalInSec*0.1,a.maxGain*2.0,a.maxGain);
+}
+
+function noise(duration, xposition, yposition, height){
+  if(xposition===undefined) xposition = 0;
+  if(height===undefined) height = 20000;
+  if(yposition===undefined) yposition = 10000;
+  //var out = new ADSR();
+  var whiteNoise = audio_context.createBufferSource();
+  var biquadFilter = audio_context.createBiquadFilter();
+  biquadFilter.type = "bandpass";
+  biquadFilter.frequency.value = yposition;
+  biquadFilter.Q.value = 20/height;
+  whiteNoise.buffer = noise_buffer;
+  whiteNoise.loop = true;
+  whiteNoise.start(audio_context.currentTime+xposition+0.1);
+  whiteNoise.stop(audio_context.currentTime+xposition+duration);
+  whiteNoise.connect(biquadFilter);
+  biquadFilter.connect(destination);
+  //out.node.connect(destination);
+  //out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,0.8);
+}
+
+function f(){ //Criando letra F
+  noise(0.2); //Haste vertical, 0.2 segundos de duracao (largura), altura e posicao indefinidos (ocupam espectro todo)
+  noise(0.8,0,4000,1); //Haste superior, 0.8 duracao, posicionado em 8kHz no espectro e com 1 unidade de altura (fino).
+  noise(0.7,0,2000,1); //Haste inferior, 0.7 duracai, posicionado em 4kHz e 1 unidade de altura.
+}
+
+function l(){ //Criando L
+  noise(0.2); //Haste vertical, identica a do F
+  noise(0.8,0,1000,1); // Haste horizontal, posicionado em 1kHz
+}
+
+function h(){ //Criando H
+  noise(0.2); //Haste vertical, identica a do F
+  noise(0.8,0,2000,1); // Haste horizontal, posicionado em 1kHz
+  noise(0.2,0.8); // Haste vertical ao final do H.
+}
+
+function play_matrix(matrix){
+  var size = matrix.length;
+  for(i=0;i<size;i++)
+    for(j=0;j<size;j++)
+      if(matrix[i][j]==1)
+        noise(1/(size),j/size,4000*(size-i)/size,10*(size-i)/size);
+}
+
+function a(){// A
+  var matrix = [[0,0,1,0,0],
+                [0,1,0,1,0],
+                [1,0,0,0,1],
+                [1,1,1,1,1],
+                [1,0,0,0,1]];
+  play_matrix(matrix);
+}
+
+function x(){// X
+  var matrix = [[1,0,0,0,1],
+                [0,1,0,1,0],
+                [0,0,1,0,0],
+                [0,1,0,1,0],
+                [1,0,0,0,1]];
+  play_matrix(matrix);
+}
+
+function t(){// T
+  var matrix = [[1,1,1,1,1],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0],
+                [0,0,1,0,0]];
+  play_matrix(matrix);
+}
+
+function play_text(text){
+  letter = text.shift();
+  switch(letter){
+    case 'A': a();
+    case 'X': x();
+    case 'T': t();
+    default: t();
+  }
+  if(text.length>0) setTimeout(function(){play_text(text);},1000);
 }
