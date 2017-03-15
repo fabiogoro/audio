@@ -1,0 +1,116 @@
+
+
+// a proposta é criar algumas funções báscias e usá-las para desenhar os caracteres no espaço,
+comecei pelas maíusculas mas é possível desenhar as minúsculas também, cada letra é uma associaçõa de traços, 
+seguindo on mapa abaixo
+
+/// audio tipografia
+
+
+funções (har1, har2, har3, har4,) 
+
+b1 (A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, U, W, 1, 6, 8, 0)
+noise 
+
+b2 (V, S, 5, 4)
+noise + highpass(har3)
+
+b3 (X, Z, 2, J)
+noise + lowpass(har3)
+
+b4 (A, B, D, H, J, M, N, O, Q, U, W, V)
+noise + delay(int/2)
+
+b5 (P, R)
+noise + highpass(har3) + delay(int/2)
+
+b6 (G, S, X)
+noise + lowpass(har3) + delay(int/2)
+
+b7 (T)
+noise + delay(int/4)
+
+
+h1 (B, C, D, E, G, J, K, L, O, Q, S)
+osc.frequency.value = har1;
+
+h2 ()
+osc.frequency.value = har2;
+
+h3 (A, B, E, F, G, H, P, R, S)
+osc.frequency.value = har3;
+
+h4 (A, B, C, D, E, F, G, O, P, Q, R, S)
+osc.frequency.value = har4;
+
+
+g1 (K, V)
+glisando (har2 - har1);
+
+g2 (M, X, N)
+glissando (har4 - har3);
+
+g3 (M, X, K)
+glissando (har3 - har4);
+
+
+
+
+
+////
+
+
+a
+.
+a = Drums('x')
+
+,
+a = Drums('o')
+
+'
+a = Drums('*')
+
+
+
+
+s
+a = Drums('-')
+
+
+
+/
+b = PWM()
+b.frequency = Add( 220, Saw( .5, 220)._ )
+
+
+
+
+números
+acordes
+a.chord( 'c3M7' )
+a.chord( 'e3M7' )
+a.chord( 'g3M7' )
+a.chord( 'b3M7' )
+a.chord( 'd4M7' )
+a.chord( 'f4m7' )
+a.chord( 'a4m7' )
+a.chord( 'c5m7' )
+a.chord( 'e5m7' )
+a.chord( 'g5m7' )
+
+
+como default podemos usar algo do tipo
+
+
+
+a = Robot({ maxVoices: 3 })
+	.say.seq( ['h e r e i s a s e n t e n c e'], 1/2 )
+	.chord.seq( Rndi(0) )
+
+a.amp = 2
+
+a.fx.add( Chorus() )
+
+
+
+
