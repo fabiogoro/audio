@@ -31,7 +31,7 @@ b7 (T)
 noise + delay(int/4)
 
 
-h1 (B, C, D, E, G, J, K, L, O, Q, S)
+h1 (B, C, D, E, G, J, L, O, Q, S)
 osc.frequency.value = har1;
 
 h2 (minusculas a definir)
