@@ -64,7 +64,11 @@ var files;
 var audio_context;
 var gain;
 var destination;
-var noise_buffer
+var bandpass;
+var noise_node;
+var noise_out;
+var oscillator_buffer = [];
+var num_oscillators = 60;
 start_web_audio();
 
 function start_web_audio(){
@@ -77,11 +81,35 @@ function start_web_audio(){
   destination = gain;
   master_gain.connect(audio_context.destination);
 
-  var bufferSize = 10 * audio_context.sampleRate;
-  noise_buffer = audio_context.createBuffer(1, bufferSize, audio_context.sampleRate);
+  var bufferSize = 60 * audio_context.sampleRate;
+  var noise_buffer = audio_context.createBuffer(1, bufferSize, audio_context.sampleRate);
   var output = noise_buffer.getChannelData(0);
   for (var i = 0; i < bufferSize; i++) {
     output[i] = Math.random() * 2 - 1;
+  }
+
+  bandpass = audio_context.createBiquadFilter();
+  bandpass.type = "bandpass";
+
+  noise_node = audio_context.createBufferSource();
+  noise_node.buffer = noise_buffer;
+  noise_node.loop = true;
+  noise_node.start(0);
+  noise_node.connect(bandpass);
+  noise_out = new ADSR();
+  bandpass.connect(noise_out.node);
+  noise_out.node.connect(destination);
+
+  var sine;
+  var out;
+  for(i=0;i<num_oscillators;i++){
+    sine = audio_context.createOscillator();
+    sine.type = "sine";
+    sine.start(0);
+    out = new ADSR();
+    sine.connect(out.node);
+    out.node.connect(destination);
+    oscillator_buffer[i] = [sine,out];
   }
 }
 
@@ -180,104 +208,33 @@ ADSR.prototype.play= function(delay, A,D,S,R, peakLevel, sustainlevel){
   this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime + A + D + S);// sustain.
   this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime + A + D + S + R);// Release
 }
-var index = 0;
-
-function ScissorVoice(noteNum, numOsc, oscType, detune){
-  this.output  = new ADSR();
-  this.maxGain = 1 / numOsc;
-  this.noteNum = noteNum;
-  this.frequency = noteNum2Freq(noteNum);
-  this.oscs = [];
-  this.index = index++;
-  this.time = audio_context.currentTime;
-  for (var i=0; i< numOsc; i++){
-    var osc = audio_context.createOscillator();
-    if ( oscType.length === "undefined")
-      osc.type = oscType;
-    else
-      osc.type = oscType[i%oscType.length];
-    osc.frequency.value = this.frequency;
-    osc.detune.value = -detune + i * 2 * detune / numOsc ;
-    osc.start(audio_context.currentTime);
-    osc.connect(this.output.node);
-    this.oscs.push(osc);
-  }
-  //console.log("played(" + index +") " + noteNum + " at " + audio_context.currentTime);
-   //   console.log("started : " +this.noteNum);
-
-}
-
-ScissorVoice.prototype.stop = function(time){
-  //time =  time | audio_context.currentTime;
-  var it = this;
-  setTimeout(function(){
- //   console.log("stopped(" + index +") " +it.noteNum + " at " +audio_context.currentTime);
-    for (var i=0; i<it.oscs.length; i++){
-        it.oscs[i].disconnect();
-    }
-  }, Math.floor((time-audio_context.currentTime)*1000));
-}
-
-ScissorVoice.prototype.detune = function(detune){
-    for (var i=0; i<this.oscs.length; i++){
-        //this.oscs[i].frequency.value = noteNum2Freq(noteNum);
-        this.oscs[i].detune.value -= detune;
-    }
-}
-
-ScissorVoice.prototype.connect = function(target){
-  this.output.node.connect(target);
-}
-
-function noteNum2Freq(num){
-    return Math.pow(2,(num-57)/12) * 440;
-}
-
-function test_adsr(intervalInSec){
-  a = new ScissorVoice(64,1,["sine"],1);
-  a.connect(destination);
-  a.output.play(0,intervalInSec*0.1,intervalInSec*0.1,intervalInSec*0.4,intervalInSec*0.1,a.maxGain*2.0,a.maxGain);
-}
 
 function noise(duration, xposition, yposition, height){
   if(xposition===undefined) xposition = 0;
   if(yposition===undefined) yposition = 10000;
   if(height===undefined) height = 20000;
-  //var out = new ADSR();
-  var whiteNoise = audio_context.createBufferSource();
-  var biquadFilter = audio_context.createBiquadFilter();
-  biquadFilter.type = "bandpass";
-  biquadFilter.frequency.value = yposition;
-  biquadFilter.Q.value = 20/height;
-  whiteNoise.buffer = noise_buffer;
-  whiteNoise.loop = true;
-  whiteNoise.start(audio_context.currentTime+xposition+0.1);
-  whiteNoise.stop(audio_context.currentTime+xposition+duration);
-  whiteNoise.connect(biquadFilter);
-  biquadFilter.connect(destination);
-  //out.node.connect(destination);
-  //out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,0.8);
+  bandpass.frequency.value = yposition;
+  bandpass.Q.value = 20/height;
+  noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,0.8);
 }
 
+var oscillator_position = 0;
 function sine(duration, yposition, direction, xposition){
   if(duration===undefined) duration = 1;
   if(yposition===undefined) yposition = 100;
   if(direction===undefined) direction = yposition;
   if(xposition===undefined) xposition = 0.1;
-  var out = new ADSR();
-  var sine = audio_context.createOscillator();
+  var sine = oscillator_buffer[oscillator_position][0];
+  var out = oscillator_buffer[oscillator_position][1];
+  oscillator_position = (oscillator_position+1)%num_oscillators;
   sine.frequency.value = yposition;
-  sine.type = "sine";
-  sine.connect(out.node);
-  sine.start(audio_context.currentTime+xposition);
   sine.frequency.exponentialRampToValueAtTime(direction, audio_context.currentTime+xposition+duration);
-  out.node.connect(destination);
   out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,1,0.8);
 }
 
 var down = 100;
 var middle = 200;
-var quart = 600;
+var quarter = 600;
 var up = 1000;
 
 function f(){ //Criando letra F
