@@ -334,7 +334,7 @@ function play_text(text){
     if($.inArray(letter,h2_group)!=-1) h2();
     var h3_group = "A, B, C, D, E, F, G, O, P, Q, R, S, T, 2, 3, 5, 7, 8, 9, 0,";
     if($.inArray(letter,h3_group)!=-1) h3();
-    var h0_group = "g";
+    var h4_group = "g";
     if($.inArray(letter,h4_group)!=-1) h4();
     
 
