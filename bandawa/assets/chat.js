@@ -339,7 +339,7 @@ function play_text(text){
     
 
     //diagonal
-    var g1_group = "0, 2, 7, k, D, M, W, X, Z, /";
+    var g1_group = "0, 2, 7, k, D, M, W, X, Z";
     if($.inArray(letter,g1_group)!=-1) g1();
     var g2_group = "X";
     if($.inArray(letter,g2_group)!=-1) g2();
@@ -349,7 +349,7 @@ function play_text(text){
     if($.inArray(letter,g4_group)!=-1) g4();
     var g5_group = "K, Q, R, m, v, x, y, 3, w";
     if($.inArray(letter,g5_group)!=-1) g5();
-    var g6_group = "a, b, d, e, g, h, m, p, q, r, s, w, x, z, 5";
+    var g6_group = "a, b, d, e, g, h, k, m, p, q, r, s, w, x, z, 5";
     if($.inArray(letter,g6_group)!=-1) g6();
   }
   if(text.length>0) setTimeout(function(){play_text(text);},1000);
