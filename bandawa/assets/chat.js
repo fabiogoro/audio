@@ -274,11 +274,10 @@ function sine(duration, yposition, direction, xposition){
   out.node.connect(destination);
   out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,1,0.8);
 }
-
-var down = 100;
-var middle = 200;
-var quart = 600;
-var up = 1000;
+var floor = 100;
+var down = 200;
+var middle = 400;
+var up = 600;
 
 function f(){ //Criando letra F
   noise(0.2); //Haste vertical, 0.2 segundos de duracao (largura), altura e posicao indefinidos (ocupam espectro todo)
@@ -350,45 +349,50 @@ function play_text(text){
     default:
     
     //verticals
-    var b1_group = "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, U, W, 1, 6, 8, 0, b, f, h, k, l";
+    var b1_group = ", B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, U, W, 1, 6, 8, 0, b, h, k, l";
     if($.inArray(letter,b1_group)!=-1) b1();
-    var b2_group = "V, S, 5, 4";
+    var b2_group = "S, 5";
     if($.inArray(letter,b2_group)!=-1) b2();
-    var b3_group = "X, Z, 2, J, c, d, e, g, i, m, n, o, p, q, r, u";
+    var b3_group = "A, X, Z, 2, J, a, c, d, e, f, g, i, m, n, o, p, q, r, u, 6";
     if($.inArray(letter,b3_group)!=-1) b3();
-    var b4_group = "A, B, D, H, J, M, N, O, Q, U, W, V, d, q,";
+    var b4_group = "A, H, J, M, N, O, Q, U, W, V, Y, d, 8, 9, 0";
     if($.inArray(letter,b4_group)!=-1) b4();
     var b5_group = "P, R";
     if($.inArray(letter,b5_group)!=-1) b5();
-    var b6_group = "G, S, X, a, b, j , g, h, m, n, o, u, w";
+    var b6_group = "G, S, X, a, j, g, h, j, m, n, o, p, s, u, v, w, y";
     if($.inArray(letter,b6_group)!=-1) b6();
     var b7_group = "T, t";
     if($.inArray(letter,b7_group)!=-1) b7();
-    var b8_group = "a";
+    
+    var b8_group = "p, y";
     if($.inArray(letter,b8_group)!=-1) b8();
-    var b9_group = "s";
+    var b9_group = "g, j, q";
     if($.inArray(letter,b9_group)!=-1) b9();
     
     //horizontals
-    var h1_group = "B, C, D, E, G, J, K, L, O, Q, S, a, b, c, d, e, g, o, p, q, s, u, _";
+    var h1_group = "C, D, E, G, J, K, L, O, Q, c, d, e, o, p, u, _, 2, 3, 6, 8, 0";
     if($.inArray(letter,h1_group)!=-1) h1();
-    var h2_group = "A, B, E, F, G, H, P, R, S, a, b, c, d, e, g, h, m, n, o, p, q, s";
+    var h2_group = "A, B, E, F, G, H, P, R, S, a, b, c, e, f, g, n, o, q, t, z, 3, 4, 5, 6, 8, 9";
     if($.inArray(letter,h2_group)!=-1) h2();
-    var h3_group = "A, B, C, D, E, F, G, O, P, Q, R, S, T";
+    var h3_group = "A, B, C, D, E, F, G, O, P, Q, R, S, T, 2, 3, 5, 7, 8, 9, 0,";
     if($.inArray(letter,h3_group)!=-1) h3();
-    var h4_group = "a, e, s, t, f";
+    var h0_group = "g";
     if($.inArray(letter,h4_group)!=-1) h4();
     
 
     //diagonal
-    var g1_group = "K, V";
+    var g1_group = "0, 2, 7, k, D, M, W, X, Z, /";
     if($.inArray(letter,g1_group)!=-1) g1();
-    var g2_group = "M, X, N";
+    var g2_group = "X";
     if($.inArray(letter,g2_group)!=-1) g2();
-    var g3_group = "M, X, K";
+    var g3_group = "f, 4, 1, 6, B, A, S, K";
     if($.inArray(letter,g3_group)!=-1) g3();
-    var g4_group = "x, z, r, g, 2";
+    var g4_group = "Y";
     if($.inArray(letter,g4_group)!=-1) g4();
+    var g5_group = "K, Q, R, m, v, x, y, 3, w";
+    if($.inArray(letter,g5_group)!=-1) g5();
+    var g6_group = "a, b, d, e, g, h, m, p, q, r, s, w, x, z, 5";
+    if($.inArray(letter,g6_group)!=-1) g6();
   }
   if(text.length>0) setTimeout(function(){play_text(text);},1000);
 }
@@ -402,11 +406,11 @@ function b1(){ //Vertical bar at the beggining
   noise(0.2);
 }
 
-function b2(){ //Half-sized vertical bar at the upper beggining
+function b2(){ //Half-sized vertical bar with the upper beggining
   noise(0.2, 0, up, 100);
 }
 
-function b3(){ //Half-sized vertical bar at the lower beggining
+function b3(){ //Half-sized vertical bar with the lower beggining
   noise(0.2, 0, down, 100);
 }
 
@@ -427,11 +431,11 @@ function b7(){ //Vertical bar at the middle
 }
 
 function b8(){ //Vertical bar at lower quarter beggining
-  noise(0.2, 0, quarter, 100);
+  noise(0.2, 0, floor, 100);
 }
 
 function b9() {//vertical bar at lower quarter end
-  noise(0.2, 0.8, quarter, 100);
+  noise(0.2, 0.8, floor, 100);
 }
 
 function h1(){ //Horizontal bar at the bottom
@@ -446,19 +450,19 @@ function h3(){ //Horizontal bar at the top
   sine(0.8, up);
 }
 
-function h4() {
-  sine(0.8, quarter);
+function h0() {
+  sine(0.8, floor);
 }
 
 
 //glissandos
 
 function g1(){ 
-  sine(0.8,middle,down);
+  sine(0.8,down,up);
 }
 
 function g2(){ 
-  sine(0.8,up,middle);
+  sine(0.8,up,down);
 }
 
 function g3(){ 
@@ -466,8 +470,11 @@ function g3(){
 }
 
 function g4(){ 
-  sine(0.8,down,middle);
+  sine(0.8,up,middle);
 }
 function g5(){ 
   sine(0.8,middle,down);
+}
+function g6(){ 
+  sine(0.8,down,middle);
 }
