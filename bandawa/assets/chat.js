@@ -174,40 +174,6 @@ function play(pos){
   }
 }
 
-////////////
-//
-// ADSR from TinderMusic (Crowd in C)
-//
-////////////
-function ADSR(){
-    this.node = audio_context.createGain();
-    this.node.gain.value = 0.0;
-}
-
-ADSR.prototype.noteOn= function(delay, A,D, peakLevel, sustainlevel){
-    peakLevel = peakLevel || 1;
-    sustainlevel = sustainlevel || 0.3;
-
-    this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime);
-    this.node.gain.linearRampToValueAtTime(peakLevel,delay + audio_context.currentTime + A); // Attack
-    this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime + A + D);// Decay
-}
-
-ADSR.prototype.noteOff= function(delay, R, sustainlevel){
-    sustainlevel = sustainlevel || 0.1;
-
-    this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime );// Release
-    this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime + R);// Release
-
-}
-
-ADSR.prototype.play= function(delay, A,D,S,R, peakLevel, sustainlevel){
-  this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime);
-  this.node.gain.linearRampToValueAtTime(peakLevel,delay + audio_context.currentTime + A); // Attack
-  this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime + A + D);// Decay
-  this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime + A + D + S);// sustain.
-  this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime + A + D + S + R);// Release
-}
 
 function noise(duration, xposition, yposition, height){
   if(xposition===undefined) xposition = 0;
@@ -435,4 +401,39 @@ function g5(){
 }
 function g6(){ 
   sine(0.8,down,middle);
+}
+
+////////////
+//
+// ADSR from TinderMusic (Crowd in C)
+//
+////////////
+function ADSR(){
+    this.node = audio_context.createGain();
+    this.node.gain.value = 0.0;
+}
+
+ADSR.prototype.noteOn= function(delay, A,D, peakLevel, sustainlevel){
+    peakLevel = peakLevel || 1;
+    sustainlevel = sustainlevel || 0.3;
+
+    this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime);
+    this.node.gain.linearRampToValueAtTime(peakLevel,delay + audio_context.currentTime + A); // Attack
+    this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime + A + D);// Decay
+}
+
+ADSR.prototype.noteOff= function(delay, R, sustainlevel){
+    sustainlevel = sustainlevel || 0.1;
+
+    this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime );// Release
+    this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime + R);// Release
+
+}
+
+ADSR.prototype.play= function(delay, A,D,S,R, peakLevel, sustainlevel){
+  this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime);
+  this.node.gain.linearRampToValueAtTime(peakLevel,delay + audio_context.currentTime + A); // Attack
+  this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime + A + D);// Decay
+  this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime + A + D + S);// sustain.
+  this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime + A + D + S + R);// Release
 }
