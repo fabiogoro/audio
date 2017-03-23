@@ -202,14 +202,13 @@ function sine(duration, yposition, direction, xposition){
   //sine.frequency.exponentialRampToValueAtTime(direction, audio_context.currentTime+0.1);
   
   for (i = 0; i < steps; i++) {
-    currfreq = currfreq + increase;
-    sine.frequency.linearRampToValueAtTime(currfreq, audio_context.currentTime+0.1);
-    }
+  currfreq = currfreq + increase;
+  sine.frequency.linearRampToValueAtTime(currfreq, audio_context.currentTime+duration);
+  }
 
 
   //sine.frequency.linearRampToValueAtTime(direction, audio_context.currentTime+duration);
-
-  //sine.frequency.linearRampToValueAtTime(direction * Math.pow(2, 1/12),audioCtx.currentTime + 1);
+  //sine.frequency.linearRampToValueAtTime(440 * Math.pow(2, 1/12),audioCtx.currentTime + 1);
 
 
   out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,1,0.8);
