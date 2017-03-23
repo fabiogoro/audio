@@ -194,14 +194,34 @@ function sine(duration, yposition, direction, xposition){
   var out = oscillator_buffer[oscillator_position][1];
   oscillator_position = (oscillator_position+1)%num_oscillators;
   sine.frequency.value = yposition;
-  sine.frequency.exponentialRampToValueAtTime(direction, audio_context.currentTime+xposition+duration);
+  
+  var delta = direction - yposition;
+  var steps = 10;
+  var increase = delta / steps; 
+  var currfreq = yposition;
+  //sine.frequency.exponentialRampToValueAtTime(direction, audio_context.currentTime+0.1);
+  
+  for (i = 0; i < steps; i++) {
+    currfreq = currfreq + increase;
+    sine.frequency.linearRampToValueAtTime(currfreq, audio_context.currentTime+0.1);
+    }
+
+
+  //sine.frequency.linearRampToValueAtTime(direction, audio_context.currentTime+duration);
+
+  //sine.frequency.linearRampToValueAtTime(direction * Math.pow(2, 1/12),audioCtx.currentTime + 1);
+
+
   out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,1,0.8);
+
+
+
 }
 
 var floor = 100;
 var down = 200;
-var middle = 400;
-var up = 600;
+var middle = 1000;
+var up = 5000;
 
 function f(){ //Criando letra F
   noise(0.2); //Haste vertical, 0.2 segundos de duracao (largura), altura e posicao indefinidos (ocupam espectro todo)
@@ -266,24 +286,24 @@ function play_text(text){
     //case 'A': a(); break;
     //case 'X': x(); break;
     //case 'T': t(); break;
-    case 'F': f(); break;
-    case 'H': h(); break;
-    case 'V': v(); break;
-    case 'L': l(); break;
+    //case 'F': f(); break;
+    //case 'H': h(); break;
+    //case 'V': v(); break;
+    //case 'L': l(); break;
     default:
     
     //verticals
     var b1_group = ", B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, U, W, 1, 6, 8, 0, b, h, k, l";
     if($.inArray(letter,b1_group)!=-1) b1();
-    var b2_group = "S, 5";
+    var b2_group = "5";
     if($.inArray(letter,b2_group)!=-1) b2();
-    var b3_group = "A, X, Z, 2, J, a, c, d, e, f, g, i, m, n, o, p, q, r, u, 6";
+    var b3_group = "A, Z, 2, J, a, c, d, e, f, g, i, m, n, o, p, q, r, u, 6";
     if($.inArray(letter,b3_group)!=-1) b3();
     var b4_group = "A, H, J, M, N, O, Q, U, W, V, Y, d, 8, 9, 0";
     if($.inArray(letter,b4_group)!=-1) b4();
     var b5_group = "P, R";
     if($.inArray(letter,b5_group)!=-1) b5();
-    var b6_group = "G, S, X, a, j, g, h, j, m, n, o, p, s, u, v, w, y";
+    var b6_group = "G, a, j, g, h, j, m, n, o, p, s, u, v, w, y";
     if($.inArray(letter,b6_group)!=-1) b6();
     var b7_group = "T, t";
     if($.inArray(letter,b7_group)!=-1) b7();
@@ -305,7 +325,7 @@ function play_text(text){
     
 
     //diagonal
-    var g1_group = "0, 2, 7, k, D, M, W, X, Z";
+    var g1_group = "0, 2, 7, k, D, M, W, Z";
     if($.inArray(letter,g1_group)!=-1) g1();
     var g2_group = "X";
     if($.inArray(letter,g2_group)!=-1) g2();
@@ -315,7 +335,7 @@ function play_text(text){
     if($.inArray(letter,g4_group)!=-1) g4();
     var g5_group = "K, Q, R, m, v, x, y, 3, w";
     if($.inArray(letter,g5_group)!=-1) g5();
-    var g6_group = "a, b, d, e, g, h, k, m, p, q, r, s, w, x, z, 5";
+    var g6_group = "a, b, d, e, g, h, k, m, p, q, r, s, w, x, z, 5, S";
     if($.inArray(letter,g6_group)!=-1) g6();
   }
   if(text.length>0) setTimeout(function(){play_text(text);},1000);
@@ -384,25 +404,25 @@ function h0() {
 
 
 function g1(){ 
-  sine(0.8,down,up);
+  sine(1,down,up);
 }
 
 function g2(){ 
-  sine(0.8,up,down);
+  sine(1,up,down);
 }
 
 function g3(){ 
-  sine(0.8,middle,up);
+  sine(1,middle,up);
 }
 
 function g4(){ 
-  sine(0.8,up,middle);
+  sine(1,up,middle);
 }
 function g5(){ 
-  sine(0.8,middle,down);
+  sine(1,middle,down);
 }
 function g6(){ 
-  sine(0.8,down,middle);
+  sine(1,down,middle);
 }
 
 ////////////
