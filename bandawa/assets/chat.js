@@ -380,6 +380,8 @@ function h0() {
 
 
 //glissandos
+//sine(duration, yposition, direction, xposition)
+
 
 function g1(){ 
   sine(0.8,down,up);
