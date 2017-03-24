@@ -189,7 +189,7 @@ function sine(duration, yposition, direction, xposition){
   if(duration===undefined) duration = 1;
   if(yposition===undefined) yposition = 100;
   if(direction===undefined) direction = yposition;
-  if(xposition===undefined) xposition = 0.1;
+  if(xposition===undefined) xposition = 0;
   var sine = oscillator_buffer[oscillator_position][0];
   var out = oscillator_buffer[oscillator_position][1];
   oscillator_position = (oscillator_position+1)%num_oscillators;
@@ -203,7 +203,7 @@ function sine(duration, yposition, direction, xposition){
   
   for (i = 0; i < steps; i++) {
   currfreq = currfreq + increase;
-  sine.frequency.linearRampToValueAtTime(currfreq, audio_context.currentTime+duration);
+  sine.frequency.linearRampToValueAtTime(currfreq, audio_context.currentTime+xposition+duration);
   }
 
 
@@ -292,19 +292,19 @@ function play_text(text){
     default:
     
     //verticals
-    var b1_group = ", B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, U, W, 1, 6, 8, 0, b, h, k, l";
+    var b1_group = "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, U, W, 1, 6, 8, 0, b, h, k, l";
     if($.inArray(letter,b1_group)!=-1) b1();
-    var b2_group = "5";
+    var b2_group = "5, W";
     if($.inArray(letter,b2_group)!=-1) b2();
-    var b3_group = "A, Z, 2, J, a, c, d, e, f, g, i, m, n, o, p, q, r, u, 6";
+    var b3_group = "2, J, a, c, d, e, f, g, i, m, n, o, p, q, r, u, 6";
     if($.inArray(letter,b3_group)!=-1) b3();
-    var b4_group = "A, H, J, M, N, O, Q, U, W, V, Y, d, 8, 9, 0";
+    var b4_group = "H, J, M, N, O, Q, U, W, V, Y, d, 8, 9, 0";
     if($.inArray(letter,b4_group)!=-1) b4();
-    var b5_group = "P, R";
+    var b5_group = "P";
     if($.inArray(letter,b5_group)!=-1) b5();
     var b6_group = "G, a, j, g, h, j, m, n, o, p, s, u, v, w, y";
     if($.inArray(letter,b6_group)!=-1) b6();
-    var b7_group = "T, t";
+    var b7_group = "T, W, t, w";
     if($.inArray(letter,b7_group)!=-1) b7();
     
     var b8_group = "p, y";
@@ -313,28 +313,28 @@ function play_text(text){
     if($.inArray(letter,b9_group)!=-1) b9();
     
     //horizontals
-    var h1_group = "C, D, E, G, J, K, L, O, Q, c, d, e, o, p, u, _, 2, 3, 6, 8, 0";
+    var h1_group = "C, D, E, G, J, L, O, Q, c, d, e, o, p, u, _, 2, 3, 6, 8, 0";
     if($.inArray(letter,h1_group)!=-1) h1();
-    var h2_group = "A, B, E, F, G, H, P, R, S, a, b, c, e, f, g, n, o, q, t, z, 3, 4, 5, 6, 8, 9";
+    var h2_group = "A, B, E, F, G, H, P, R, a, b, c, e, f, g, n, o, q, t, z, 3, 4, 5, 6, 8, 9";
     if($.inArray(letter,h2_group)!=-1) h2();
-    var h3_group = "A, B, C, D, E, F, G, O, P, Q, R, S, T, 2, 3, 5, 7, 8, 9, 0,";
+    var h3_group = "A, B, C, D, E, F, G, O, P, Q, R, S, T, Z, 2, 3, 5, 7, 8, 9, 0,";
     if($.inArray(letter,h3_group)!=-1) h3();
     var h4_group = "g";
     if($.inArray(letter,h4_group)!=-1) h4();
     
 
     //diagonal
-    var g1_group = "0, 2, 7, k, D, M, W, Z";
+    var g1_group = "X, D, 0, 2, 7, k, D, M, Z";
     if($.inArray(letter,g1_group)!=-1) g1();
     var g2_group = "X";
     if($.inArray(letter,g2_group)!=-1) g2();
-    var g3_group = "f, 4, 1, 6, B, A, S, K";
+    var g3_group = "f, 4, 1, 6, S, K";
     if($.inArray(letter,g3_group)!=-1) g3();
-    var g4_group = "Y";
+    var g4_group = "B, Y";
     if($.inArray(letter,g4_group)!=-1) g4();
-    var g5_group = "K, Q, R, m, v, x, y, 3, w";
+    var g5_group = "B, K, Q, R, m, v, x, y, 3";
     if($.inArray(letter,g5_group)!=-1) g5();
-    var g6_group = "a, b, d, e, g, h, k, m, p, q, r, s, w, x, z, 5, S";
+    var g6_group = "a, b, d, e, g, h, k, m, p, q, r, s, x, z, 5, S";
     if($.inArray(letter,g6_group)!=-1) g6();
   }
   if(text.length>0) setTimeout(function(){play_text(text);},1000);
