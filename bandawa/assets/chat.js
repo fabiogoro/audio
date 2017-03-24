@@ -175,6 +175,8 @@ function play(pos){
 }
 
 
+//noise
+
 function noise(duration, xposition, yposition, height){
   if(xposition===undefined) xposition = 0;
   if(yposition===undefined) yposition = 10000;
@@ -183,6 +185,8 @@ function noise(duration, xposition, yposition, height){
   bandpass.Q.value = 20/height;
   noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,0.8);
 }
+
+//osc
 
 var oscillator_position = 0;
 function sine(duration, yposition, direction, xposition){
@@ -221,63 +225,9 @@ var floor = 100;
 var down = 200;
 var middle = 1000;
 var up = 5000;
+var thick = 0.4;
+var eye = 0.4;
 
-function f(){ //Criando letra F
-  noise(0.2); //Haste vertical, 0.2 segundos de duracao (largura), altura e posicao indefinidos (ocupam espectro todo)
-  sine(0.8,up); //Haste superior, 0.8 duracao, posicionado em 8kHz no espectro e com 1 unidade de altura (fino).
-  sine(0.7,middle); //Haste inferior, 0.7 duracai, posicionado em 4kHz e 1 unidade de altura.
-}
-
-function l(){ //Criando L
-  noise(0.2); 
-  sine(0.8,down); 
-}
-
-function h(){ //Criando H
-  noise(0.2);
-  sine(0.8,middle);
-  noise(0.2,0.8);
-}
-
-function v(){
-  sine(0.5,up,down);
-  sine(0.5,down,up,0.6);
-}
-
-function play_matrix(matrix){
-  var size = matrix.length;
-  for(i=0;i<size;i++)
-    for(j=0;j<size;j++)
-      if(matrix[i][j]==1)
-        noise(1/(size),j/size,4000*(size-i)/size,10*(size-i)/size);
-}
-
-function a(){// A
-  var matrix = [[0,0,1,0,0],
-                [0,1,0,1,0],
-                [1,0,0,0,1],
-                [1,1,1,1,1],
-                [1,0,0,0,1]];
-  play_matrix(matrix);
-}
-
-function x(){// X
-  var matrix = [[1,0,0,0,1],
-                [0,1,0,1,0],
-                [0,0,1,0,0],
-                [0,1,0,1,0],
-                [1,0,0,0,1]];
-  play_matrix(matrix);
-}
-
-//function t(){// T
-//  var matrix = [[1,1,1,1,1],
-//                [0,0,1,0,0],
-//                [0,0,1,0,0],
-//                [0,0,1,0,0],
-//                [0,0,1,0,0]];
-//  play_matrix(matrix);
-//}
 
 function play_text(text){
   letter = text.shift();
@@ -346,43 +296,43 @@ function play_text(text){
 //
 //////////////
 function b1(){ //Vertical bar at the beggining
-  noise(0.2);
+  noise(thick);
 }
 
 function b2(){ //Half-sized vertical bar with the upper beggining
-  noise(0.2, 0, up, 100);
+  noise(thick, 0, up, 100);
 }
 
 function b3(){ //Half-sized vertical bar with the lower beggining
-  noise(0.2, 0, down, 100);
+  noise(thick, 0, down, 100);
 }
 
 function b4(){ //Vertical bar at the end
-  noise(0.2, 0.8);
+  noise(thick, thick+eye);
 }
 
 function b5(){ //Half-sized vertical bar at the upper end
-  noise(0.2, 0.8, up, 100);
+  noise(thick, thick+eye, up, 100);
 }
 
 function b6(){ //Half-sized vertical bar at the lower end
-  noise(0.2, 0.8, down, 100);
+  noise(thick, thick+eye, down, 100);
 }
 
 function b7(){ //Vertical bar at the middle
-  noise(0.2, 0.5);
+  noise(thick, eye);
 }
 
 function b8(){ //Vertical bar at lower quarter beggining
-  noise(0.2, 0, floor, 100);
+  noise(thick, 0, floor, 100);
 }
 
 function b9() {//vertical bar at lower quarter end
-  noise(0.2, 0.8, floor, 100);
+  noise(thick, thick+eye, floor, 100);
 }
 
 function h1(){ //Horizontal bar at the bottom
-  sine(0.8, down);
+  sine(thick, down);
 }
 
 function h2(){ //Horizontal bar at the middle
@@ -458,3 +408,64 @@ ADSR.prototype.play= function(delay, A,D,S,R, peakLevel, sustainlevel){
   this.node.gain.linearRampToValueAtTime(sustainlevel,delay + audio_context.currentTime + A + D + S);// sustain.
   this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime + A + D + S + R);// Release
 }
+
+
+
+//matrix player
+
+function f(){ //Criando letra F
+  noise(0.2); //Haste vertical, 0.2 segundos de duracao (largura), altura e posicao indefinidos (ocupam espectro todo)
+  sine(0.8,up); //Haste superior, 0.8 duracao, posicionado em 8kHz no espectro e com 1 unidade de altura (fino).
+  sine(0.7,middle); //Haste inferior, 0.7 duracai, posicionado em 4kHz e 1 unidade de altura.
+}
+
+function l(){ //Criando L
+  noise(0.2); 
+  sine(0.8,down); 
+}
+
+function h(){ //Criando H
+  noise(0.2);
+  sine(0.8,middle);
+  noise(0.2,0.8);
+}
+
+function v(){
+  sine(0.5,up,down);
+  sine(0.5,down,up,0.6);
+}
+
+function play_matrix(matrix){
+  var size = matrix.length;
+  for(i=0;i<size;i++)
+    for(j=0;j<size;j++)
+      if(matrix[i][j]==1)
+        noise(1/(size),j/size,4000*(size-i)/size,10*(size-i)/size);
+}
+
+function a(){// A
+  var matrix = [[0,0,1,0,0],
+                [0,1,0,1,0],
+                [1,0,0,0,1],
+                [1,1,1,1,1],
+                [1,0,0,0,1]];
+  play_matrix(matrix);
+}
+
+function x(){// X
+  var matrix = [[1,0,0,0,1],
+                [0,1,0,1,0],
+                [0,0,1,0,0],
+                [0,1,0,1,0],
+                [1,0,0,0,1]];
+  play_matrix(matrix);
+}
+
+//function t(){// T
+//  var matrix = [[1,1,1,1,1],
+//                [0,0,1,0,0],
+//                [0,0,1,0,0],
+//                [0,0,1,0,0],
+//                [0,0,1,0,0]];
+//  play_matrix(matrix);
+//}
