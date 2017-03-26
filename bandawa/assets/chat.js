@@ -105,9 +105,9 @@ function start_web_audio(){
   noise_node.buffer = noise_buffer;
   noise_node.loop = true;
   noise_node.start(0);
-  noise_node.connect(bandpass);
+  noise_node.connect(lowpass);
   noise_out = new ADSR();
-  bandpass.connect(noise_out.node);
+  lowpass.connect(noise_out.node);
   noise_out.node.connect(destination);
 
   var sine;
@@ -190,9 +190,13 @@ function play(pos){
 function noise(duration, xposition, yposition, height){
   if(xposition===undefined) xposition = 0;
   if(yposition===undefined) yposition = 10000;
-  if(height===undefined) height = 20000;
-  bandpass.frequency.value = yposition;
-  bandpass.Q.value = 0.9;
+  if(height===undefined) height = 0;
+  //bandpass.frequency.value = yposition;
+  //bandpass.Q.value = 1;
+  lowpass.frequency.value = yposition;
+  lowpass.Q.value = 1; 
+  highpass.frequency.value = height;
+  highpass.Q.value = 1;
   //delay, attack, decay, sustain, release e max gain
   noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,1);
 }
@@ -306,27 +310,27 @@ function play_text(text){
 //
 //////////////
 function b1(){ //Vertical bar at the beggining
-  noise(thick);
+  noise(thick, 0, up, floor);
 }
 
 function b2(){ //Half-sized vertical bar with the upper beggining
-  noise(thick, 0, up, 100);
+  noise(thick, 0, up, middle);
 }
 
 function b3(){ //Half-sized vertical bar with the lower beggining
-  noise(thick, 0, down, 100);
+  noise(thick, 0, middle, down);
 }
 
 function b4(){ //Vertical bar at the end
-  noise(thick, thick+eye);
+  noise(thick, thick+eye, up, down);
 }
 
 function b5(){ //Half-sized vertical bar at the upper end
-  noise(thick, thick+eye, up, 100);
+  noise(thick, thick+eye, up, middle);
 }
 
 function b6(){ //Half-sized vertical bar at the lower end
-  noise(thick, thick+eye, down, 100);
+  noise(thick, thick+eye, down, middle);
 }
 
 function b7(){ //Vertical bar at the middle
@@ -334,11 +338,11 @@ function b7(){ //Vertical bar at the middle
 }
 
 function b8(){ //Vertical bar at lower quarter beggining
-  noise(thick, 0, floor, 100);
+  noise(thick, 0, floor, down);
 }
 
 function b9() {//vertical bar at lower quarter end
-  noise(thick, thick+eye, floor, 100);
+  noise(thick, thick+eye, floor, down);
 }
 
 function h1(){ //Horizontal bar at the bottom
