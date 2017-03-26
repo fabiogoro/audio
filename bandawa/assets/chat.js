@@ -221,7 +221,7 @@ function sine(duration, yposition, direction, xposition){
 
 }
 
-var floor = 100;
+var floor = 150;
 var down = 200;
 var middle = 1000;
 var up = 5000;
@@ -269,7 +269,7 @@ function play_text(text){
     if($.inArray(letter,h2_group)!=-1) h2();
     var h3_group = "A, B, C, D, E, F, G, O, P, Q, R, S, T, Z, 2, 3, 5, 7, 8, 9, 0,";
     if($.inArray(letter,h3_group)!=-1) h3();
-    var h4_group = "g";
+    var h4_group = "g, j";
     if($.inArray(letter,h4_group)!=-1) h4();
     
 
@@ -340,11 +340,11 @@ function h2(){ //Horizontal bar at the middle
 }
 
 function h3(){ //Horizontal bar at the top
-  sine(0.8, up);
+  sine(1, up);
 }
 
-function h1() {
-  sine(0.8, floor);
+function h4() {
+  sine(1, floor);
 }
 
 
