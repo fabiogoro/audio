@@ -4,6 +4,8 @@
 // 
 ////////////
 
+
+
 // When enter is pressed, clear textbox and send message.
 function chat(event) {
   if(event.keyCode===13){
@@ -76,7 +78,7 @@ function start_web_audio(){
   audio_context = new (window.AudioContext || window.webkitAudioContext)();
   gain = audio_context.createGain();
   master_gain = audio_context.createGain();
-  gain.gain.value = 1;
+  gain.gain.value = 0.2;
   gain.connect(master_gain);
   destination = gain;
   master_gain.connect(audio_context.destination);
@@ -242,24 +244,24 @@ function play_text(text){
     default:
     
     //verticals
-    var b1_group = "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, U, W, 1, 6, 8, 0, b, h, k, l";
+    var b1_group = "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, U, W, 1, 6, 8, 0, b, h, k, l, \!, \#, \{, \[";
     if($.inArray(letter,b1_group)!=-1) b1();
-    var b2_group = "5, W";
+    var b2_group = "5, \", \', \:, \;";
     if($.inArray(letter,b2_group)!=-1) b2();
-    var b3_group = "2, J, a, c, d, e, f, g, i, m, n, o, p, q, r, u, 6";
+    var b3_group = "2, J, a, c, d, e, f, g, i, m, n, o, p, q, r, u, 6, , \% \@, \?";
     if($.inArray(letter,b3_group)!=-1) b3();
-    var b4_group = "H, J, M, N, O, Q, U, W, V, Y, d, 8, 9, 0";
+    var b4_group = "H, J, M, N, O, Q, U, W, V, Y, d, 8, 9, 0, \@, \:, \@, \#, \}, \]";
     if($.inArray(letter,b4_group)!=-1) b4();
-    var b5_group = "P";
+    var b5_group = "P, \" "; 
     if($.inArray(letter,b5_group)!=-1) b5();
-    var b6_group = "G, a, j, g, h, j, m, n, o, p, s, u, v, w, y";
+    var b6_group = "G, a, j, g, h, j, m, n, o, p, s, u, v, w, y, \%";
     if($.inArray(letter,b6_group)!=-1) b6();
-    var b7_group = "T, W, t, w";
+    var b7_group = "T, W, t, w, \|, \$, \+, \*";
     if($.inArray(letter,b7_group)!=-1) b7();
     
     var b8_group = "p, y";
     if($.inArray(letter,b8_group)!=-1) b8();
-    var b9_group = "g, j, q";
+    var b9_group = "g, j, q, \., \!, \:, \?";
     if($.inArray(letter,b9_group)!=-1) b9();
     
     //horizontals
@@ -274,7 +276,7 @@ function play_text(text){
     
 
     //diagonal
-    var g1_group = "X, D, 0, 2, 7, k, D, M, Z";
+    var g1_group = "X, D, 0, 2, 7, k, D, M, Z, \\";
     if($.inArray(letter,g1_group)!=-1) g1();
     var g2_group = "X";
     if($.inArray(letter,g2_group)!=-1) g2();
@@ -330,6 +332,8 @@ function b8(){ //Vertical bar at lower quarter beggining
 function b9() {//vertical bar at lower quarter end
   noise(thick, thick+eye, floor, 100);
 }
+
+
 
 function h1(){ //Horizontal bar at the bottom
   sine(thick, down);
