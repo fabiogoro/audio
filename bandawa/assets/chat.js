@@ -343,7 +343,7 @@ function h3(){ //Horizontal bar at the top
   sine(0.8, up);
 }
 
-function h0() {
+function h1() {
   sine(0.8, floor);
 }
 
