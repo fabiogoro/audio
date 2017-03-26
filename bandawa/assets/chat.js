@@ -67,6 +67,8 @@ var audio_context;
 var gain;
 var destination;
 var bandpass;
+var highpass;
+var lowpass;
 var noise_node;
 var noise_out;
 var oscillator_buffer = [];
@@ -78,7 +80,7 @@ function start_web_audio(){
   audio_context = new (window.AudioContext || window.webkitAudioContext)();
   gain = audio_context.createGain();
   master_gain = audio_context.createGain();
-  gain.gain.value = 0.2;
+  gain.gain.value = 1;
   gain.connect(master_gain);
   destination = gain;
   master_gain.connect(audio_context.destination);
@@ -92,6 +94,12 @@ function start_web_audio(){
 
   bandpass = audio_context.createBiquadFilter();
   bandpass.type = "bandpass";
+
+  highpass = audio_context.createBiquadFilter();
+  highpass.type = "highpass";
+
+  lowpass = audio_context.createBiquadFilter();
+  lowpass.type = "lowpass";
 
   noise_node = audio_context.createBufferSource();
   noise_node.buffer = noise_buffer;
@@ -184,8 +192,9 @@ function noise(duration, xposition, yposition, height){
   if(yposition===undefined) yposition = 10000;
   if(height===undefined) height = 20000;
   bandpass.frequency.value = yposition;
-  bandpass.Q.value = 20/height;
-  noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,0.8);
+  bandpass.Q.value = 0.9;
+  //delay, attack, decay, sustain, release e max gain
+  noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,1);
 }
 
 //osc
@@ -217,7 +226,7 @@ function sine(duration, yposition, direction, xposition){
   //sine.frequency.linearRampToValueAtTime(440 * Math.pow(2, 1/12),audioCtx.currentTime + 1);
 
 
-  out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,1,0.8);
+  out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,0.5,0.2);
 
 
 
@@ -234,8 +243,7 @@ var eye = 0.4;
 function play_text(text){
   letter = text.shift();
   switch(letter){
-    //case 'A': a(); break;
-    //case 'X': x(); break;
+    case '\,': x(); break;
     //case 'T': t(); break;
     //case 'F': f(); break;
     //case 'H': h(); break;
@@ -265,20 +273,20 @@ function play_text(text){
     if($.inArray(letter,b9_group)!=-1) b9();
     
     //horizontals
-    var h1_group = "C, D, E, G, J, L, O, Q, c, d, e, o, p, u, _, 2, 3, 6, 8, 0";
+    var h1_group = "C, D, E, G, J, L, O, Q, Z, c, d, e, o, p, u, _, 2, 3, 6, 8, 0";
     if($.inArray(letter,h1_group)!=-1) h1();
     var h2_group = "A, B, E, F, G, H, P, R, a, b, c, e, f, g, n, o, q, t, z, 3, 4, 5, 6, 8, 9";
     if($.inArray(letter,h2_group)!=-1) h2();
     var h3_group = "A, B, C, D, E, F, G, O, P, Q, R, S, T, Z, 2, 3, 5, 7, 8, 9, 0,";
     if($.inArray(letter,h3_group)!=-1) h3();
-    var h4_group = "g, j";
+    var h4_group = "g, j, \,";
     if($.inArray(letter,h4_group)!=-1) h4();
     
 
     //diagonal
-    var g1_group = "X, D, 0, 2, 7, k, D, M, Z, \\";
+    var g1_group = "X, D, 0, 2, 7, k, D, M, Z, \/";
     if($.inArray(letter,g1_group)!=-1) g1();
-    var g2_group = "X";
+    var g2_group = "X, \\";
     if($.inArray(letter,g2_group)!=-1) g2();
     var g3_group = "f, 4, 1, 6, S, K";
     if($.inArray(letter,g3_group)!=-1) g3();
@@ -333,14 +341,12 @@ function b9() {//vertical bar at lower quarter end
   noise(thick, thick+eye, floor, 100);
 }
 
-
-
 function h1(){ //Horizontal bar at the bottom
-  sine(thick, down);
+  sine(1, down);
 }
 
 function h2(){ //Horizontal bar at the middle
-  sine(0.8, middle);
+  sine(1, middle);
 }
 
 function h3(){ //Horizontal bar at the top
@@ -448,20 +454,20 @@ function play_matrix(matrix){
 }
 
 function a(){// A
-  var matrix = [[0,0,1,0,0],
-                [0,1,0,1,0],
-                [1,0,0,0,1],
-                [1,1,1,1,1],
-                [1,0,0,0,1]];
+  var matrix = [[0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0]];
   play_matrix(matrix);
 }
 
 function x(){// X
-  var matrix = [[1,0,0,0,1],
-                [0,1,0,1,0],
-                [0,0,1,0,0],
-                [0,1,0,1,0],
-                [1,0,0,0,1]];
+  var matrix = [[0,0,0,0,0],
+                [0,0,0,0,0],
+                [0,0,0,0,0],
+                [1,0,0,0,0],
+                [1,0,0,0,0]];
   play_matrix(matrix);
 }
 
