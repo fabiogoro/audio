@@ -107,7 +107,8 @@ function start_web_audio(){
   noise_node.start(0);
   noise_node.connect(lowpass);
   noise_out = new ADSR();
-  lowpass.connect(noise_out.node);
+  lowpass.connect(highpass);
+  highpass.connect(noise_out.node);
   noise_out.node.connect(destination);
 
   var sine;
@@ -195,8 +196,10 @@ function noise(duration, xposition, yposition, height){
   //bandpass.Q.value = 1;
   lowpass.frequency.value = yposition;
   lowpass.Q.value = 1; 
+  //lowpass.gain.value = -25;
   highpass.frequency.value = height;
   highpass.Q.value = 1;
+  //highpass.gain.value = -25;
   //delay, attack, decay, sustain, release e max gain
   noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,1);
 }
@@ -237,9 +240,9 @@ function sine(duration, yposition, direction, xposition){
 }
 
 var floor = 150;
-var down = 200;
+var down = 300;
 var middle = 1000;
-var up = 5000;
+var up = 4000;
 var thick = 0.4;
 var eye = 0.4;
 
@@ -256,13 +259,13 @@ function play_text(text){
     default:
     
     //verticals
-    var b1_group = "ABCDEFGHIJKLMNOPQRUW1680bhkl\!\#\{\[";
+    var b1_group = "ABCDEFGHIKLMNOPQRUW680bhkl\!\#\{\[";
     if($.inArray(letter,b1_group)!=-1) b1();
     var b2_group = "5\"\'\:\;";
     if($.inArray(letter,b2_group)!=-1) b2();
-    var b3_group = "2Jacdefgimnopqru6\%\@\?";
+    var b3_group = "2Jacefgimnopqru6\%\@\?";
     if($.inArray(letter,b3_group)!=-1) b3();
-    var b4_group = "HJMNOQUWVYd890\@\:\#\}\]";
+    var b4_group = "HJMNOQUWVYd134890\@\:\#\}\]";
     if($.inArray(letter,b4_group)!=-1) b4();
     var b5_group = "P\""; 
     if($.inArray(letter,b5_group)!=-1) b5();
@@ -277,28 +280,28 @@ function play_text(text){
     if($.inArray(letter,b9_group)!=-1) b9();
     
     //horizontals
-    var h1_group = "CDEGJLOQZcdeopu\_23680";
+    var h1_group = "CBDEGJLOQUZcdeopuz\_23680\=\+";
     if($.inArray(letter,h1_group)!=-1) h1();
-    var h2_group = "ABEFGHPRabcefgnoqtz345689";
+    var h2_group = "ABEFHPRabcefgnopqtz345689\-\=";
     if($.inArray(letter,h2_group)!=-1) h2();
-    var h3_group = "ABCDEFGOPQRSTZ2357890,";
+    var h3_group = "ACEFGOPQRTZ2357890\[\]";
     if($.inArray(letter,h3_group)!=-1) h3();
     var h4_group = "gj\,";
     if($.inArray(letter,h4_group)!=-1) h4();
     
 
     //diagonal
-    var g1_group = "XD027kDMZ\/";
+    var g1_group = "XD07kDMZ\/";
     if($.inArray(letter,g1_group)!=-1) g1();
-    var g2_group = "X\\";
+    var g2_group = "VMNX\\";
     if($.inArray(letter,g2_group)!=-1) g2();
-    var g3_group = "f416SK";
+    var g3_group = "f416SK2\<";
     if($.inArray(letter,g3_group)!=-1) g3();
-    var g4_group = "BY";
+    var g4_group = "BY\>\`";
     if($.inArray(letter,g4_group)!=-1) g4();
-    var g5_group = "BKQRmvxy3";
+    var g5_group = "BKQRmvxy3\<";
     if($.inArray(letter,g5_group)!=-1) g5();
-    var g6_group = "abdeghkmpqrsxz5S";
+    var g6_group = "Gabdeghkmpqrsxz5S\>";
     if($.inArray(letter,g6_group)!=-1) g6();
   }
   if(text.length>0) setTimeout(function(){play_text(text);},1000);
@@ -318,7 +321,7 @@ function b2(){ //Half-sized vertical bar with the upper beggining
 }
 
 function b3(){ //Half-sized vertical bar with the lower beggining
-  noise(thick, 0, middle, down);
+  noise(thick, 0, middle, 0);
 }
 
 function b4(){ //Vertical bar at the end
@@ -330,7 +333,7 @@ function b5(){ //Half-sized vertical bar at the upper end
 }
 
 function b6(){ //Half-sized vertical bar at the lower end
-  noise(thick, thick+eye, down, middle);
+  noise(thick, thick+eye, middle, 0);
 }
 
 function b7(){ //Vertical bar at the middle
