@@ -72,7 +72,7 @@ var lowpass;
 var noise_node;
 var noise_out;
 var oscillator_buffer = [];
-var num_oscillators = 60;
+var num_oscillators = 20;
 start_web_audio();
 
 function start_web_audio(){
@@ -192,15 +192,12 @@ function noise(duration, xposition, yposition, height){
   if(xposition===undefined) xposition = 0;
   if(yposition===undefined) yposition = 10000;
   if(height===undefined) height = 0;
-  //bandpass.frequency.value = yposition;
-  //bandpass.Q.value = 1;
+  duration = duration * interval;
   lowpass.frequency.value = yposition;
   lowpass.Q.value = 1; 
-  //lowpass.gain.value = -25;
   highpass.frequency.value = height;
   highpass.Q.value = 1;
-  //highpass.gain.value = -25;
-  //delay, attack, decay, sustain, release e max gain
+  //delay, attack, decay, sustain, release, peak gain, sustain gain
   noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,1);
 }
 
@@ -215,47 +212,27 @@ function sine(duration, yposition, direction, xposition){
   var sine = oscillator_buffer[oscillator_position][0];
   var out = oscillator_buffer[oscillator_position][1];
   oscillator_position = (oscillator_position+1)%num_oscillators;
-  sine.frequency.value = yposition;
+  sine.frequency.setValueAtTime(yposition,audio_context.currentTime+xposition);
+  sine.frequency.linearRampToValueAtTime(direction,audio_context.currentTime+xposition+duration);
   
-  var delta = direction - yposition;
-  var steps = 10;
-  var increase = delta / steps; 
-  var currfreq = yposition;
-  //sine.frequency.exponentialRampToValueAtTime(direction, audio_context.currentTime+0.1);
-  
-  for (i = 0; i < steps; i++) {
-  currfreq = currfreq + increase;
-  sine.frequency.linearRampToValueAtTime(currfreq, audio_context.currentTime+xposition+duration);
-  }
-
-
-  //sine.frequency.linearRampToValueAtTime(direction, audio_context.currentTime+duration);
-  //sine.frequency.linearRampToValueAtTime(440 * Math.pow(2, 1/12),audioCtx.currentTime + 1);
-
-
   out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,0.5,0.2);
-
-
-
 }
 
-var floor = 150;
+var floor = 150; //Hz
 var down = 300;
 var middle = 1000;
 var up = 4000;
-var thick = 0.4;
+
+var thick = 0.4; //percentage of interval
 var eye = 0.4;
+
+var interval = 1; //seconds per letter
 
 
 function play_text(text){
   letter = text.shift();
   switch(letter){
     case '\,': x(); break;
-    //case 'T': t(); break;
-    //case 'F': f(); break;
-    //case 'H': h(); break;
-    //case 'V': v(); break;
-    //case 'L': l(); break;
     default:
     
     //verticals
@@ -289,7 +266,6 @@ function play_text(text){
     var h4_group = "gj\,";
     if($.inArray(letter,h4_group)!=-1) h4();
     
-
     //diagonal
     var g1_group = "XD07kDMZ\/";
     if($.inArray(letter,g1_group)!=-1) g1();
@@ -304,7 +280,7 @@ function play_text(text){
     var g6_group = "Gabdeghkmpqrsxz5S\>";
     if($.inArray(letter,g6_group)!=-1) g6();
   }
-  if(text.length>0) setTimeout(function(){play_text(text);},1000);
+  if(text.length>0) setTimeout(function(){play_text(text);},interval*1000);
 }
 
 ///////////////
