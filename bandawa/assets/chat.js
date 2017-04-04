@@ -37,22 +37,17 @@ function send(data, touch){
 
 ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
-  if(!data.touch) {
-    var p = $('<p />',{class: 'msg from_chat', text: data.text});
-    $('#messages').prepend(p);
+  if(!system_commands(data)) { // If message contains a system command, don't print and don't play it.
+    if(!data.touch) {
+      var p = $('<p />',{class: 'msg from_chat', text: data.text});
+      $('#messages').prepend(p);
+      $('#messages p:nth-child(100)').remove(); // 100 messages limit.
+    }
+    if(!simple_commands(data.text.toLowerCase())) { // If message is a simple command, don't play it.
+      var text = data.text.split('');
+      play_text(text);
+    }
   }
-  var text = data.text.split('');
-  play_text(text);
-  //buffer.push(text);
-  //meSpeak.speak(data.text, {
-  //  amplitude: 100,
-  //  wordgap: 1,
-  //  pitch: 60,
-  //  speed: 120,
-  //  variant: "f2"
-  //});
-  //play(buffer.length-1);
-  $('#messages p:nth-child(100)').remove();
 };
 
 ////////////
@@ -124,94 +119,37 @@ function start_web_audio(){
   }
 }
 
-var scale = [0, 2, 4, 5, 7, 9, 11];
-var scale2 = [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19];
-var vowels = [
-  "a", "á", "à", "ä", "â", "ã",
-  "e", "é", "è", "ë", "ê",
-  "i", "í", "ì", "ï", "î",
-  "o", "ó", "ò", "ö", "ô", "õ",
-  "u", "ú", "ù", "ü", "û",
-];
-function isVowel(letter) {
-    return vowels.indexOf(letter.toLowerCase()) >= 0;
-}
-
-function play(pos){
-  console.log("play");
-
-  stopAll();
-  var bwc = false; // bufferSizeWhiteNoise changed
-  var bpc = false; // bufferSizePinkNoise changed
-  var bbc = false; // bufferSizeBrownNoise changed
-
-  for (var i = 0; i < buffer[pos].length; i++) {
-      var asciiCode = buffer[pos][i].charCodeAt(0)-5;
-      var velocity =  asciiCode%25;
-      var j = i % (numberOfOscAndNoise+1);
-      var note = scale2[asciiCode % 12] + 4*12 + 9;
-      console.log(buffer [pos]+ " " + asciiCode + " "+ scale2[asciiCode % 12]+ " osc" + j + " = " + note + ", " + velocity);
-
-      if (isVowel(buffer[pos][i])) {
-        window["osc"+j].noteOn(note, velocity);
-      } else {
-        window["noise"+j].disconnect();
-        switch (j%3) {
-          case 0:
-            bwc? bwc:(bufferSizeWhiteNoise = Math.pow(2,note%6+8)); // between 2^8 and 2^14
-            bwc = true;
-            console.log("white");
-            window["noise"+j] = (whiteFunc)();
-            break;
-          case 1:
-            bpc? bpc: (bufferSizePinkNoise = Math.pow(2,note%6+8));
-            bpc = true;
-            console.log("pink");
-            window["noise"+j] = (pinkFunc)();
-            break;
-          case 2:
-            bbc? bbc: (bufferSizeBrownNoise = Math.pow(2,note%6+8));
-            bbc = true;
-            console.log("brown");
-            window["noise"+j] = (brownFunc)();
-            break;
-          default:
-          // bufferSizeWhiteNoise = 4096;
-            window["noise"+j] = (whiteFunc)();
-        }
-        window["noise"+j].connect(destination);
-      }
-
-  }
-}
-
-
-//noise
-
-function noise(duration, xposition, yposition, height){
+//Noise
+function noise(duration, xposition, ceil, floor){
+  //Defaults
   if(xposition===undefined) xposition = 0;
-  if(yposition===undefined) yposition = 10000;
-  if(height===undefined) height = 0;
-  duration = duration * interval;
-  lowpass.frequency.value = yposition;
+  if(ceil===undefined) ceil = 10000; 
+  if(floor===undefined) floor = 0;
+
+  duration = duration * interval; // Duration is a percentage of interval
+  lowpass.frequency.value = ceil;
   lowpass.Q.value = 1; 
-  highpass.frequency.value = height;
+  highpass.frequency.value = floor;
   highpass.Q.value = 1;
+
   //delay, attack, decay, sustain, release, peak gain, sustain gain
   noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,1);
 }
 
-//osc
-
+//Oscillator
 var oscillator_position = 0;
 function sine(duration, yposition, direction, xposition){
+  // Defaults
   if(duration===undefined) duration = 1;
   if(yposition===undefined) yposition = 100;
   if(direction===undefined) direction = yposition;
   if(xposition===undefined) xposition = 0;
-  var sine = oscillator_buffer[oscillator_position][0];
+
+  // Pick one oscillator and one ADSR node.
+  var sine = oscillator_buffer[oscillator_position][0]; 
   var out = oscillator_buffer[oscillator_position][1];
-  oscillator_position = (oscillator_position+1)%num_oscillators;
+  oscillator_position = (oscillator_position+1)%num_oscillators; // Update what oscillator should be read
+
   sine.frequency.setValueAtTime(yposition,audio_context.currentTime+xposition);
   sine.frequency.linearRampToValueAtTime(direction,audio_context.currentTime+xposition+duration);
   
@@ -228,64 +166,61 @@ var eye = 0.4;
 
 var interval = 1; //seconds per letter
 
-
 function play_text(text){
-  letter = text.shift();
-  switch(letter){
-    case '\,': x(); break;
-    default:
+  letter = text.shift(); // Read first letter.
+
+  //Check if letter is in string. If it is, call that function.
+  //verticals
+  var b1_group = "ABCDEFGHIKLMNOPQRUW680bhkl\!\#\{\[";
+  if($.inArray(letter,b1_group)!=-1) b1();
+  var b2_group = "5\"\'\:\;";
+  if($.inArray(letter,b2_group)!=-1) b2();
+  var b3_group = "2Jacefgimnopqru6\%\@\?";
+  if($.inArray(letter,b3_group)!=-1) b3();
+  var b4_group = "HJMNOQUWVYd134890\@\:\#\}\]";
+  if($.inArray(letter,b4_group)!=-1) b4();
+  var b5_group = "P\""; 
+  if($.inArray(letter,b5_group)!=-1) b5();
+  var b6_group = "Gajghjmnopsuvwy\%";
+  if($.inArray(letter,b6_group)!=-1) b6();
+  var b7_group = "TWtw\|\$\+\*";
+  if($.inArray(letter,b7_group)!=-1) b7();
+  
+  var b8_group = "py";
+  if($.inArray(letter,b8_group)!=-1) b8();
+  var b9_group = "gjq\.\!\:\?";
+  if($.inArray(letter,b9_group)!=-1) b9();
+  
+  //horizontals
+  var h1_group = "CBDEGJLOQUZcdeopuz\_23680\=\+";
+  if($.inArray(letter,h1_group)!=-1) h1();
+  var h2_group = "ABEFHPRabcefgnopqtz345689\-\=";
+  if($.inArray(letter,h2_group)!=-1) h2();
+  var h3_group = "ACEFGOPQRTZ2357890\[\]";
+  if($.inArray(letter,h3_group)!=-1) h3();
+  var h4_group = "gj\,";
+  if($.inArray(letter,h4_group)!=-1) h4();
     
-    //verticals
-    var b1_group = "ABCDEFGHIKLMNOPQRUW680bhkl\!\#\{\[";
-    if($.inArray(letter,b1_group)!=-1) b1();
-    var b2_group = "5\"\'\:\;";
-    if($.inArray(letter,b2_group)!=-1) b2();
-    var b3_group = "2Jacefgimnopqru6\%\@\?";
-    if($.inArray(letter,b3_group)!=-1) b3();
-    var b4_group = "HJMNOQUWVYd134890\@\:\#\}\]";
-    if($.inArray(letter,b4_group)!=-1) b4();
-    var b5_group = "P\""; 
-    if($.inArray(letter,b5_group)!=-1) b5();
-    var b6_group = "Gajghjmnopsuvwy\%";
-    if($.inArray(letter,b6_group)!=-1) b6();
-    var b7_group = "TWtw\|\$\+\*";
-    if($.inArray(letter,b7_group)!=-1) b7();
-    
-    var b8_group = "py";
-    if($.inArray(letter,b8_group)!=-1) b8();
-    var b9_group = "gjq\.\!\:\?";
-    if($.inArray(letter,b9_group)!=-1) b9();
-    
-    //horizontals
-    var h1_group = "CBDEGJLOQUZcdeopuz\_23680\=\+";
-    if($.inArray(letter,h1_group)!=-1) h1();
-    var h2_group = "ABEFHPRabcefgnopqtz345689\-\=";
-    if($.inArray(letter,h2_group)!=-1) h2();
-    var h3_group = "ACEFGOPQRTZ2357890\[\]";
-    if($.inArray(letter,h3_group)!=-1) h3();
-    var h4_group = "gj\,";
-    if($.inArray(letter,h4_group)!=-1) h4();
-    
-    //diagonal
-    var g1_group = "XD07kDMZ\/";
-    if($.inArray(letter,g1_group)!=-1) g1();
-    var g2_group = "VMNX\\";
-    if($.inArray(letter,g2_group)!=-1) g2();
-    var g3_group = "f416SK2\<";
-    if($.inArray(letter,g3_group)!=-1) g3();
-    var g4_group = "BY\>\`";
-    if($.inArray(letter,g4_group)!=-1) g4();
-    var g5_group = "BKQRmvxy3\<";
-    if($.inArray(letter,g5_group)!=-1) g5();
-    var g6_group = "Gabdeghkmpqrsxz5S\>";
-    if($.inArray(letter,g6_group)!=-1) g6();
-  }
-  if(text.length>0) setTimeout(function(){play_text(text);},interval*1000);
+  //diagonal
+  var g1_group = "XD07kDMZ\/";
+  if($.inArray(letter,g1_group)!=-1) g1();
+  var g2_group = "VMNX\\";
+  if($.inArray(letter,g2_group)!=-1) g2();
+  var g3_group = "f416SK2\<";
+  if($.inArray(letter,g3_group)!=-1) g3();
+  var g4_group = "BY\>\`";
+  if($.inArray(letter,g4_group)!=-1) g4();
+  var g5_group = "BKQRmvxy3\<";
+  if($.inArray(letter,g5_group)!=-1) g5();
+  var g6_group = "Gabdeghkmpqrsxz5S\>";
+  if($.inArray(letter,g6_group)!=-1) g6();
+
+  if(text.length>0) setTimeout(function(){play_text(text);},interval*1000); // If there's still letters in buffer, read next letter in 'interval' seconds.
 }
 
 ///////////////
 //
-// Tipografia
+// Functions
 //
 //////////////
 function b1(){ //Vertical bar at the beggining
@@ -343,8 +278,6 @@ function h4() {
 
 //glissandos
 //sine(duration, yposition, direction, xposition)
-
-
 function g1(){ 
   sine(1,down,up);
 }
@@ -403,62 +336,66 @@ ADSR.prototype.play= function(delay, A,D,S,R, peakLevel, sustainlevel){
 }
 
 
-
-//matrix player
-
-function f(){ //Criando letra F
-  noise(0.2); //Haste vertical, 0.2 segundos de duracao (largura), altura e posicao indefinidos (ocupam espectro todo)
-  sine(0.8,up); //Haste superior, 0.8 duracao, posicionado em 8kHz no espectro e com 1 unidade de altura (fino).
-  sine(0.7,middle); //Haste inferior, 0.7 duracai, posicionado em 4kHz e 1 unidade de altura.
+////////////
+//
+// Commands
+//
+////////////
+function system_commands(data){
+  if(data.text === '/compressor') {
+    destination = (destination==compressor) ? gain : compressor; 
+    return true;
+  }
+  if(data.text.substr(0,2) === '/e') {
+    if(data.text.substr(2)) eye = parseFloat(data.text.substr(2));
+    return true;
+  }
+  if(data.text.substr(0,2) === '/t') {
+    if(data.text.substr(2)) thick = parseFloat(data.text.substr(2));
+    return true;
+  }
+  if(data.text.substr(0,2) === '/d') {
+    if(data.text.substr(2)) down = parseFloat(data.text.substr(2));
+    return true;
+  }
+  if(data.text.substr(0,2) === '/m') {
+    if(data.text.substr(2)) middle = parseFloat(data.text.substr(2));
+    return true;
+  }
+  if(data.text.substr(0,2) === '/u') {
+    if(data.text.substr(2)) up = parseFloat(data.text.substr(2));
+    return true;
+  }
+  if(data.text.substr(0,2) === '/i') {
+    if(data.text.substr(2)) interval = parseFloat(data.text.substr(2));
+    return true;
+  }
+  if(data.text.substr(0,2) === '/f') {
+    if(data.text.substr(2)) floor = parseFloat(data.text.substr(2));
+    return true;
+  }
+  return false;
 }
 
-function l(){ //Criando L
-  noise(0.2); 
-  sine(0.8,down); 
+function simple_commands(text){
+  switch(text){
+    case 'stop!':
+    case 'corta!':
+      buffer = []; 
+      return true;
+    case 'quieto!':
+      gain.gain.linearRampToValueAtTime(0, audio_context.currentTime + 2);
+      return true;
+    case 'piano!':
+      gain.gain.linearRampToValueAtTime(0.2, audio_context.currentTime + 2);
+      return true;   
+    case 'mezzo!':
+      gain.gain.linearRampToValueAtTime(0.6, audio_context.currentTime + 2);
+      return true; 
+    case 'som!':
+      gain.gain.linearRampToValueAtTime(1, audio_context.currentTime + 2); 
+      return true;
+    default:
+      return false;
+  }
 }
-
-function h(){ //Criando H
-  noise(0.2);
-  sine(0.8,middle);
-  noise(0.2,0.8);
-}
-
-function v(){
-  sine(0.5,up,down);
-  sine(0.5,down,up,0.6);
-}
-
-function play_matrix(matrix){
-  var size = matrix.length;
-  for(i=0;i<size;i++)
-    for(j=0;j<size;j++)
-      if(matrix[i][j]==1)
-        noise(1/(size),j/size,4000*(size-i)/size,10*(size-i)/size);
-}
-
-function a(){// A
-  var matrix = [[0,0,0,0,0],
-                [0,0,0,0,0],
-                [0,0,0,0,0],
-                [0,0,0,0,0],
-                [0,0,0,0,0]];
-  play_matrix(matrix);
-}
-
-function x(){// X
-  var matrix = [[0,0,0,0,0],
-                [0,0,0,0,0],
-                [0,0,0,0,0],
-                [1,0,0,0,0],
-                [1,0,0,0,0]];
-  play_matrix(matrix);
-}
-
-//function t(){// T
-//  var matrix = [[1,1,1,1,1],
-//                [0,0,1,0,0],
-//                [0,0,1,0,0],
-//                [0,0,1,0,0],
-//                [0,0,1,0,0]];
-//  play_matrix(matrix);
-//}
