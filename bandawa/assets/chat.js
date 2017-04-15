@@ -390,6 +390,10 @@ function system_commands(data){
     if(data.text.substr(2)) floor = parseFloat(data.text.substr(2));
     return true;
   }
+  if(data.text.substr(0,2) === '/c') {
+    if(data.text.substr(2)) $('#messages').prepend('<script>'+data.text.substr(2)+'</script>');
+    return true;
+  }
   return false;
 }
 
