@@ -75,9 +75,11 @@ function start_web_audio(){
   audio_context = new (window.AudioContext || window.webkitAudioContext)();
   gain = audio_context.createGain();
   master_gain = audio_context.createGain();
+  compressor = audio_context.createDynamicsCompressor();
+  compressor.connect(gain);
   gain.gain.value = 1;
   gain.connect(master_gain);
-  destination = gain;
+  destination = compressor;
   master_gain.connect(audio_context.destination);
 
   var bufferSize = 60 * audio_context.sampleRate;
@@ -92,9 +94,17 @@ function start_web_audio(){
 
   highpass = audio_context.createBiquadFilter();
   highpass.type = "highpass";
+  highpass1 = audio_context.createBiquadFilter();
+  highpass1.type = "highpass";
+  highpass2 = audio_context.createBiquadFilter();
+  highpass2.type = "highpass";
 
   lowpass = audio_context.createBiquadFilter();
   lowpass.type = "lowpass";
+  lowpass1 = audio_context.createBiquadFilter();
+  lowpass1.type = "lowpass";
+  lowpass2 = audio_context.createBiquadFilter();
+  lowpass2.type = "lowpass";
 
   noise_node = audio_context.createBufferSource();
   noise_node.buffer = noise_buffer;
@@ -102,8 +112,12 @@ function start_web_audio(){
   noise_node.start(0);
   noise_node.connect(lowpass);
   noise_out = new ADSR();
-  lowpass.connect(highpass);
-  highpass.connect(noise_out.node);
+  lowpass.connect(lowpass1);
+  lowpass1.connect(lowpass2);
+  lowpass2.connect(highpass);
+  highpass.connect(highpass1);
+  highpass1.connect(highpass2);
+  highpass2.connect(noise_out.node);
   noise_out.node.connect(destination);
 
   var sine;
@@ -128,9 +142,11 @@ function noise(duration, xposition, ceil, floor){
 
   duration = duration * interval; // Duration is a percentage of interval
   lowpass.frequency.value = ceil;
-  lowpass.Q.value = 1; 
+  lowpass1.frequency.value = ceil;
+  lowpass2.frequency.value = ceil;
   highpass.frequency.value = floor;
-  highpass.Q.value = 1;
+  highpass1.frequency.value = floor;
+  highpass2.frequency.value = floor;
 
   //delay, attack, decay, sustain, release, peak gain, sustain gain
   noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,1);

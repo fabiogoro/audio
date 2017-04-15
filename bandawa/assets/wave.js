@@ -18,12 +18,12 @@ $(function(){
     canvas.clearRect(0, 0, WIDTH, HEIGHT);
     var freqDomain = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(freqDomain);
-    for (var i = 0; i < analyser.frequencyBinCount/16; i++) {
+    for (var i = 0; i < analyser.frequencyBinCount/4; i++) {
       var value = freqDomain[i];
       var percent = value / 256;
       var height = HEIGHT * percent;
       var offset = HEIGHT - height - 1;
-      var barWidth = WIDTH/analyser.frequencyBinCount*16;
+      var barWidth = WIDTH/analyser.frequencyBinCount*4;
       var hue = i/analyser.frequencyBinCount * 360;
       canvas.fillStyle = 'hsl(' + 1 + ', 100%, 50%)';
       canvas.fillRect(i * barWidth, offset, barWidth, height);
