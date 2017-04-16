@@ -147,6 +147,9 @@ function noise(duration, xposition, ceil, floor){
   highpass.frequency.value = floor;
   highpass1.frequency.value = floor;
   highpass2.frequency.value = floor;
+  lowpass.Q.value = 10; 
+  highpass.frequency.value = floor;
+  highpass.Q.value = 10;
 
   //delay, attack, decay, sustain, release, peak gain, sustain gain
   noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,1);
@@ -180,7 +183,7 @@ var up = 4000;
 var thick = 0.4; //percentage of interval
 var eye = 0.4;
 
-var interval = 1; //seconds per letter
+var interval = 1.5; //seconds per letter
 
 function play_text(text){
   letter = text.shift(); // Read first letter.
@@ -191,7 +194,7 @@ function play_text(text){
   if($.inArray(letter,b1_group)!=-1) b1();
   var b2_group = "5\"\'\:\;";
   if($.inArray(letter,b2_group)!=-1) b2();
-  var b3_group = "2Jacefgimnopqru6\%\@\?";
+  var b3_group = "2Jcefgimnopqru6\%\@\?";
   if($.inArray(letter,b3_group)!=-1) b3();
   var b4_group = "HJMNOQUWVYd134890\@\:\#\}\]";
   if($.inArray(letter,b4_group)!=-1) b4();
