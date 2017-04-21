@@ -209,7 +209,6 @@ function sine(duration, yposition, direction, xposition){
   out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,0.5,0.2);
 }
 
-
 function play_text(text){
   letter = text.shift(); // Read first letter.
 
@@ -219,7 +218,7 @@ function play_text(text){
   if($.inArray(letter,b1_group)!=-1) b1();
   var b2_group = "5\"\'\:\;";
   if($.inArray(letter,b2_group)!=-1) b2();
-  var b3_group = "2Jacefgimnopqru6\%\@\?";
+  var b3_group = "2Jcefgimnopqru6\%\@\?";
   if($.inArray(letter,b3_group)!=-1) b3();
   var b4_group = "HJMNOQUWVYd134890\@\:\#\}\]";
   if($.inArray(letter,b4_group)!=-1) b4();
