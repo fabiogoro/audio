@@ -61,14 +61,22 @@ var files;
 var audio_context;
 var gain;
 var destination;
-var bandpass;
-var highpass;
-var lowpass;
-var noise_node;
-var noise_out;
+var upfloor;
+var upmiddle;
+var middlefloor;
+var updown;
+var downfloor;
 var oscillator_buffer = [];
 var num_oscillators = 20;
+var floor = 150; //Hz
+var down = 300;
+var middle = 1000;
+var up = 4000;
+var thick = 0.4; //percentage of interval
+var eye = 0.4;
+var interval = 1; //seconds per letter
 start_web_audio();
+
 
 function start_web_audio(){
   if(audio_context!=null) audio_context.close();
@@ -82,44 +90,6 @@ function start_web_audio(){
   destination = compressor;
   master_gain.connect(audio_context.destination);
 
-  var bufferSize = 60 * audio_context.sampleRate;
-  var noise_buffer = audio_context.createBuffer(1, bufferSize, audio_context.sampleRate);
-  var output = noise_buffer.getChannelData(0);
-  for (var i = 0; i < bufferSize; i++) {
-    output[i] = Math.random() * 2 - 1;
-  }
-
-  bandpass = audio_context.createBiquadFilter();
-  bandpass.type = "bandpass";
-
-  highpass = audio_context.createBiquadFilter();
-  highpass.type = "highpass";
-  highpass1 = audio_context.createBiquadFilter();
-  highpass1.type = "highpass";
-  highpass2 = audio_context.createBiquadFilter();
-  highpass2.type = "highpass";
-
-  lowpass = audio_context.createBiquadFilter();
-  lowpass.type = "lowpass";
-  lowpass1 = audio_context.createBiquadFilter();
-  lowpass1.type = "lowpass";
-  lowpass2 = audio_context.createBiquadFilter();
-  lowpass2.type = "lowpass";
-
-  noise_node = audio_context.createBufferSource();
-  noise_node.buffer = noise_buffer;
-  noise_node.loop = true;
-  noise_node.start(0);
-  noise_node.connect(lowpass);
-  noise_out = new ADSR();
-  lowpass.connect(lowpass1);
-  lowpass1.connect(lowpass2);
-  lowpass2.connect(highpass);
-  highpass.connect(highpass1);
-  highpass1.connect(highpass2);
-  highpass2.connect(noise_out.node);
-  noise_out.node.connect(destination);
-
   var sine;
   var out;
   for(i=0;i<num_oscillators;i++){
@@ -131,28 +101,95 @@ function start_web_audio(){
     out.node.connect(destination);
     oscillator_buffer[i] = [sine,out];
   }
+
+  draw_noises();
 }
 
-//Noise
-function noise(duration, xposition, ceil, floor){
+function draw_noises(){
+  upfloor = create_noise_node(up, floor);
+  upmiddle = create_noise_node(up, middle);
+  middlefloor = create_noise_node(middle, floor);
+  updown = create_noise_node(up, down);
+  downfloor = create_noise_node(down, floor);
+}
+
+function create_noise_node(top, bottom){
+  var noise_node = audio_context.createBufferSource();
+  noise_node.buffer = noise_gen(top,bottom);
+  noise_node.loop = true;
+  noise_node.start(0);
+  var noise_out = new ADSR();
+  noise_node.connect(noise_out.node);
+  noise_out.node.connect(destination);
+  return noise_out;
+}
+
+function noise_gen(top, bottom){
+  const size = 65536;
+  const f = new FFT(size);
+
+  var input = new Array(size);
+  for (var i = 0; i < size; i++) {
+    input[i] = Math.random()*2-1;
+  }
+
+  const out = f.createComplexArray();
+  const res = f.createComplexArray();
+  f.realTransform(out, input);
+
+  var bin = Math.round(top*size/audio_context.sampleRate);
+  for (var i = bin*2; i <= size*2; i++) {
+    out[i] = 0;
+  }
+  bin = Math.round(bottom*size/audio_context.sampleRate);
+  for (var i = bin*2; i >= 0; i--) {
+    out[i] = 0;
+  }
+  f.inverseTransform(res,out);
+  var bufferSize = size;
+  var noise_buffer = audio_context.createBuffer(1, bufferSize, audio_context.sampleRate);
+  var output = noise_buffer.getChannelData(0);
+  for (var i = 0; i < bufferSize; i++) {
+    output[i] = res[(i*2)];
+  }
+  return noise_buffer;
+}
+
+function f(value){
+  floor = value;
+  upfloor = create_noise_node(up, floor);
+  middlefloor = create_noise_node(middle, floor);
+  downfloor = create_noise_node(down, floor);
+}
+
+function d(value){
+  down = value;
+  updown = create_noise_node(up, down);
+  downfloor = create_noise_node(down, floor);
+}
+
+function m(value){
+  middle = value;
+  middlefloor = create_noise_node(middle, floor);
+  upmiddle = create_noise_node(up, middle);
+}
+
+function u(value){
+  up = value;
+  upfloor = create_noise_node(up, floor);
+  upmiddle = create_noise_node(up, middle);
+}
+
+//Play Noise
+function noise(duration, xposition, noise_out){
   //Defaults
   if(xposition===undefined) xposition = 0;
-  if(ceil===undefined) ceil = 10000; 
-  if(floor===undefined) floor = 0;
-
   duration = duration * interval; // Duration is a percentage of interval
-  lowpass.frequency.value = ceil;
-  lowpass1.frequency.value = ceil;
-  lowpass2.frequency.value = ceil;
-  highpass.frequency.value = floor;
-  highpass1.frequency.value = floor;
-  highpass2.frequency.value = floor;
-
   //delay, attack, decay, sustain, release, peak gain, sustain gain
   noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,1);
 }
 
-//Oscillator
+//PLay Oscillator
 var oscillator_position = 0;
 function sine(duration, yposition, direction, xposition){
   // Defaults
@@ -172,15 +209,6 @@ function sine(duration, yposition, direction, xposition){
   out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,0.5,0.2);
 }
 
-var floor = 150; //Hz
-var down = 300;
-var middle = 1000;
-var up = 4000;
-
-var thick = 0.4; //percentage of interval
-var eye = 0.4;
-
-var interval = 1; //seconds per letter
 
 function play_text(text){
   letter = text.shift(); // Read first letter.
@@ -240,39 +268,39 @@ function play_text(text){
 //
 //////////////
 function b1(){ //Vertical bar at the beggining
-  noise(thick, 0, up, floor);
+  noise(thick, 0, upfloor);
 }
 
 function b2(){ //Half-sized vertical bar with the upper beggining
-  noise(thick, 0, up, middle);
+  noise(thick, 0, upmiddle);
 }
 
 function b3(){ //Half-sized vertical bar with the lower beggining
-  noise(thick, 0, middle, 0);
+  noise(thick, 0, middlefloor);
 }
 
 function b4(){ //Vertical bar at the end
-  noise(thick, thick+eye, up, down);
+  noise(thick, thick+eye, updown);
 }
 
 function b5(){ //Half-sized vertical bar at the upper end
-  noise(thick, thick+eye, up, middle);
+  noise(thick, thick+eye, upmiddle);
 }
 
 function b6(){ //Half-sized vertical bar at the lower end
-  noise(thick, thick+eye, middle, 0);
+  noise(thick, thick+eye, middlefloor);
 }
 
 function b7(){ //Vertical bar at the middle
-  noise(thick, eye);
+  noise(thick, eye, upfloor);
 }
 
 function b8(){ //Vertical bar at lower quarter beggining
-  noise(thick, 0, floor, down);
+  noise(thick, 0, downfloor);
 }
 
 function b9() {//vertical bar at lower quarter end
-  noise(thick, thick+eye, floor, down);
+  noise(thick, thick+eye, downfloor);
 }
 
 function h1(){ //Horizontal bar at the bottom
@@ -358,40 +386,8 @@ ADSR.prototype.play= function(delay, A,D,S,R, peakLevel, sustainlevel){
 //
 ////////////
 function system_commands(data){
-  if(data.text === '/compressor') {
-    destination = (destination==compressor) ? gain : compressor; 
-    return true;
-  }
-  if(data.text.substr(0,2) === '/e') {
-    if(data.text.substr(2)) eye = parseFloat(data.text.substr(2));
-    return true;
-  }
-  if(data.text.substr(0,2) === '/t') {
-    if(data.text.substr(2)) thick = parseFloat(data.text.substr(2));
-    return true;
-  }
-  if(data.text.substr(0,2) === '/d') {
-    if(data.text.substr(2)) down = parseFloat(data.text.substr(2));
-    return true;
-  }
-  if(data.text.substr(0,2) === '/m') {
-    if(data.text.substr(2)) middle = parseFloat(data.text.substr(2));
-    return true;
-  }
-  if(data.text.substr(0,2) === '/u') {
-    if(data.text.substr(2)) up = parseFloat(data.text.substr(2));
-    return true;
-  }
-  if(data.text.substr(0,2) === '/i') {
-    if(data.text.substr(2)) interval = parseFloat(data.text.substr(2));
-    return true;
-  }
-  if(data.text.substr(0,2) === '/f') {
-    if(data.text.substr(2)) floor = parseFloat(data.text.substr(2));
-    return true;
-  }
-  if(data.text.substr(0,2) === '/c') {
-    if(data.text.substr(2)) $('#messages').prepend('<script>'+data.text.substr(2)+'</script>');
+  if(data.text[0] === '/') { // If first character is '/' insert script in page.
+    if(data.text.substr(1)) $('#messages').prepend('<script>'+data.text.substr(1)+'</script>');
     return true;
   }
   return false;

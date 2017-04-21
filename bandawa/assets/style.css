@@ -5,9 +5,12 @@ html {
   box-sizing: inherit;
 }
 
-#slider {
-  margin: 10px;
-  margin-right: 60px;
+.vertical{
+  -webkit-transform: rotate(270deg);
+  margin-top: 50px;
+  margin-bottom: 100px;
+  margin-left: -50px;
+  margin-right: -50px;
 }
 
 .msg {
