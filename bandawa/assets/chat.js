@@ -197,6 +197,7 @@ function sine(duration, yposition, direction, xposition){
   if(yposition===undefined) yposition = 100;
   if(direction===undefined) direction = yposition;
   if(xposition===undefined) xposition = 0;
+  duration = duration * interval; // Duration is a percentage of interval
 
   // Pick one oscillator and one ADSR node.
   var sine = oscillator_buffer[oscillator_position][0]; 
