@@ -9,24 +9,46 @@
     <title>Banda Aberta</title>
     <link type="text/css" href="assets/style.css" rel="stylesheet">
     <link type="text/css" href="assets/lib/css/font-awesome.min.css" rel="stylesheet">
+
+    <link type="text/css" href="assets/lib/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+    <script src="assets/lib/js/jquery-3.0.0.min.js"></script>
+    <script src="assets/lib/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+
   </head>
   <body>
     <div id="main">
       <div class="btn-group">
+        <div id="display">
+          <div id="duration" class="ui-widget-content">
+            <div id="limitador">
+              <div id="thick"></div>
+            </div>
+          
+          
+          <div id="end"></div>
+          </div>
+
+
+
+        </div>
         <!-- How to change values:
                 floor, down,  middle and up can be changed by sending messages
                 /f(x), /d(x), /m(x)  and /u(x).
                 where x is the new value to set. In examples below the range input value is being sent.
         -->
-        <input class="vertical" type="range" step="100" min="100" max="500" onchange=send("/f("+this.value+")");>
-        <input class="vertical" type="range" step="1000" min="1000" max="5000" onchange=send("/u("+this.value+")");>
+        <label>floor</label><input  type="range" step="50" min="100" max="200" onchange=send("/f("+this.value+")");><br>
+        <label>baseline</label><input  type="range" step="50" min="300" max="500" onchange=send("/d("+this.value+")");><br>
+        <label>baseline</label><input  type="range" step="50" min="500" max="1000" onchange=send("/m("+this.value+")");><br>
+        <label>uppercase</label><input  type="range" step="100" min="1000" max="6000" onchange=send("/u("+this.value+")");><br>
         <!-- For other values:
                 interval,   thick    and eye,   the message to be sent is
                 /interval=x /thick=x and /eye=x
         -->
-        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/interval="+this.value);>
-        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/thick="+this.value);>
-      </div>
+        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/interval="+this.value);><br>
+        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/thick="+this.value);><br>
+      
+        
+
     <canvas class="visualizer"></canvas> 
       <input type=text id=chat placeholder='envie sua mensagem' onkeypress='chat(event)'>
       <div id="messages" ></div>
@@ -35,8 +57,64 @@
     <script type="text/javascript">
       var SERVER = "wss://aberta.herokuapp.com/";
     </script>
-    <script type="text/javascript" src="assets/config.js"></script>
-    <script type="text/javascript" src="assets/lib/js/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+
+
+  $('#thick').resizable({
+      containment: "#limitador",
+      grid: 5,
+      maxHeight: 100,
+      minHeight: 100,
+      minWidth: 10,
+      autoHide: true,
+      alsoResize: '#duration',
+      resize: function(event,ui) {
+        var larg = $(this).outerWidth();
+        console.log([$(this).outerWidth(),$(this).outerHeight()]);
+        $('#end').width(larg);
+        $( "#duration" ).resizable( "option", "minWidth", larg*2 );
+         
+    }
+    });
+
+  $('#display').resizable({
+      grid: 10,
+      maxHeight: 100,
+      maxWidth: 2000,
+      minHeight: 100,
+      minWidth: 100,
+      resize: function(event,ui) {
+        //var inter = $(this).outerWidth();
+      }
+  });
+
+  $('#duration').resizable({
+      containment: "#display",
+      grid: 10,
+      maxHeight: 100,
+      maxWidth: 300,
+      minHeight: 100,
+      minWidth: 50,
+      alsoResize: '#display',
+      resize: function(event,ui) {
+        //var inter = $(this).outerWidth();
+      }
+
+    });
+
+    
+
+
+});
+
+    
+
+    </script>
+
+    <!--<script type="text/javascript" src="assets/config.js"></script>-->
+
     <script type="text/javascript" src="assets/fft.js"></script>
     <script type="text/javascript" src="assets/chat.js"></script>
     <script type="text/javascript" src="assets/ios_hack.js"></script>

@@ -85,7 +85,7 @@ function start_web_audio(){
   master_gain = audio_context.createGain();
   compressor = audio_context.createDynamicsCompressor();
   compressor.connect(gain);
-  gain.gain.value = 1;
+  gain.gain.value = 0.2;
   gain.connect(master_gain);
   destination = compressor;
   master_gain.connect(audio_context.destination);
@@ -231,17 +231,17 @@ function play_text(text){
   
   var b8_group = "py";
   if($.inArray(letter,b8_group)!=-1) b8();
-  var b9_group = "gjq\.\!\:\?";
+  var b9_group = "gjq\.\!\:\?\,";
   if($.inArray(letter,b9_group)!=-1) b9();
   
   //horizontals
-  var h1_group = "CBDEGJLOQUZcdeopuz\_23680\=\+";
+  var h1_group = "CBDEGJLOQUZcdeopuz23680\=\+";
   if($.inArray(letter,h1_group)!=-1) h1();
   var h2_group = "ABEFHPRabcefgnopqtz345689\-\=";
   if($.inArray(letter,h2_group)!=-1) h2();
   var h3_group = "ACEFGOPQRTZ2357890\[\]";
   if($.inArray(letter,h3_group)!=-1) h3();
-  var h4_group = "gj\,";
+  var h4_group = "gj\_";
   if($.inArray(letter,h4_group)!=-1) h4();
     
   //diagonal
@@ -354,8 +354,8 @@ function ADSR(){
 }
 
 ADSR.prototype.noteOn= function(delay, A,D, peakLevel, sustainlevel){
-    peakLevel = peakLevel || 1;
-    sustainlevel = sustainlevel || 0.3;
+    peakLevel = peakLevel || 0.1;
+    sustainlevel = sustainlevel || 0.1;
 
     this.node.gain.linearRampToValueAtTime(0.0,delay + audio_context.currentTime);
     this.node.gain.linearRampToValueAtTime(peakLevel,delay + audio_context.currentTime + A); // Attack
@@ -402,13 +402,13 @@ function simple_commands(text){
       gain.gain.linearRampToValueAtTime(0, audio_context.currentTime + 2);
       return true;
     case 'piano!':
-      gain.gain.linearRampToValueAtTime(0.2, audio_context.currentTime + 2);
+      gain.gain.linearRampToValueAtTime(0.1, audio_context.currentTime + 2);
       return true;   
     case 'mezzo!':
-      gain.gain.linearRampToValueAtTime(0.6, audio_context.currentTime + 2);
+      gain.gain.linearRampToValueAtTime(0.4, audio_context.currentTime + 2);
       return true; 
     case 'som!':
-      gain.gain.linearRampToValueAtTime(1, audio_context.currentTime + 2); 
+      gain.gain.linearRampToValueAtTime(0.7, audio_context.currentTime + 2); 
       return true;
     default:
       return false;

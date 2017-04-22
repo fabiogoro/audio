@@ -194,6 +194,7 @@ i.fa-question {
     display: none;
 }
 
+
 /* Telefones em landscape e abaixo */
 @media (max-width: 480px)  { 
 
@@ -220,3 +221,46 @@ i.fa-question {
 
 }
 
+
+/* display bandawa*/
+
+#display {
+  display: block;
+  height: 100px;
+  width:200px;
+  border: 1px solid black;
+}
+
+#duration {
+  width: 100px;
+  height: 100px;
+  background-color: #aaa;
+  z-index: 10;
+  position: relative;;
+}
+
+#limitador {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+}
+
+#thick {
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 100px;
+  background-color: #000;
+    z-index: 20;
+
+}
+
+#end {
+  position: absolute;
+  right: 0;
+  width: 20px;
+  height: 100px;
+  background-color: #000;
+    z-index: 20;
+
+}
