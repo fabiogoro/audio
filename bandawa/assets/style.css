@@ -57,7 +57,12 @@ html {
     position: fixed;
     bottom: 0;
     z-index: 0;
+    margin: 0;
+    padding: 0;
 }
+
+
+
 
 #messages {
     z-index: 2;
@@ -227,7 +232,7 @@ i.fa-question {
 #display {
   display: block;
   height: 100px;
-  width:200px;
+  width:300px;
   border: 1px solid black;
 }
 
@@ -263,4 +268,8 @@ i.fa-question {
   background-color: #000;
     z-index: 20;
 
+}
+label {
+  width: 20px;
+  font-size: 10px;
 }
