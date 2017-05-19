@@ -67,7 +67,7 @@ var middlefloor;
 var updown;
 var downfloor;
 var oscillator_buffer = [];
-var num_oscillators = 20;
+var num_oscillators = 8;
 var floor = 150; //Hz
 var down = 300;
 var middle = 1000;

@@ -51,43 +51,27 @@
         <input type="range" step="0.2" min="0.1" max="1" onchange=send("/interval="+this.value);><br>
         <input type="range" step="0.2" min="0.1" max="1" onchange=send("/thick="+this.value);><br>
       
-  <button onclick=
-    send("/interval=1.2");
-    send("/thick=0.15");
-    send("/eye=0.45");>parte1
-  </button>
-    <button onclick=
-    send("/interval=1.6");
-    send("/thick=0.2");
-    send("/eye=0.6");>parte2
-  </button>
+  <script>
+    function ite(i,t,e){
+      send("/ interval="+i+";\
+              thick=   "+t+";\
+              eye=     "+e+";");
+    }
+    function fdmu(f,d,m,u){
+      send("/ f("+f+");\
+              d("+d+");\
+              m("+m+");\
+              u("+u+");");
+    }
+  </script>
 
-      <button onclick=
-    send("/interval=1.8");
-    send("/thick=0.1");
-    send("/eye=0.5");>parte3
-  </button>
-        <button onclick=
-    send("/interval=2");
-    send("/thick=0.4");
-    send("/eye=0.6");>parte4
-  </button> 
-
-    <button onclick=
-    send("/f(261.63);/d(392);/m(659.25);/u(1046.5)");>C
-  </button>
-      <button onclick=
-    send("/f(220)");
-    send("/d(440)");
-    send("/m(350)");
-    send("/u(500)");>c2
-  </button>
-      <button onclick=
-    send("/f(330)");
-    send("/d(660)");
-    send("/m(990)");
-    send("/u(6000)");>c3
-  </button>
+  <button onclick=ite(1.2,0.15,0.45)>parte1</button>
+  <button onclick=ite(1.6,0.2,0.6)>parte2</button>
+  <button onclick=ite(1.8,0.1,0.5)>parte3</button>
+  <button onclick=ite(2,0.4,0.6)>parte4</button> 
+  <button onclick=fdmu(261.63,392,659.25,659.25,1046.5)>C</button>
+  <button onclick=fdmu(220,440,350,500)>C2</button>
+  <button onclick=fdmu(330,660,990,6000)>C3</button>
 
 <br/>
     <canvas class="visualizer"></canvas> 
