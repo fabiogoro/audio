@@ -64,15 +64,20 @@
               u("+u+");");
     }
   </script>
+  
+ <button onclick=ite(1,0.1,0.2)>light con</button> 
+  <button onclick=ite(1,0.2,0.2)>med con</button> 
+  <button onclick=ite(1.5,0.15,0.45)>med</button>
+  <button onclick=ite(1.5,0.5,0.25)>bold</button>
+  <button onclick=ite(2,0.1,0.5)>light ext</button>
+  <button onclick=ite(2,0.6,0.3)>bold ext</button> 
 
-  <button onclick=ite(1.2,0.15,0.45)>parte1</button>
-  <button onclick=ite(1.6,0.2,0.6)>parte2</button>
-  <button onclick=ite(1.8,0.1,0.5)>parte3</button>
-  <button onclick=ite(2,0.4,0.6)>parte4</button> 
   <button onclick=fdmu(261.63,523.25,783.99,1046.5)>C</button>
   <button onclick=fdmu(196,261,622,2093)>C3</button>
   <button onclick=fdmu(396,528,741,852)>H</button>
-  <button onclick=fdmu(300,500,1600,2800)>A</button>
+  <button onclick=fdmu(300,500,2500,5000)>A</button>
+  <button onclick=fdmu(351,528,726,1606)>Def</button>  
+
 <br/>
     <canvas class="visualizer"></canvas> 
       <input type=text id=chat placeholder='envie sua mensagem' onkeypress='chat(event)'>
