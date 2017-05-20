@@ -75,6 +75,8 @@ var up = 4000;
 var thick = 0.4; //percentage of interval
 var eye = 0.4;
 var interval = 1; //seconds per letter
+var noise_amp = 1;
+var osc_amp = 0.1;
 start_web_audio();
 
 
@@ -186,7 +188,7 @@ function noise(duration, xposition, noise_out){
   if(xposition===undefined) xposition = 0;
   duration = duration * interval; // Duration is a percentage of interval
   //delay, attack, decay, sustain, release, peak gain, sustain gain
-  noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,1,1);
+  noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,noise_amp,noise_amp);
 }
 
 //PLay Oscillator
@@ -207,7 +209,7 @@ function sine(duration, yposition, direction, xposition){
   sine.frequency.setValueAtTime(yposition,audio_context.currentTime+xposition);
   sine.frequency.linearRampToValueAtTime(direction,audio_context.currentTime+xposition+duration);
   
-  out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,0.5,0.2);
+  out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,2*osc_amp,osc_amp);
 }
 
 function play_text(text){
