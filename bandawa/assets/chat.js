@@ -76,7 +76,7 @@ var thick = 0.4; //percentage of interval
 var eye = 0.4;
 var interval = 1; //seconds per letter
 var noise_amp = 1;
-var osc_amp = 0.1;
+var osc_amp = 0.01;
 start_web_audio();
 
 
