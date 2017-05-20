@@ -3,6 +3,19 @@ html {
 }
 *, *:before, *:after {
   box-sizing: inherit;
+      font-family: arial; 
+
+}
+
+body {
+      font-family: arial; 
+
+}
+
+.info {
+  font-size: 12px;
+  line-height: 14px;
+  margin: 0;
 }
 
 .vertical{
