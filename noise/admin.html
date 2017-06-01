@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Web Audio">
+    <meta name="author" content="Banda Aberta">
+
+    <title>Banda Aberta</title>
+    <link type="text/css" href="assets/style.css" rel="stylesheet">
+    <link type="text/css" href="assets/lib/css/font-awesome.min.css" rel="stylesheet">
+
+    <link type="text/css" href="assets/lib/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+    <script src="assets/lib/js/jquery-3.0.0.min.js"></script>
+    <script src="assets/lib/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+
+  </head>
+  <body>
+    <div id="main">
+      <div class="btn-group">
+        
+<!--
+        <div id="display">
+          <div id="duration" class="ui-widget-content">
+            <div id="limitador">
+              <div id="thick"></div>
+            </div>
+          
+          
+          <div id="end"></div>
+          </div>
+
+
+
+        </div>
+-->
+
+        <!-- How to change values:
+                floor, down,  middle and up can be changed by sending messages
+                /f(x), /d(x), /m(x)  and /u(x).
+                where x is the new value to set. In examples below the range input value is being sent.
+        -->
+        <label>floor</label><input  type="range" step="50" min="100" max="200" onchange=send("/f("+this.value+")");><br>
+        <label>baseline</label><input  type="range" step="50" min="300" max="500" onchange=send("/d("+this.value+")");><br>
+        <label>baseline</label><input  type="range" step="50" min="500" max="1000" onchange=send("/m("+this.value+")");><br>
+        <label>uppercase</label><input  type="range" step="100" min="1000" max="6000" onchange=send("/u("+this.value+")");><br>
+        <!-- For other values:
+                interval,   thick    and eye,   the message to be sent is
+                /interval=x /thick=x and /eye=x
+        -->
+        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/interval="+this.value);><br>
+        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/thick="+this.value);><br>
+      
+  <script>
+    function ite(i,t,e){
+      send("/ interval="+i+";\
+              thick=   "+t+";\
+              eye=     "+e+";");
+    }
+    function fdmu(f,d,m,u){
+      send("/ f("+f+");\
+              d("+d+");\
+              m("+m+");\
+              u("+u+");");
+    }
+  </script>
+  
+ <button onclick=ite(1,0.1,0.2)>light con</button> 
+  <button onclick=ite(1,0.2,0.2)>med con</button> 
+  <button onclick=ite(1.5,0.15,0.45)>med</button>
+  <button onclick=ite(1.5,0.5,0.25)>bold</button>
+  <button onclick=ite(2,0.1,0.5)>light ext</button>
+  <button onclick=ite(2,0.6,0.3)>bold ext</button> 
+
+  <button onclick=fdmu(261.63,523.25,783.99,1046.5)>C</button>
+  <button onclick=fdmu(196,261,622,2093)>C3</button>
+  <button onclick=fdmu(396,528,741,852)>H</button>
+  <button onclick=fdmu(300,500,2500,5000)>A</button>
+  <button onclick=fdmu(351,528,726,1606)>Def</button>  
+  <button onclick=fdmu(333,666,999,1665)>666</button> 
+  <button onclick=fdmu(324,644,101,3820)>diss</button>
+<br/>
+    <canvas class="visualizer"></canvas> 
+      <input type=text id=chat placeholder='envie sua mensagem' onkeypress='chat(event)'>
+      <div id="messages" ></div>
+    </div>
+    
+
+
+    <script type="text/javascript">
+      var SERVER = "wss://aberta.herokuapp.com/";
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+
+
+  $('#thick').resizable({
+      containment: "#limitador",
+      //grid: 5,
+      axis:"x",
+      maxHeight: 100,
+      minHeight: 100,
+      minWidth: 10,
+      autoHide: true,
+      resize: function(event,ui) {
+        var larg = $(this).outerWidth();
+        console.log([$(this).outerWidth(),$(this).outerHeight()]);
+        $('#end').width(larg);
+        $( "#duration" ).resizable( "option", "minWidth", larg*2 );
+         
+      },
+      stop: function( event, ui ) {
+        var larg = $(this).outerWidth();
+        var espess = larg / 100;
+        //send("/thick="espess);
+      }
+    });
+
+
+
+  $('#duration').resizable({
+      containment: "#display",
+      //grid: 10,
+      axis:"x",
+      maxHeight: 100,
+      maxWidth: 300,
+      minHeight: 100,
+      minWidth: 50,
+        resize: function(event,ui) {
+        //var inter = $(this).outerWidth();
+      }
+
+    });
+
+    
+
+
+});
+
+    
+
+    </script>
+
+    <!--<script type="text/javascript" src="assets/config.js"></script>-->
+
+    <script type="text/javascript" src="assets/fft.js"></script>
+    <script type="text/javascript" src="assets/chat.js"></script>
+    <script type="text/javascript" src="assets/ios_hack.js"></script>
+    <script type="text/javascript" src="assets/wave.js"></script>
+  </body>
+</html>
