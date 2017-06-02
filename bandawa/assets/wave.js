@@ -42,5 +42,24 @@ $(function(){
     drawVisual = requestAnimationFrame(draw);
   }
 
-  draw();
+  var offset_x=0;
+  function draw2(){
+    var freqDomain = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(freqDomain);
+    var fac = 4;
+    var width = WIDTH * 0.001;
+    var height = HEIGHT/analyser.frequencyBinCount*fac;
+    for (var i = 0; i < analyser.frequencyBinCount/fac; i++) {
+      var value = freqDomain[i];
+      var offset_y = HEIGHT - height*i - 1;
+      var light = value/256 * 100;
+      canvas.fillStyle = 'hsl(0, 0%, '+ light +'%)';
+      canvas.fillRect(offset_x-0.3, offset_y, width, height);
+    }
+    offset_x=(offset_x+width)%WIDTH;
+    canvas.clearRect(offset_x, 0, width, HEIGHT);
+    drawVisual = requestAnimationFrame(draw2);
+  }
+
+  draw2();
 });
