@@ -48,15 +48,14 @@
                 interval,   thick    and eye,   the message to be sent is
                 /interval=x /thick=x and /eye=x
         -->
-        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/lps="+this.value);><br>
+        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/interval="+this.value);><br>
         <input type="range" step="0.2" min="0.1" max="1" onchange=send("/thick="+this.value);><br>
       
   <script>
-    function ltei(l,t,e,i){
-      send("/ lps=      "+l+";\
-              thick=    "+t+";\
-              eye=      "+e+";\
-              interval= "+i+";");
+    function ite(i,t,e){
+      send("/ interval="+i+";\
+              thick=   "+t+";\
+              eye=     "+e+";");
     }
     function fdmu(f,d,m,u){
       send("/ f("+f+");\
@@ -66,12 +65,12 @@
     }
   </script>
   
-  <button onclick=ltei(1,0.1,0.2,0.5)>light con</button> 
-  <button onclick=ltei(1,0.2,0.2,0.5)>med con</button> 
-  <button onclick=ltei(1.5,0.15,0.45,0.5)>med</button>
-  <button onclick=ltei(1.5,0.5,0.25,0.5)>bold</button>
-  <button onclick=ltei(2,0.1,0.5,0.5)>light ext</button>
-  <button onclick=ltei(2,0.6,0.3,0.5)>bold ext</button> 
+ <button onclick=ite(1,0.1,0.2)>light con</button> 
+  <button onclick=ite(1,0.2,0.2)>med con</button> 
+  <button onclick=ite(1.5,0.15,0.45)>med</button>
+  <button onclick=ite(1.5,0.5,0.25)>bold</button>
+  <button onclick=ite(2,0.1,0.5)>light ext</button>
+  <button onclick=ite(2,0.6,0.3)>bold ext</button> 
 
   <button onclick=fdmu(261.63,523.25,783.99,1046.5)>C</button>
   <button onclick=fdmu(196,261,622,2093)>C3</button>

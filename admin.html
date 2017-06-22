@@ -24,6 +24,13 @@
     </div>
     <div id="loading"><i class='fa fa-circle-o-notch fa-spin '></i> Carregando... <span id="percent"></span></div>
 
+    <script type="text/javascript" src="assets/mespeak.js"></script>
+    <script type="text/javascript">
+      meSpeak.loadConfig("assets/mespeak_config.json");
+      meSpeak.loadVoice('assets/voices/en/en.json');
+      var SERVER = "wss://websocketfaye.herokuapp.com/";
+      var FOLDERS = 3;
+    </script>
     <script type="text/javascript" src="assets/config.js"></script>
     <script type="text/javascript" src="assets/lib/js/jquery-3.0.0.min.js"></script>
     <script type="text/javascript" src="assets/sounds.js"></script>
