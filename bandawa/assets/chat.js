@@ -115,7 +115,6 @@ function draw_noises(){
   upmiddle = create_noise_node(up, middle);
   middlefloor = create_noise_node(middle, floor);
   middledown = create_noise_node(middle, down);
-  updown = create_noise_node(up, down);
   downfloor = create_noise_node(down, floor);
 }
 
@@ -165,25 +164,31 @@ function f(value){
   floor = value;
   upfloor = create_noise_node(up, floor);
   middlefloor = create_noise_node(middle, floor);
+  middledown = create_noise_node(middle, down);
   downfloor = create_noise_node(down, floor);
 }
 
 function d(value){
   down = value;
   updown = create_noise_node(up, down);
+  middledown = create_noise_node(middle, down);
   downfloor = create_noise_node(down, floor);
 }
 
 function m(value){
   middle = value;
-  middlefloor = create_noise_node(middle, floor);
   upmiddle = create_noise_node(up, middle);
+  middlefloor = create_noise_node(middle, floor);
+  middledown = create_noise_node(middle, down);
+
 }
 
 function u(value){
   up = value;
   upfloor = create_noise_node(up, floor);
+  updown = create_noise_node(up, down);
   upmiddle = create_noise_node(up, middle);
+
 }
 
 //Play Noise
