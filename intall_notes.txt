@@ -1,0 +1,7 @@
+- intall ruby versão 2.2.2
+- gem install bundler
+- bundle install
+
+./run
+
+ifconfig para descobrir o ip - 172.19.20.125
