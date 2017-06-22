@@ -111,8 +111,10 @@ function draw_noises(){
   upfloor = create_noise_node(up, floor);
   upmiddle = create_noise_node(up, middle);
   middlefloor = create_noise_node(middle, floor);
+  middledown = create_noise_node(middle, down);
   updown = create_noise_node(up, down);
   downfloor = create_noise_node(down, floor);
+
 }
 
 function create_noise_node(top, bottom){
@@ -278,7 +280,7 @@ function b2(){ //Half-sized vertical bar with the upper beggining
 }
 
 function b3(){ //Half-sized vertical bar with the lower beggining
-  noise(thick, 0, middlefloor);
+  noise(thick, 0, middledown);
 }
 
 function b4(){ //Vertical bar at the end
@@ -290,7 +292,7 @@ function b5(){ //Half-sized vertical bar at the upper end
 }
 
 function b6(){ //Half-sized vertical bar at the lower end
-  noise(thick, thick+eye, middlefloor);
+  noise(thick, thick+eye, middledown);
 }
 
 function b7(){ //Vertical bar at the middle

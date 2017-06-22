@@ -62,8 +62,10 @@ var audio_context;
 var gain;
 var destination;
 var upfloor;
+var updown;
 var upmiddle;
 var middlefloor;
+var middledown;
 var updown;
 var downfloor;
 var oscillator_buffer = [];
@@ -110,8 +112,10 @@ function start_web_audio(){
 
 function draw_noises(){
   upfloor = create_noise_node(up, floor);
+  updown = create_noise_node(up, down);
   upmiddle = create_noise_node(up, middle);
   middlefloor = create_noise_node(middle, floor);
+  middledown = create_noise_node(middle, down);
   updown = create_noise_node(up, down);
   downfloor = create_noise_node(down, floor);
 }
@@ -224,7 +228,7 @@ function play_text(text){
   if($.inArray(letter,b2_group)!=-1) b2();
   var b3_group = "2Jcefgimnopqru6\%\@\?";
   if($.inArray(letter,b3_group)!=-1) b3();
-  var b4_group = "HJMNOQUWVYd134890\@\:\#\}\]";
+  var b4_group = "AHJMNOQUWVYd134890\@\:\#\}\]";
   if($.inArray(letter,b4_group)!=-1) b4();
   var b5_group = "P\""; 
   if($.inArray(letter,b5_group)!=-1) b5();
@@ -271,7 +275,7 @@ function play_text(text){
 //
 //////////////
 function b1(){ //Vertical bar at the beggining
-  noise(thick, 0, upfloor);
+  noise(thick, 0, updown);
 }
 
 function b2(){ //Half-sized vertical bar with the upper beggining
@@ -279,7 +283,7 @@ function b2(){ //Half-sized vertical bar with the upper beggining
 }
 
 function b3(){ //Half-sized vertical bar with the lower beggining
-  noise(thick, 0, middlefloor);
+  noise(thick, 0, middledown);
 }
 
 function b4(){ //Vertical bar at the end
@@ -291,7 +295,7 @@ function b5(){ //Half-sized vertical bar at the upper end
 }
 
 function b6(){ //Half-sized vertical bar at the lower end
-  noise(thick, thick+eye, middlefloor);
+  noise(thick, thick+eye, middledown);
 }
 
 function b7(){ //Vertical bar at the middle
