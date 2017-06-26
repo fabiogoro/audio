@@ -74,9 +74,10 @@ var floor = 351; //Hz
 var down = 528;
 var middle = 727;
 var up = 1606;
-var thick = 0.4; //percentage of interval
+var thick = 0.4; //percentage of lps-interval
 var eye = 0.4;
-var interval = 1; //seconds per letter
+var interval = 0.5; //percentage of lps
+var lps = 1; //letters per second
 var noise_amp = 1;
 var osc_amp = 0.01;
 start_web_audio();
@@ -195,9 +196,9 @@ function u(value){
 function noise(duration, xposition, noise_out){
   //Defaults
   if(xposition===undefined) xposition = 0;
-  duration = duration * interval; // Duration is a percentage of interval
+  duration = duration * (lps-lps*interval); // Duration is a percentage of interval
   //delay, attack, decay, sustain, release, peak gain, sustain gain
-  noise_out.play(xposition,0.01*duration,0.01*duration,0.5*duration,0.48*duration,noise_amp,noise_amp);
+  noise_out.play(xposition*(lps-lps*interval),0.01*duration,0.01*duration,0.5*duration,0.48*duration,noise_amp,noise_amp);
 }
 
 //PLay Oscillator
@@ -208,7 +209,7 @@ function sine(duration, yposition, direction, xposition){
   if(yposition===undefined) yposition = 100;
   if(direction===undefined) direction = yposition;
   if(xposition===undefined) xposition = 0;
-  duration = duration * interval; // Duration is a percentage of interval
+  duration = duration * (lps-lps*interval); // Duration is a percentage of interval
 
   // Pick one oscillator and one ADSR node.
   var sine = oscillator_buffer[oscillator_position][0]; 
@@ -270,7 +271,7 @@ function play_text(text){
   var g6_group = "Gabdeghkmpqrsxz5S\>";
   if($.inArray(letter,g6_group)!=-1) g6();
 
-  if(text.length>0) setTimeout(function(){play_text(text);},interval*1000); // If there's still letters in buffer, read next letter in 'interval' seconds.
+  if(text.length>0) setTimeout(function(){play_text(text);},lps*1000); // If there's still letters in buffer, read next letter in lps seconds.
 }
 
 ///////////////
