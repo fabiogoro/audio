@@ -235,9 +235,9 @@ function play_text(text){
   if($.inArray(letter,b3_group)!=-1) b3();
   var b4_group = "AHJMNOQUWVYd134890\@\:\#\}\]";
   if($.inArray(letter,b4_group)!=-1) b4();
-  var b5_group = "P\""; 
+  var b5_group = "PR\""; 
   if($.inArray(letter,b5_group)!=-1) b5();
-  var b6_group = "Gajghjmnopsuvwy\%";
+  var b6_group = "GDajghjmnopsuvwy\%";
   if($.inArray(letter,b6_group)!=-1) b6();
   var b7_group = "TWtw\|\$\+\*";
   if($.inArray(letter,b7_group)!=-1) b7();
@@ -258,13 +258,13 @@ function play_text(text){
   if($.inArray(letter,h4_group)!=-1) h4();
     
   //diagonal
-  var g1_group = "XD07kDMZ\/";
+  var g1_group = "X07kMZ\/";
   if($.inArray(letter,g1_group)!=-1) g1();
   var g2_group = "VMNX\\";
   if($.inArray(letter,g2_group)!=-1) g2();
   var g3_group = "f416SK2\<";
   if($.inArray(letter,g3_group)!=-1) g3();
-  var g4_group = "BY\>\`";
+  var g4_group = "BDY\>\`";
   if($.inArray(letter,g4_group)!=-1) g4();
   var g5_group = "BKQRmvxy3\<";
   if($.inArray(letter,g5_group)!=-1) g5();

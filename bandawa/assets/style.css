@@ -18,6 +18,9 @@ body {
   margin: 0;
 }
 
+ 
+
+
 .vertical{
   -webkit-transform: rotate(270deg);
   margin-top: 50px;
@@ -286,3 +289,12 @@ label {
   width: 20px;
   font-size: 10px;
 }
+
+
+ @media screen and (min-width:800px){
+        /* styles for browsers larger than 960px; */
+        .info {
+  font-size: 20px;
+  line-height: 20px;
+      }
+    }
