@@ -198,7 +198,7 @@ function noise(duration, xposition, noise_out){
   if(xposition===undefined) xposition = 0;
   duration = duration * (lps-lps*interval); // Duration is a percentage of interval
   //delay, attack, decay, sustain, release, peak gain, sustain gain
-  noise_out.play(xposition*(lps-lps*interval),0.01*duration,0.01*duration,0.5*duration,0.48*duration,noise_amp,noise_amp);
+  noise_out.play(xposition*(lps-lps*interval),0.1*duration,0.01*duration,0.5*duration,0.39*duration,noise_amp,noise_amp);
 }
 
 //PLay Oscillator
