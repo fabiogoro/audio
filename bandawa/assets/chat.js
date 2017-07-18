@@ -219,7 +219,7 @@ function sine(duration, yposition, direction, xposition){
   sine.frequency.setValueAtTime(yposition,audio_context.currentTime+xposition);
   sine.frequency.linearRampToValueAtTime(direction,audio_context.currentTime+xposition+duration);
   
-  out.play(xposition,0.1*duration,0.1*duration,0.7*duration,0.1*duration,2*osc_amp,osc_amp);
+  out.play(xposition*(lps-lps*interval),0.1*duration,0.1*duration,0.7*duration,0.1*duration,2*osc_amp,osc_amp);
 }
 
 function play_text(text){
