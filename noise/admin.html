@@ -8,11 +8,11 @@
 
     <title>Banda Aberta</title>
     <link type="text/css" href="assets/style.css" rel="stylesheet">
-    <link type="text/css" href="assets/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link type="text/css" href="../assets/lib/css/font-awesome.min.css" rel="stylesheet">
 
-    <link type="text/css" href="assets/lib/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
-    <script src="assets/lib/js/jquery-3.0.0.min.js"></script>
-    <script src="assets/lib/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <link type="text/css" href="../assets/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+    <script src="../assets/lib/js/jquery-3.0.0.min.js"></script>
+    <script src="../assets/lib/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 
   </head>
   <body>
@@ -40,17 +40,28 @@
                 /f(x), /d(x), /m(x)  and /u(x).
                 where x is the new value to set. In examples below the range input value is being sent.
         -->
-        <label>floor</label><input  type="range" step="50" min="100" max="200" onchange=send("/f("+this.value+")");><br>
-        <label>baseline</label><input  type="range" step="50" min="300" max="500" onchange=send("/d("+this.value+")");><br>
-        <label>baseline</label><input  type="range" step="50" min="500" max="1000" onchange=send("/m("+this.value+")");><br>
-        <label>uppercase</label><input  type="range" step="100" min="1000" max="6000" onchange=send("/u("+this.value+")");><br>
+        
         <!-- For other values:
                 interval,   thick    and eye,   the message to be sent is
                 /interval=x /thick=x and /eye=x
         -->
+    
+<!--
+    <label>floor</label><input  type="range" step="50" min="100" max="200" onchange=send("/f("+this.value+")");><br>
+        <label>baseline</label><input  type="range" step="50" min="300" max="500" onchange=send("/d("+this.value+")");><br>
+        <label>baseline</label><input  type="range" step="50" min="500" max="1000" onchange=send("/m("+this.value+")");><br>
+        <label>uppercase</label><input  type="range" step="100" min="1000" max="6000" onchange=send("/u("+this.value+")");><br>
         <input type="range" step="0.2" min="0.1" max="1" onchange=send("/interval="+this.value);><br>
-        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/thick="+this.value);><br>
-      
+        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/thick="+this.value);><br>   
+
+  
+  <label>floor</label><input  type="text" step="50" min="100" max="200" onchange=send("/f("+this.value+")");><br>
+        <label>baseline</label><input  type="text" step="50" min="300" max="500" onchange=send("/d("+this.value+")");><br>
+        <label>baseline</label><input  type="text" step="50" min="500" max="1000" onchange=send("/m("+this.value+")");><br>
+        <label>uppercase</label><input  type="text" step="100" min="1000" max="6000" onchange=send("/u("+this.value+")");><br>
+
+          -->
+
   <script>
     function ite(i,t,e){
       send("/ interval="+i+";\
