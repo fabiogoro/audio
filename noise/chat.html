@@ -7,7 +7,7 @@
     <meta name="author" content="Banda Aberta">
 
     <title>Banda Aberta</title>
-    <link type="text/css" href="../assets/style.css" rel="stylesheet">
+    <link type="text/css" href="assets/style.css" rel="stylesheet">
     <link type="text/css" href="../assets/lib/css/font-awesome.min.css" rel="stylesheet">
     <link type="text/css" href="../assets/lib/css/jquery-ui.min.css" rel="stylesheet">
   </head>
@@ -20,146 +20,19 @@
       </div>
     </div>
 
-    <script type="text/javascript" src="mespeak/mespeak.js"></script>
-    <script type="text/javascript">
-// VOICE SYNTH
-      meSpeak.loadConfig("mespeak/mespeak_config.json");
-      meSpeak.loadVoice('voices/pt.json');
-    </script>
+  
 
 
     <script type="text/javascript">
       var SERVER = "wss://aberta.herokuapp.com/";
     </script>
-  <script type="text/javascript" src="/config.js"></script>
-    <script type="text/javascript" src="assets/lib/js/jquery-3.0.0.min.js"></script>
-    <script type="text/javascript" src="assets/lib/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../assets/lib/js/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="../assets/lib/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="assets/ios_hack.js"></script>
     <script type="text/javascript" src="assets/fft.js"></script>
     <script type="text/javascript" src="assets/chat.js"></script>
 
-    <script>
 
-    // NOISES
-    // http://noisehack.com/generate-noise-web-audio-api/
-    // audio_context = new (window.AudioContext || window.webkitAudioContext)();
-
-    // WHITE NOISE
-    var bufferSizeWhiteNoise = 2 * audio_context.sampleRate;
-    var whiteFunc = function() {
-      var noiseBuffer = audio_context.createBuffer(1, bufferSizeWhiteNoise, audio_context.sampleRate);
-      var output = noiseBuffer.getChannelData(0);
-      for (var i = 0; i < bufferSizeWhiteNoise; i++) {
-          output[i] = (Math.random() * 2 - 1)*0.1;
-      }
-      var node = audio_context.createBufferSource();
-      node.buffer = noiseBuffer;
-      node.loop = true;
-      node.start(0);
-      // node.gain.value = (gainCompensation%101)/100;
-      return node;
-    };
-    // example of white noise
-    // var whiteNoise = (whiteFunc)();
-    // whiteNoise.connect(audio_context.destination);
-    // whiteNoise.gain.value = 0.5;
-
-    // PINK NOISE
-    var bufferSizePinkNoise = 4096;
-    var pinkFunc = function() {
-        var b0, b1, b2, b3, b4, b5, b6;
-        b0 = b1 = b2 = b3 = b4 = b5 = b6 = 0.0;
-        var node = audio_context.createScriptProcessor(bufferSizePinkNoise, 1, 1);
-        node.onaudioprocess = function(e) {
-            var output = e.outputBuffer.getChannelData(0);
-            for (var i = 0; i < bufferSizePinkNoise; i++) {
-                var white = Math.random() * 2 - 1;
-                b0 = 0.99886 * b0 + white * 0.0555179;
-                b1 = 0.99332 * b1 + white * 0.0750759;
-                b2 = 0.96900 * b2 + white * 0.1538520;
-                b3 = 0.86650 * b3 + white * 0.3104856;
-                b4 = 0.55000 * b4 + white * 0.5329522;
-                b5 = -0.7616 * b5 - white * 0.0168980;
-                output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-                // output[i] *= 0.11; // (roughly) compensate for gain
-                output[i] *= 0.01; // (roughly) compensate for gain
-                b6 = white * 0.115926;
-            }
-        }
-        return node;
-    };
-
-    // example of pink noise
-    // var pinkNoise = (pinkFunc)();
-    // pinkNoise.connect(audio_context.destination);
-
-    // BROWNIAN NOISE
-    var bufferSizeBrownNoise = 4096;
-    var brownFunc = function() {
-        var lastOut = 0.0;
-        var node = audio_context.createScriptProcessor(bufferSizeBrownNoise, 1, 1);
-        node.onaudioprocess = function(e) {
-            var output = e.outputBuffer.getChannelData(0);
-            for (var i = 0; i < bufferSizeBrownNoise; i++) {
-                var white = Math.random() * 2 - 1;
-                output[i] = (lastOut + (0.02 * white)) / 1.02;
-                lastOut = output[i];
-                // output[i] *= 3.5; // (roughly) compensate for gain
-                output[i] *= 0.5; // (roughly) compensate for gain
-            }
-        }
-        return node;
-    };
-    // example of brown noise
-    // var brownNoise = (brownFunc)();
-    // brownNoise.connect(audio_context.destination);
-
-
-    </script>
-
-    <script src="build/waax.min.js"></script>
-    <script>
-      var numberOfOscAndNoise = 3;
-
-      var osc0 = WX.SimpleOsc({output: 0.25});
-      var osc1 = WX.SimpleOsc({output: 0.25});
-      var osc2 = WX.SimpleOsc({output: 0.25});
-      var osc3 = WX.SimpleOsc({output: 0.25});
-      var osc4 = WX.SimpleOsc({output: 0.25});
-      var osc5 = WX.SimpleOsc({output: 0.25});
-      var osc6 = WX.SimpleOsc({output: 0.25});
-      var osc7 = WX.SimpleOsc({output: 0.25});
-      var osc8 = WX.SimpleOsc({output: 0.25});
-      var osc9 = WX.SimpleOsc({output: 0.25});
-      osc0.to(WX.Master);
-      osc1.to(WX.Master);
-      osc2.to(WX.Master);
-      osc3.to(WX.Master);
-      osc4.to(WX.Master);
-      osc5.to(WX.Master);
-      osc6.to(WX.Master);
-      osc7.to(WX.Master);
-      osc8.to(WX.Master);
-      osc9.to(WX.Master);
-
-      var noise0 = (whiteFunc)(25);
-      var noise1 = (pinkFunc)(25);
-      var noise2 = (brownFunc)(25);
-      var noise3 = (whiteFunc)(25);
-      var noise4 = (pinkFunc)(25);
-      var noise5 = (brownFunc)(25);
-      var noise6 = (whiteFunc)(25);
-      var noise7 = (pinkFunc)(25);
-      var noise8 = (brownFunc)(25);
-      var noise9 = (brownFunc)(25);
-      // noise0.connect(audio_context.destination);
-
-      function stopAll(){
-        for(var i= 0; i < 10; i++) { window["osc"+i].noteOff(); }
-
-        for(var i= 0; i < 10; i++) { window["noise"+i].disconnect(); }
-      }
-    </script>
 
 </body>
 </html>
