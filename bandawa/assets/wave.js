@@ -52,7 +52,7 @@ $(function(){
     for (var i = 0; i < analyser.frequencyBinCount/fac; i++) {
       var value = freqDomain[i];
       var offset_y = HEIGHT - height*i - 1;
-      var light = value/256 * 100;
+      var light = (1-(value/256)^(1/2)) * 100;
       canvas.fillStyle = 'hsl(0, 0%, '+ light +'%)';
       canvas.fillRect(offset_x-0.3, offset_y, width, height);
     }
