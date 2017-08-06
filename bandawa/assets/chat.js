@@ -304,7 +304,7 @@ function b6(){ //Half-sized vertical bar at the lower end
 }
 
 function b7(){ //Vertical bar at the middle
-  noise(thick, eye, upfloor);
+  noise(thick, (thick+eye)/2, updown);
 }
 
 function b8(){ //Vertical bar at lower quarter beggining
@@ -316,19 +316,19 @@ function b9() {//vertical bar at lower quarter end
 }
 
 function h1(){ //Horizontal bar at the bottom
-  sine(1, down);
+  sine(thick+eye+thick, down);
 }
 
 function h2(){ //Horizontal bar at the middle
-  sine(1, middle);
+  sine(thick+eye+thick, middle);
 }
 
 function h3(){ //Horizontal bar at the top
-  sine(1, up);
+  sine(thick+eye+thick, up);
 }
 
 function h4() {
-  sine(1, floor);
+  sine(thick+eye+thick, floor);
 }
 
 
