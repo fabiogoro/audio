@@ -227,7 +227,7 @@ function play_text(text){
 
   //Check if letter is in string. If it is, call that function.
   //verticals
-  var b1_group = "ABCDEFGHIKLMNOPQRUW680bhkl\!\#\{\[";
+  var b1_group = "ABCDEFGHIKLMNOPQUW680bhkl\!\#\{\[";
   if($.inArray(letter,b1_group)!=-1) b1();
   var b2_group = "5\"\'\:\;";
   if($.inArray(letter,b2_group)!=-1) b2();
@@ -235,9 +235,9 @@ function play_text(text){
   if($.inArray(letter,b3_group)!=-1) b3();
   var b4_group = "AHJMNOQUWVYd134890\@\:\#\}\]";
   if($.inArray(letter,b4_group)!=-1) b4();
-  var b5_group = "PR\""; 
+  var b5_group = "P\""; 
   if($.inArray(letter,b5_group)!=-1) b5();
-  var b6_group = "GDajghjmnopsuvwy\%";
+  var b6_group = "Gajghjmnopsuvwy\%";
   if($.inArray(letter,b6_group)!=-1) b6();
   var b7_group = "TWtw\|\$\+\*";
   if($.inArray(letter,b7_group)!=-1) b7();
@@ -248,23 +248,23 @@ function play_text(text){
   if($.inArray(letter,b9_group)!=-1) b9();
   
   //horizontals
-  var h1_group = "CBDEGJLOQUZcdeopuz23680\=\+";
+  var h1_group = "CBEGJLOQUZcdeopuz23680\=\+";
   if($.inArray(letter,h1_group)!=-1) h1();
-  var h2_group = "ABEFHPRabcefgnopqtz345689\-\=";
+  var h2_group = "ABEFHPRSabcefgnopqtz345689\-\=";
   if($.inArray(letter,h2_group)!=-1) h2();
-  var h3_group = "ACEFGOPQRTZ2357890\[\]";
+  var h3_group = "ACDEFGOPQTZ2357890\[\]";
   if($.inArray(letter,h3_group)!=-1) h3();
   var h4_group = "gj\_";
   if($.inArray(letter,h4_group)!=-1) h4();
     
   //diagonal
-  var g1_group = "X07kMZ\/";
+  var g1_group = "DX07KkMZ\/";
   if($.inArray(letter,g1_group)!=-1) g1();
   var g2_group = "VMNX\\";
   if($.inArray(letter,g2_group)!=-1) g2();
-  var g3_group = "f416SK2\<";
+  var g3_group = "f416S2\<";
   if($.inArray(letter,g3_group)!=-1) g3();
-  var g4_group = "BDY\>\`";
+  var g4_group = "BRY\>\`";
   if($.inArray(letter,g4_group)!=-1) g4();
   var g5_group = "BKQRmvxy3\<";
   if($.inArray(letter,g5_group)!=-1) g5();
@@ -304,7 +304,7 @@ function b6(){ //Half-sized vertical bar at the lower end
 }
 
 function b7(){ //Vertical bar at the middle
-  noise(thick, eye, upfloor);
+  noise(thick, (thick+eye)/2, updown);
 }
 
 function b8(){ //Vertical bar at lower quarter beggining
@@ -316,19 +316,19 @@ function b9() {//vertical bar at lower quarter end
 }
 
 function h1(){ //Horizontal bar at the bottom
-  sine(1, down);
+  sine(thick+eye+thick, down);
 }
 
 function h2(){ //Horizontal bar at the middle
-  sine(1, middle);
+  sine(thick+eye+thick, middle);
 }
 
 function h3(){ //Horizontal bar at the top
-  sine(1, up);
+  sine(thick+eye+thick, up);
 }
 
 function h4() {
-  sine(1, floor);
+  sine(thick+eye+thick, floor);
 }
 
 
