@@ -21,7 +21,7 @@
                 floor, down,  middle and up can be changed by sending messages
                 /f(x), /d(x), /m(x)  and /u(x).
                 where x is the new value to set. In examples below the range input value is being sent.
-        -->
+        
         <label>floor</label><input  type="range" step="50" min="100" max="200" onchange=send("/f("+this.value+")");><br>
         <label>baseline</label><input  type="range" step="50" min="300" max="500" onchange=send("/d("+this.value+")");><br>
         <label>baseline</label><input  type="range" step="50" min="500" max="1000" onchange=send("/m("+this.value+")");><br>
@@ -58,6 +58,7 @@
     <button onclick=ltei(2,0.6,0.3,0.5)>bold ext</button> 
 
     <button onclick=fdmu(261.63,523.25,783.99,1046.5)>C</button>
+    <button onclick=fdmu(523.26,1046.52,1567.98,2093)>C2</button>
     <button onclick=fdmu(196,261,622,2093)>C3</button>
     <button onclick=fdmu(396,528,741,852)>H</button>
     <button onclick=fdmu(300,500,2500,5000)>A</button>
