@@ -242,9 +242,9 @@ function play_text(text){
   var b7_group = "TWtw\|\$\+\*";
   if($.inArray(letter,b7_group)!=-1) b7();
   
-  var b8_group = "py";
+  var b8_group = "p";
   if($.inArray(letter,b8_group)!=-1) b8();
-  var b9_group = "gjq\.\!\:\?\,";
+  var b9_group = "gjqy\.\!\:\?\,";
   if($.inArray(letter,b9_group)!=-1) b9();
   
   //horizontals
@@ -266,9 +266,9 @@ function play_text(text){
   if($.inArray(letter,g3_group)!=-1) g3();
   var g4_group = "BRY\>\`";
   if($.inArray(letter,g4_group)!=-1) g4();
-  var g5_group = "BKQRmvxy3\<";
+  var g5_group = "BKQRkmvxy3\<";
   if($.inArray(letter,g5_group)!=-1) g5();
-  var g6_group = "Gabdeghkmpqrsxz5S\>";
+  var g6_group = "Gabdeghmpqrsxz5S\>";
   if($.inArray(letter,g6_group)!=-1) g6();
 
   if(text.length>0) setTimeout(function(){play_text(text);},lps*1000); // If there's still letters in buffer, read next letter in lps seconds.
