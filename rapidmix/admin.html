@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Web Audio">
+    <meta name="author" content="Banda Aberta">
+
+    <title>Banda Aberta</title>
+    <link type="text/css" href="assets/style.css" rel="stylesheet">
+    <link type="text/css" href="assets/lib/css/font-awesome.min.css" rel="stylesheet">
+
+    <link type="text/css" href="assets/lib/js/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+    <script src="assets/lib/js/jquery-3.0.0.min.js"></script>
+    <script src="assets/lib/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="https://www.doc.gold.ac.uk/eavi/rapidmix/RapidLib.js"></script>
+
+  </head>
+  <body>
+
+        <!-- How to change values:
+                floor, down,  middle and up can be changed by sending messages
+                /f(x), /d(x), /m(x)  and /u(x).
+                where x is the new value to set. In examples below the range input value is being sent.
+        
+        <label>floor</label><input  type="range" step="50" min="100" max="200" onchange=send("/f("+this.value+")");><br>
+        <label>baseline</label><input  type="range" step="50" min="300" max="500" onchange=send("/d("+this.value+")");><br>
+        <label>baseline</label><input  type="range" step="50" min="500" max="1000" onchange=send("/m("+this.value+")");><br>
+        <label>uppercase</label><input  type="range" step="100" min="1000" max="6000" onchange=send("/u("+this.value+")");><br>
+        <!-- For other values:
+                interval,   thick    and eye,   the message to be sent is
+                /interval=x /thick=x and /eye=x
+        -->
+        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/lps="+this.value);><br>
+        <input type="range" step="0.2" min="0.1" max="1" onchange=send("/thick="+this.value);><br>
+      
+  <script>
+    function ltei(l,t,e,i){
+      send("/ lps=      "+l+";\
+              thick=    "+t+";\
+              eye=      "+e+";\
+              interval= "+i+";");
+    }
+    function fdmu(f,d,m,u){
+      send("/ f("+f+");\
+              d("+d+");\
+              m("+m+");\
+              u("+u+");");
+    }
+  </script>
+  
+<div id="main">
+  <div class="btn-group">
+    <button onclick=ltei(1,0.1,0.2,0.5)>light con</button> 
+    <button onclick=ltei(1,0.2,0.2,0.5)>med con</button> 
+    <button onclick=ltei(1.5,0.15,0.45,0.5)>med</button>
+    <button onclick=ltei(1.5,0.5,0.25,0.5)>bold</button>
+    <button onclick=ltei(2,0.1,0.5,0.5)>light ext</button>
+    <button onclick=ltei(2,0.6,0.3,0.5)>bold ext</button> 
+
+    <button onclick=fdmu(261.63,523.25,783.99,1046.5)>C</button>
+    <button onclick=fdmu(523.26,1046.52,1567.98,2093)>C2</button>
+    <button onclick=fdmu(500,1250,5000,10000)>full</button>
+    <button onclick=fdmu(396,528,741,852)>H</button>
+    <button onclick=fdmu(300,500,2500,5000)>A</button>
+    <button onclick=fdmu(351,528,726,1606)>Def</button>  
+    <button onclick=fdmu(333,666,999,1665)>666</button> 
+    <button onclick=fdmu(324,644,1010,3820)>diss</button>
+  </div>
+  <br/>
+   <input type=text id=chat placeholder='envie sua mensagem' onkeypress='chat(event)'>
+  <div id="messages" style="position: absolute; z-index:1"></div>
+<h2>Video classification</h2>
+    <canvas id="output-canvas"></canvas>
+    <p></p>
+    <p>classifying at this resolution:</p>
+    <canvas id="small-canvas"></canvas>
+    <video width="1" autoplay></video>
+
+  <!--<canvas class="visualizer"></canvas> -->
+ 
+
+
+
+</div>
+    
+    <script type="text/javascript">
+      var SERVER = "wss://aberta.herokuapp.com/";
+    </script>
+
+    <!--<script type="text/javascript" src="assets/config.js"></script>-->
+
+    <script type="text/javascript" src="assets/fft.js"></script>
+    <script type="text/javascript" src="assets/chat.js"></script>
+    <script type="text/javascript" src="assets/ios_hack.js"></script>
+    <script type="text/javascript" src="assets/wave.js"></script>
+  </body>
+</html>
+
+<script type="text/javascript">
+
+var knnOutput = 0;
+    
+///////////////////// Web Audio API
+// create web audio api context
+var audioConstructor = window.AudioContext || window.webkitAudioContex;
+var audioCtx = new audioConstructor();
+
+// create Oscillator node
+//var oscillator = audioCtx.createOscillator();
+//oscillator.type = 'square';
+//oscillator.frequency.value = 220; // value in hertz
+//oscillator.connect(audioCtx.destination);
+//oscillator.start();
+
+////////////////////////////////////RAPID API
+
+    var rapidMix= window.RapidLib();
+    var kNN = new rapidMix.Classification();
+    var storedTrainingSet = localStorage.getItem("trainingset");
+    var myTrainingSet = storedTrainingSet ? JSON.parse(storedTrainingSet) : [];
+
+// Access some stored data
+
+    
+    var trained = false;
+    function trainMe() {
+        console.log('classification trained: ', kNN.train(myTrainingSet));
+        console.log(myTrainingSet);
+        trained = true;
+    }
+    
+    var classificationOutput;
+    function process(input) {
+        classificationOutput = kNN.process(input);
+    }
+
+
+    var classOutput = 0;
+    var recordingTrigger = false;
+    var recordingCounter = 0;
+
+
+    
+/////////////////////////Controls
+
+ window.addEventListener('keydown',this.check,false);
+    function check(e) {
+        if (e.keyCode >= 48 && e.keyCode < 58) {
+            classOutput = e.keyCode - 48;
+            recordingTrigger = true;
+        }
+    }
+  
+///////////////////////////Drawing
+
+    var video = document.querySelector('video');
+    var canvas = document.getElementById('small-canvas');
+    var outCanvas = document.getElementById('output-canvas');
+    canvas.width = 32;
+    canvas.height = 24;
+    outCanvas.width = 480;
+    outCanvas.height = 340;
+
+    var context = canvas.getContext('2d');
+    var outContext = outCanvas.getContext('2d');
+    function draw() {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        outContext.drawImage(video, 0, 0, 480, 340);
+        
+        var colorImage = context.getImageData(0,0, canvas.width, canvas.height).data;
+        var lightnessImage = [];
+        for (var i = 0; i < canvas.width; ++i) {
+            for (var j = 0; j < canvas.height; ++j) {
+                var index = i + (j * canvas.width);
+                var colorIndex = index * 4;
+                lightnessImage[index] = colorImage[colorIndex] + colorImage[colorIndex + 1] + colorImage[colorIndex + 2];
+            }
+        }
+        
+        outContext.fillStyle = "#FF0000";
+        outContext.font="14px Verdana";
+        outContext.fillText("Press a number key to record examples of a class.", 115, 20);
+        
+        if (recordingTrigger) {
+            outContext.fillText("recording class " + classOutput + " (" + recordingCounter + ")", 300, 60);
+        } else if (trained === true) {
+            knnOutput = kNN.run(lightnessImage)[0];
+ 
+            //oscillator.frequency.value = 220 + (knnOutput * 220);
+
+      switch(knnOutput) {
+          case 1:
+            fdmu(261.63,523.25,783.99,1046.5);
+              break;
+        case 2:
+            fdmu(500,1250,5000,10000);
+            break;
+          case 3:
+            fdmu(396,528,741,852);
+            break;
+        default:
+        fdmu(324,644,1010,3820);
+      }
+
+
+            
+           outContext.fillText("identified class " + knnOutput, 350, 60);
+        }
+        
+        if (recordingTrigger) {
+              if (++recordingCounter > 50) {
+                recordingTrigger = false;
+                trainMe();
+                recordingCounter = 0;
+            } else {
+                myTrainingSet.push({
+                    input: lightnessImage,
+                    output: [classOutput]
+                });
+    //if stored data else empty
+
+                localStorage.setItem("trainingset", JSON.stringify(myTrainingSet));
+            }
+          
+        }
+        
+        window.requestAnimationFrame(draw);
+    }
+    window.requestAnimationFrame(draw);
+
+//////////////////////////////Video capture
+
+var constraints = {
+  audio: false,
+  video: true
+};
+
+function handleSuccess(stream) {
+  window.stream = stream; // make stream available to browser console
+  video.srcObject = stream;
+}
+
+function handleError(error) {
+  console.log('navigator.getUserMedia error: ', error);
+}
+
+var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+if (!getUserMedia) {
+    alert("getUserMedia not supported by this browser.");
+}
+navigator.mediaDevices.getUserMedia(constraints).
+    then(handleSuccess).catch(handleError);
+    
+
+</script>
+</html>
