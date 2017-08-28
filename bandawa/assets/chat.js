@@ -80,12 +80,14 @@ var interval = 0.5; //percentage of lps
 var lps = 1; //letters per second
 var noise_amp = 1;
 var osc_amp = 0.01;
+var noisy;
 start_web_audio();
 
 
 function start_web_audio(){
   if(audio_context!=null) audio_context.close();
   audio_context = new (window.AudioContext || window.webkitAudioContext)();
+  noisy = new Noisy(audio_context, 16384)
   gain = audio_context.createGain();
   master_gain = audio_context.createGain();
   compressor = audio_context.createDynamicsCompressor();
@@ -120,12 +122,10 @@ function draw_noises(){
 }
 
 function create_noise_node(top, bottom){
-  var noise_node = audio_context.createBufferSource();
-  noise_node.buffer = noise_gen(top,bottom);
-  noise_node.loop = true;
-  noise_node.start(0);
+  var b = noisy.createNoise(bottom,top); // Create the node.
+  b.start();
   var noise_out = new ADSR();
-  noise_node.connect(noise_out.node);
+  b.connect(noise_out.node);
   noise_out.node.connect(destination);
   return noise_out;
 }
