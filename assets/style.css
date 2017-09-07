@@ -119,7 +119,10 @@ h1 {
             font-size: 10px;
         }
 
-
+.pack {
+  width: 200px;
+  float: left;
+}
 
 #help {
   position: fixed;
