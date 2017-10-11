@@ -1,0 +1,26 @@
+
+*** These modified files were found in JOE when it aborted on Mon Aug  7 08:04:34 2017
+*** JOE was aborted by UNIX signal 1
+
+*** File '(Unnamed)'
+/home/bandaaberta/banda.codigo.xyz/public/chat/.git/COMMIT_EDITMSG
+
+*** File '/home/bandaaberta/banda.codigo.xyz/public/chat/.git/COMMIT_EDITMSG'
+presentation for sh:wq
+xit
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Committer: banda aberta <bandaaberta@king-george.dreamhost.com>
+#
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   chat.html
+#	modified:   index.html
+#
+# Untracked files:
+#	assets/.connection.js.swp
+#
