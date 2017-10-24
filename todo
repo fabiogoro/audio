@@ -1,17 +1,29 @@
 # To do
-* Outros caracteres e combo
-  * adicionar stop que para na mesma hora
-  * adicionar volume
-* Outras opções de pastas, permitir troca de pastas na execução
+
+* vozes individuais
+incluir samples na mensagem
+
 * Inserir sons novos
-* API freesound
+	* API freesound
+	url par charactere/id
+
+
+* Outros caracteres e combo
+  
+* Outras opções de pastas, permitir troca de pastas na execução
 * ID das mensagens não funciona entre dispositivos
 * 3 interfaces
   * Chat
+  * player que rode as mensagens on scroll
   * Botões que tocam samples
   * Oscilador
+
+vozes individuais
 
 # Done
 * Play
 * adicionado stop
 * IOS não funciona
+* adicionar stop que para na mesma hora
+* adicionar volume
+
